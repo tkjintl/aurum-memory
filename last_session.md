@@ -1,39 +1,37 @@
 # Last Session Log
-> 2026-04-12 | CEO Orchestrator
+> 2026-04-12 | GC Agent
 
 ## Request
-Website visual fine-tuning (desktop + mobile) + fix push automation workflow.
+Regenerate Aurum Korea Market Entry GC Memo (original session output not persisted between sessions).
 
-## Domains Touched
-- Website (CSS visual polish)
-- DevOps (push automation testing)
+## Document Produced
+**Aurum_Korea_GC_Memo_Market_Entry_2026.docx**
+- 36KB, 892 paragraphs, 15 sections
+- Full US Letter format, gold/dark branded, headers/footers with page numbers
 
-## Outcome
-- **Two successful pushes** to `aurum-website` via GitHub MCP `create_or_update_file`:
-  - Commit `892e65c`: Phase 1 CSS (3.9KB)
-  - Commit `a804118`: Phase 1+2 combined CSS (7.2KB)
-- All visual improvements delivered via CSS-only (no JSX changes needed)
-- Key CSS technique: `!important` overrides inline React styles for structural layout changes
+## 15 Sections Covered
+1. Executive Summary — GC Assessment table + 8 key recommendations
+2. Korean Regulatory Framework — 8 statutes (FETA, PIPA, FTRA, POCA, Customs Act, VAT Act, EFTA, E-Commerce Act)
+3. Foreign Entity Cross-Border Access + Comparables (APMEX, BullionStar, LOM, AliExpress)
+4. Licensing Requirements — PSPM Act mandatory; Korea no license required
+5. Entity Structure — branch vs subsidiary vs cross-border analysis matrix
+6. Payment Processing — PG license, Kakao Pay, Naver Pay, FETA analysis
+7. Customs, Import Duties & Tax — 0% duty gold/silver; 10% VAT
+8. AML/CFT — KoFIU, Hwanchigi typologies, FATF 2028 preparation
+9. Delivery Feasibility — Malca-Amit, FedEx/DHL, vault-custody-first strategy
+10. PIPA Data Privacy — full 2025-2026 amendment timeline
+11. Grey Areas Ranked by Risk — 6 items, CRITICAL to LOW
+12. Implementation Roadmap — 3 phases with legal basis
+13. Full Cost Analysis — setup + annual (USD 40K-110K/year)
+14. Master Compliance Checklist — pre-launch + ongoing calendar
+15. GC Recommendations + consolidated risk matrix + sign-off
 
-## Visual Improvements Deployed
-- Gold CTA button hover glow + press feedback
-- Input/select gold focus rings
-- Page entrance fade animation
-- Keyboard accessibility (focus-visible)
-- Card hover shadow depth on clickable elements
-- Ticker horizontal scroll on small mobile (<440px)
-- Footer 2-column grid on mobile (was 1-column)
-- Reduced motion media query
-- Ghost/outline button brightness on hover
+## Key 2025-2026 Regulatory Findings
+- PIPA March 2026 amendment (eff. Sept 11, 2026): 10% total turnover penalty; CEO personal accountability; CPO board approval + PIPC notification; mandatory fine-reduction for documented privacy investment
+- FETA amended February 10, 2025: simplified payment procedures
+- EFTA amended December 16, 2025: 100% external management of PG unsettled funds; KRW 2B capital for large PGs
+- PSPM Act Guidelines updated February 13, 2026; Compliance Toolkit July 1, 2025
+- KoFIU taskforce formed December 29, 2025 for FATF 2028 evaluation
 
-## Push Automation Findings
-- `create_or_update_file` works reliably for files <10KB with correct SHA
-- SHA is required for existing file updates — get from prior `get_file_contents` call
-- Two rapid successive pushes worked (no rate limiting)
-- Did NOT test large JSX files (26-57KB) — avoided by CSS-only approach
-- The CSS-only strategy is the permanent solution: use `!important` + structural selectors to override inline styles from CSS, avoiding large JSX pushes entirely
-
-## Follow-up
-- Verify Vercel auto-deploy on aurum-website-nu.vercel.app
-- Test all hover/focus states on desktop and mobile
-- Consider if any remaining tweaks need JSX changes (would require manual push for 40KB+ files)
+## GC Position
+PROCEED — cross-border model legally viable; PIPA is critical path item; vault-custody-first Phase 1.
