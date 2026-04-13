@@ -1,6 +1,7 @@
 # BRAND MANAGER — Consolidated Content Brief
 
 **From:** Founder
+
 **To:** Aurum Brand Manager Agent
 **Subject:** Storage page expansion + Bullion Savings Program (AGP) content and positioning
 **Priority:** High — foundational content for Aurum launch
