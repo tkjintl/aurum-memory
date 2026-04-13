@@ -1,3 +1,22 @@
+## 2026-04-13 — Marketing Agent
+
+**Request:** Review website colour scheme — founder reported black-on-brown unreadable text at https://aurum-website-nu.vercel.app/
+**Outcome:** Full colour audit delivered inline — contrast ratios calculated, root causes identified, complete substitution map + CSS overrides produced for web agent
+
+**Files generated:**
+- none (colour spec delivered inline as markdown reference)
+
+**Decisions recorded in aurum_context.md:**
+- Updated Brand colours section with full corrected palette (old → new)
+
+**Open items added:**
+- [2026-04-13] Website Agent — Apply colour fix: neutralise warm-brown card/border colours + fix CTA button text to #ffffff + fix muted text contrast. Full spec in last_session.md.
+
+**Cross-domain notes:**
+- Website colour fix is high priority UX issue. Web agent should apply CSS-only overrides to index.css first (can push via MCP), then JSX find-and-replace for inline styles.
+
+---
+
 ## 2026-04-13 17:15 UTC — Website Agent
 
 **Request:** Fix Vercel build failures — 8 consecutive ERROR deployments caused by manual JSX file uploads placing content in wrong files
@@ -18,14 +37,12 @@
 
 ---
 
-## FINAL REPO STATE after this session:
+## FINAL REPO STATE after website session:
 - `src/ShopPages.jsx` — exports: Home, Shop, ProductPage, CartPage, Checkout ✅
 - `src/UserPages.jsx` — exports: OrderHistoryPage, AccountPage, KYCFlowPage, WhyGold, Learn, Storage (thin), AGP, AGPBackingReport ✅
 - `src/App.jsx` — single import from UserPages.jsx, no separate file imports ✅
 - `src/AGPPage.jsx` — DELETED ✅
-- `src/StoragePage.jsx` — never existed, never needed ✅
 - Last READY deployment: dpl_FGrF9hyFp7pohHY9sbpGqJ5EtUHA (commit cc6db09)
-- Preview URL: aurum-website-fbk9tr33x-tkjintls-projects.vercel.app
 
 ## ROOT CAUSE of the failures (for future reference):
 Founder uploaded new JSX files via GitHub UI which accidentally:
