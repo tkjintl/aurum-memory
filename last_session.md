@@ -1,3 +1,34 @@
+## 2026-04-13 18:00 UTC — Website Agent
+
+**Request:** Fix build errors caused by missing UserPages exports (Storage, AGP, AGPBackingReport) + merge full 13-section Storage from founder's StoragePage.jsx upload
+**Outcome:** ✅ Built & validated new UserPages.jsx (128KB). StoragePage.jsx deleted from repo. File too large for MCP push — tmpfiles download link delivered to founder for manual upload.
+
+**Files generated:**
+- UserPages.jsx (128KB, local only — too large for MCP archive) — Full combined file: OrderHistoryPage, AccountPage, KYCFlowPage, WhyGold, T/SectionLabel/BenefitTile/StepCard/FAQAccordion shared components, full 13-section Storage (from founder's StoragePage.jsx upload), Learn, AGP, AGPBackingReport. All 8 exports correct.
+
+**Decisions recorded in aurum_context.md:**
+- none
+
+**Open items added:**
+- [2026-04-13] Website Agent — UserPages.jsx manual upload required: tmpfiles link https://tmpfiles.org/dl/33435151/userpages.jsx (60min expiry). Founder uploads to src/UserPages.jsx via GitHub UI to fix build.
+
+**Cross-domain notes:**
+- StoragePage.jsx deleted (commit 31cb11e) — was a standalone file violating repo architecture. Full 13-section Storage now inside UserPages.jsx once founder uploads it.
+- Build will remain broken until founder uploads the new UserPages.jsx.
+
+---
+
+## REPO STATE after this session:
+- `src/StoragePage.jsx` — DELETED ✅ (commit 31cb11e)
+- `src/UserPages.jsx` — STILL BROKEN (missing Storage/AGP/AGPBackingReport exports). Needs manual upload of the new file.
+- New UserPages.jsx ready at: https://tmpfiles.org/dl/33435151/userpages.jsx
+- Verified exports: OrderHistoryPage, AccountPage, KYCFlowPage, WhyGold, Learn, Storage, AGP, AGPBackingReport ✅
+
+## PUSH LIMITATION NOTE:
+JSX files >10KB cannot be pushed via GitHub MCP (per domain_website.md). Files must be downloaded and uploaded manually via GitHub UI. Do NOT attempt MCP push for files >10KB.
+
+---
+
 ## 2026-04-13 — Marketing Agent
 
 **Request:** Review website colour scheme — founder reported black-on-brown unreadable text at https://aurum-website-nu.vercel.app/
@@ -34,21 +65,6 @@
 **Cross-domain notes:**
 - AGP page (AGP + AGPBackingReport components) now live in UserPages.jsx and accessible at /agp and /agp-report routes. Brand Manager content (20260413_brand_agp_page_content_v1.docx) is implemented.
 - Storage page still uses thin version — Brand Manager's expanded 13-section Storage content (20260413_brand_storage_page_content_v1.docx) is pending implementation.
-
----
-
-## FINAL REPO STATE after website session:
-- `src/ShopPages.jsx` — exports: Home, Shop, ProductPage, CartPage, Checkout ✅
-- `src/UserPages.jsx` — exports: OrderHistoryPage, AccountPage, KYCFlowPage, WhyGold, Learn, Storage (thin), AGP, AGPBackingReport ✅
-- `src/App.jsx` — single import from UserPages.jsx, no separate file imports ✅
-- `src/AGPPage.jsx` — DELETED ✅
-- Last READY deployment: dpl_FGrF9hyFp7pohHY9sbpGqJ5EtUHA (commit cc6db09)
-
-## ROOT CAUSE of the failures (for future reference):
-Founder uploaded new JSX files via GitHub UI which accidentally:
-1. Created standalone StoragePage.jsx + AGPPage.jsx (pattern violation — this repo uses grouped files)
-2. Overwrote ShopPages.jsx with Storage page content (wrong filename)
-**FIX PATTERN**: Always upload JSX content into the correct grouped file (UserPages.jsx / ShopPages.jsx), never as new standalone .jsx files.
 
 ---
 
