@@ -1,3 +1,31 @@
+## 2026-04-13 17:00 UTC — Website Agent
+
+**Request:** Fix build failures caused by manual JSX uploads creating separate files (StoragePage.jsx, AGPPage.jsx) outside the grouped file pattern
+**Outcome:** PARTIAL — AGP merged, App.jsx fixed, AGPPage.jsx deleted; build still broken because ShopPages.jsx was accidentally overwritten with Storage page content. One final push needed (say "resume").
+
+**Files generated:**
+- none (no deliverable files — all work was direct repo commits)
+
+**Decisions recorded in aurum_context.md:**
+- none
+
+**Open items added:**
+- [2026-04-13] Website Agent — Build still broken: ShopPages.jsx was accidentally overwritten with Storage page content. Need to push: (1) ShopPages.jsx restored to Home/Shop/etc., (2) UserPages.jsx with 13-section Storage replacing old thin version. Both files ready in session. Say "resume" to complete.
+
+**Cross-domain notes:**
+- Brand Manager produced Storage page (13-section) and AGP page content. Both are now partially integrated into the website. Build fix is 1 commit away.
+
+---
+
+## CURRENT BROKEN STATE (as of session end):
+- `src/ShopPages.jsx` — contains new Storage page content INSTEAD of Home/Shop/ProductPage/CartPage/Checkout
+- `src/UserPages.jsx` — has AGP+AGPBackingReport merged in, but old thin Storage (needs 13-section replacement)
+- `src/App.jsx` — FIXED, imports all from UserPages.jsx
+- `src/AGPPage.jsx` — DELETED ✅
+- Last successful deploy: dpl_DKXS1fRQFk98gtv4aUznHJ4SzjhE (14:20 UTC Apr 13) — site still live on that
+
+---
+
 ## 2026-04-13 02:21 UTC — GC (Legal Counsel)
 
 **Request:** Test run of full 7-step file delivery protocol with a hello.txt file
