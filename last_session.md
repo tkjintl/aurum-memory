@@ -1,3 +1,46 @@
+## 2026-04-13 18:20 UTC — Website Agent
+
+**Request:** (1) Fix login — any email/password should work, test account wsl@aurum.com/1234; (2) Fix colours — Phase 3 CSS was broken (hex selectors don't match browser-normalized RGB inline styles); (3) Fix desktop sizing — too small, ~115% zoom needed.
+**Outcome:** ✅ index.css Phase 4 pushed (commit 63a4053) — hex+RGB selectors, desktop zoom 1.15×. BaseUI.jsx delivered via tmpfiles (fixes broken login: API was never imported). Manual upload required for BaseUI.jsx.
+
+**Files generated:**
+- files/website/20260413_website_BaseUI_demoauth_v1.jsx — stub archive; full file at tmpfiles https://tmpfiles.org/dl/33438262/baseui.jsx (60min)
+
+**Decisions recorded in aurum_context.md:**
+- none
+
+**Open items added:**
+- BaseUI.jsx manual upload required: download https://tmpfiles.org/dl/33438262/baseui.jsx → upload to src/BaseUI.jsx via GitHub UI. This fixes login (was completely broken — API never imported).
+
+**Cross-domain notes:**
+- none
+
+---
+
+## REPO STATE (2026-04-13 18:20 UTC):
+- `src/index.css` — ✅ 7.8KB, Phase 1+2+4 (Phase 4 = hex+RGB colour fix + desktop zoom 1.15×)
+- `src/BaseUI.jsx` — ⚠️ NEEDS MANUAL UPLOAD (login broken in current version — API not imported)
+- `src/UserPages.jsx` — ✅ 128KB, full 13-section Storage + AGP + AGPBackingReport
+- `src/App.jsx` — ✅ unchanged
+- Latest committed: 63a4053 (index.css Phase 4)
+
+## CRITICAL BUG NOTES:
+- Phase 3 CSS selectors like `[style*="background: #111008"]` DO NOT work in Chrome/Firefox because browsers normalize inline hex colors to rgb() when writing to the DOM style attribute. Phase 4 adds rgb() variants: `[style*="background: rgb(17, 16, 8)"]`.
+- BaseUI.jsx login was broken since initial build — `API` was called in submit() and socialLogin() but never imported. New version removes API dependency entirely, uses demo auth.
+
+## COLOUR MAP (Phase 4):
+- Panel bg: #111008 → #1c1c1c (clearly readable on #0a0a0a background)
+- Deep bg: #0d0b08/#0d0c08 → #111111
+- Footer: #050505 → #0f0f0f
+- Primary borders: #1a1510 → #2a2a2a
+- Heavy borders: #2a2318 → #333333
+- Secondary text: #8a7d6b → #a0a0a0
+- Muted text: #555/#6b6b6b → #888888
+- CTA button text: #ffffff (WCAG AA on gold gradient)
+- Desktop zoom: html { zoom: 1.15 } at min-width: 1024px
+
+---
+
 ## 2026-04-13 18:10 UTC — Website Agent
 
 **Request:** Apply Marketing Agent colour contrast fix to index.css (Phase 3). Site back up after founder manually uploaded new UserPages.jsx.
