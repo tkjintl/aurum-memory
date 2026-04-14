@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurum — AGP Flow Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #111008;
+    --bg-3: #1a1814;
+    --panel: #15130d;
+    --gold: #C5A572;
+    --gold-bright: #E3C187;
+    --gold-dim: #8a7d6b;
+    --line: rgba(197, 165, 114, 0.2);
+    --line-strong: rgba(197, 165, 114, 0.5);
+    --text: #f5f0e8;
+    --text-dim: #a8a096;
+    --text-muted: #6b655d;
+    --success: #7FB069;
+    --warn: #E3C187;
+    --danger: #D4846B;
+
+    --font-display: 'Cormorant Garamond', 'Noto Serif KR', serif;
+    --font-body: 'Outfit', 'Noto Sans KR', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-kr: 'Noto Sans KR', 'Outfit', sans-serif;
+    --font-kr-display: 'Noto Serif KR', 'Cormorant Garamond', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-weight: 300; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* Subtle grain overlay on body for atmospheric depth */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.77 0 0 0 0 0.65 0 0 0 0 0.45 0 0 0 0.05 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  /* Preview nav — utility only, not production */
+  .preview-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 20px;
+    display: flex; gap: 6px; align-items: center;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    overflow-x: auto;
+  }
+  .preview-nav::before {
+    content: "PROTOTYPE PREVIEW";
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  .preview-nav button {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .preview-nav button:hover { border-color: var(--gold); color: var(--gold); }
+  .preview-nav button.active { border-color: var(--gold); color: var(--bg); background: var(--gold); }
+
+  .screen { display: none; min-height: 100vh; padding-top: 60px; position: relative; z-index: 2; }
+  .screen.active { display: block; }
+
+  /* Shared brand elements */
+  .mono { font-family: var(--font-mono); letter-spacing: 0.06em; }
+  .kr { font-family: var(--font-kr); }
+  .kr-display { font-family: var(--font-kr-display); }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; font-weight: 500; }
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--gold); color: var(--bg);
+    border: none; padding: 16px 32px;
+    font-family: var(--font-body); font-weight: 500; font-size: 15px;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--gold-bright); transform: translateY(-1px); box-shadow: 0 10px 40px -10px rgba(197, 165, 114, 0.5); }
+  .btn-primary:disabled { background: var(--gold-dim); cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    background: transparent; color: var(--text);
+    border: 1px solid var(--line-strong); padding: 15px 30px;
+    font-family: var(--font-body); font-weight: 400; font-size: 15px;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ================================================
+     SCREEN 1 — SHOP SELECTOR (실물 매매 vs AGP)
+     ================================================ */
+  #selector { display: flex; align-items: center; justify-content: center; padding: 100px 20px 60px; }
+  .selector-wrap { max-width: 1240px; width: 100%; }
+  .selector-head { text-align: center; margin-bottom: 80px; }
+  .selector-head .eyebrow { margin-bottom: 20px; display: block; }
+  .selector-head h1 {
+    font-family: var(--font-kr-display);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 500; line-height: 1.2; color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .selector-head .sub-en {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 24px);
+    color: var(--gold);
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+  .selector-head p {
+    max-width: 640px; margin: 0 auto;
+    color: var(--text-dim); font-size: 15px; line-height: 1.7;
+  }
+
+  .selector-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 820px) { .selector-grid { grid-template-columns: 1fr; } }
+
+  .option-card {
+    position: relative;
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+    border: 1px solid var(--line);
+    padding: 48px 40px 40px;
+    display: flex; flex-direction: column;
+    transition: all 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .option-card::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(800px circle at var(--mx, 50%) var(--my, 50%), rgba(197, 165, 114, 0.08), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .option-card:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+  .option-card:hover::before { opacity: 1; }
+  .option-card::after {
+    content: "";
+    position: absolute; top: 0; left: 0; height: 1px; width: 0%;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transition: width 0.7s ease;
+  }
+  .option-card:hover::after { width: 100%; }
+
+  .option-card .icon {
+    width: 72px; height: 72px;
+    border: 1px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 32px;
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 500;
+    color: var(--gold);
+  }
+  .option-card .icon.dual {
+    flex-direction: column;
+    font-size: 22px;
+    line-height: 1.05;
+    letter-spacing: 0.08em;
+  }
+  .option-card h2 {
+    font-family: var(--font-kr-display);
+    font-size: 30px; font-weight: 600; color: var(--text);
+    margin-bottom: 6px; line-height: 1.25;
+  }
+  .option-card .en-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px; color: var(--gold);
+    font-weight: 400; margin-bottom: 24px;
+  }
+  .option-card p {
+    color: var(--text-dim); font-size: 14.5px; line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .option-card ul {
+    list-style: none; margin-bottom: 36px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .option-card ul li {
+    font-size: 14px; color: var(--text); display: flex;
+    align-items: flex-start; gap: 12px; padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .option-card ul li:last-child { border-bottom: none; padding-bottom: 0; }
+  .option-card ul li::before {
+    content: "—"; color: var(--gold);
+    font-family: var(--font-mono); flex-shrink: 0;
+  }
+  .option-card ul li .kr-label { flex: 1; }
+  .option-card ul li .en-note {
+    font-family: var(--font-display); font-style: italic;
+    color: var(--text-muted); font-size: 13px;
+    display: block; margin-top: 2px;
+  }
+  .option-card .card-cta { margin-top: auto; }
+  .option-card .card-cta a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.15em; color: var(--gold);
+    text-decoration: none; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .option-card .card-cta a:hover { color: var(--gold-bright); }
+  .option-card .card-cta .arrow {
+    transition: transform 0.3s;
+  }
+  .option-card:hover .card-cta .arrow { transform: translateX(6px); }
+
+  .option-card.featured {
+    border-color: rgba(197, 165, 114, 0.35);
+    background: linear-gradient(180deg, rgba(197, 165, 114, 0.04) 0%, var(--bg) 100%);
+  }
+  .option-card.featured .featured-tag {
+    position: absolute; top: 24px; right: 24px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.15em; color: var(--gold);
+    padding: 5px 10px; border: 1px solid var(--line-strong);
+    text-transform: uppercase;
+  }
+
+  /* ================================================
+     SCREEN 2 — AGP INTRO CLICK-THROUGH
+     ================================================ */
+  #agp-intro { display: none; padding: 100px 20px 80px; }
+  #agp-intro.active { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .intro-wrap { max-width: 880px; width: 100%; }
+  .intro-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 40px;
+  }
+  .intro-top .step-count {
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.2em; color: var(--gold-dim);
+  }
+  .intro-top .step-count .current { color: var(--gold); font-weight: 500; }
+  .intro-top .skip {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.15em; color: var(--text-muted);
+    text-transform: uppercase; cursor: pointer;
+    background: none; border: none;
+    transition: color 0.3s;
+  }
+  .intro-top .skip:hover { color: var(--gold); }
+
+  .intro-card {
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+    border: 1px solid var(--line);
+    padding: 80px 60px;
+    min-height: 480px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  @media (max-width: 640px) { .intro-card { padding: 60px 28px; min-height: 440px; } }
+  .intro-card::before {
+    content: ""; position: absolute;
+    top: -200px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(197, 165, 114, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .intro-card .eyebrow { margin-bottom: 32px; }
+  .intro-icon {
+    font-size: 52px; margin-bottom: 32px;
+    filter: drop-shadow(0 0 40px rgba(197, 165, 114, 0.3));
+  }
+  .intro-title-kr {
+    font-family: var(--font-kr-display);
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 500; color: var(--text);
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .intro-title-en {
+    font-family: var(--font-display); font-style: italic;
+    font-size: clamp(18px, 2.4vw, 24px); color: var(--gold);
+    margin-bottom: 36px; font-weight: 400;
+  }
+  .intro-desc {
+    max-width: 560px;
+    color: var(--text-dim);
+    font-size: 16px; line-height: 1.75;
+  }
+
+  .intro-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 32px; gap: 16px;
+  }
+  .intro-nav button {
+    background: transparent; border: 1px solid var(--line-strong);
+    color: var(--text); padding: 14px 28px;
+    font-family: var(--font-body); font-size: 14px;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .intro-nav button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+  .intro-nav button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .intro-nav .next-btn { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 500; }
+  .intro-nav .next-btn:hover { background: var(--gold-bright); }
+
+  .intro-dots {
+    display: flex; gap: 10px; align-items: center;
+  }
+  .intro-dots span {
+    width: 32px; height: 2px; background: var(--line);
+    transition: all 0.4s;
+  }
+  .intro-dots span.active { background: var(--gold); }
+  .intro-dots span.done { background: var(--gold-dim); }
+
+  /* ================================================
+     SCREEN 3 — AGP SIGNUP FORM
+     ================================================ */
+  #agp-signup { padding: 100px 20px 80px; }
+  .signup-wrap {
+    max-width: 980px; margin: 0 auto;
+    display: grid; grid-template-columns: 280px 1fr; gap: 48px;
+  }
+  @media (max-width: 860px) { .signup-wrap { grid-template-columns: 1fr; gap: 24px; } }
+
+  .signup-sidebar {
+    position: sticky; top: 80px; align-self: start;
+  }
+  @media (max-width: 860px) { .signup-sidebar { position: static; } }
+  .signup-sidebar .eyebrow { margin-bottom: 16px; display: block; }
+  .signup-sidebar h2 {
+    font-family: var(--font-kr-display);
+    font-size: 24px; color: var(--text);
+    margin-bottom: 6px; font-weight: 600;
+  }
+  .signup-sidebar .en {
+    font-family: var(--font-display); font-style: italic;
+    color: var(--gold); font-size: 15px; margin-bottom: 32px;
+  }
+  .signup-progress {
+    display: flex; flex-direction: column; gap: 2px;
+    border-left: 1px solid var(--line);
+    padding-left: 20px;
+  }
+  @media (max-width: 860px) {
+    .signup-progress {
+      flex-direction: row; border-left: none;
+      border-top: 1px solid var(--line); padding-left: 0;
+      padding-top: 16px; overflow-x: auto;
+    }
+    .signup-progress::-webkit-scrollbar { display: none; }
+  }
+  .signup-progress .step {
+    padding: 12px 0; display: flex; gap: 12px;
+    align-items: center; position: relative;
+    font-size: 13px; color: var(--text-muted);
+    transition: color 0.3s; cursor: default;
+  }
+  @media (max-width: 860px) { .signup-progress .step { padding: 8px 14px; white-space: nowrap; } }
+  .signup-progress .step::before {
+    content: "";
+    position: absolute; left: -24px; width: 8px; height: 8px;
+    background: var(--line); border-radius: 50%;
+    transition: all 0.3s;
+  }
+  @media (max-width: 860px) {
+    .signup-progress .step::before {
+      left: auto; top: -22px; width: 100%; height: 2px;
+      border-radius: 0; background: var(--line);
+    }
+  }
+  .signup-progress .step .num {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--gold-dim); font-weight: 500;
+  }
+  .signup-progress .step.done { color: var(--text-dim); }
+  .signup-progress .step.done::before { background: var(--gold-dim); }
+  .signup-progress .step.active { color: var(--text); font-weight: 500; }
+  .signup-progress .step.active::before { background: var(--gold); box-shadow: 0 0 0 4px rgba(197, 165, 114, 0.15); }
+  .signup-progress .step.active .num { color: var(--gold); }
+
+  .signup-main {
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+    border: 1px solid var(--line);
+    padding: 48px 44px;
+    min-height: 600px;
+  }
+  @media (max-width: 860px) { .signup-main { padding: 32px 24px; } }
+
+  .form-section { display: none; }
+  .form-section.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .form-section h3 {
+    font-family: var(--font-kr-display);
+    font-size: 26px; font-weight: 600; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .form-section .section-en {
+    font-family: var(--font-display); font-style: italic;
+    color: var(--gold); font-size: 15px; margin-bottom: 8px;
+  }
+  .form-section .section-desc {
+    color: var(--text-dim); font-size: 14px; line-height: 1.7;
+    margin-bottom: 36px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .field-group { margin-bottom: 24px; }
+  .field-group.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .field-group.two-col { grid-template-columns: 1fr; } }
+  .field-label {
+    display: block; font-family: var(--font-body);
+    font-size: 13px; color: var(--text); font-weight: 500;
+    margin-bottom: 8px; letter-spacing: 0.02em;
+  }
+  .field-label .en {
+    font-family: var(--font-display); font-style: italic;
+    color: var(--text-muted); font-weight: 400; margin-left: 6px;
+  }
+  .field-label .required { color: var(--gold); font-size: 11px; margin-left: 4px; }
+  .field-input, .field-select, .field-textarea {
+    width: 100%; background: var(--bg-3);
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    color: var(--text); font-family: var(--font-body);
+    font-size: 15px; transition: border-color 0.2s;
+  }
+  .field-input:focus, .field-select:focus, .field-textarea:focus {
+    outline: none; border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(197, 165, 114, 0.12);
+  }
+  .field-input::placeholder { color: var(--text-muted); }
+  .field-hint {
+    font-size: 12px; color: var(--text-muted); margin-top: 6px;
+    font-family: var(--font-body);
+  }
+  .field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23C5A572' fill='none' stroke-width='1.5'/></svg>");
+    background-repeat: no-repeat; background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .field-with-button {
+    display: grid; grid-template-columns: 1fr auto; gap: 10px;
+  }
+  .inline-verify-btn {
+    background: var(--bg); color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0 20px;
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.1em; cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .inline-verify-btn:hover { background: var(--gold); color: var(--bg); }
+
+  .id-upload {
+    border: 1px dashed var(--line-strong);
+    padding: 28px 20px; text-align: center;
+    background: rgba(197, 165, 114, 0.03);
+    cursor: pointer; transition: all 0.3s;
+  }
+  .id-upload:hover { border-color: var(--gold); background: rgba(197, 165, 114, 0.07); }
+  .id-upload .upload-icon { font-size: 24px; color: var(--gold); margin-bottom: 8px; }
+  .id-upload .upload-title { color: var(--text); font-size: 14px; margin-bottom: 4px; }
+  .id-upload .upload-hint { color: var(--text-muted); font-size: 12px; }
+
+  /* Radio card grid for plan composition etc */
+  .radio-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+  .radio-card {
+    position: relative; cursor: pointer;
+    padding: 18px 16px;
+    background: var(--bg-3);
+    border: 1px solid var(--line);
+    transition: all 0.25s;
+  }
+  .radio-card:hover { border-color: var(--line-strong); }
+  .radio-card input { position: absolute; opacity: 0; }
+  .radio-card input:checked ~ .radio-inner { color: var(--text); }
+  .radio-card:has(input:checked) {
+    border-color: var(--gold);
+    background: rgba(197, 165, 114, 0.07);
+    box-shadow: 0 0 0 2px rgba(197, 165, 114, 0.15);
+  }
+  .radio-inner .r-title {
+    font-family: var(--font-kr); font-weight: 500;
+    color: var(--text); font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .radio-inner .r-sub {
+    font-family: var(--font-display); font-style: italic;
+    color: var(--text-muted); font-size: 12px;
+  }
+  .radio-inner .r-detail {
+    color: var(--text-dim); font-size: 12px; margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* Payment method tabs */
+  .pay-methods {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 640px) { .pay-methods { grid-template-columns: 1fr; } }
+  .pay-method {
+    position: relative; cursor: pointer;
+    padding: 20px 18px;
+    background: var(--bg-3);
+    border: 1px solid var(--line);
+    transition: all 0.25s;
+  }
+  .pay-method:hover { border-color: var(--line-strong); }
+  .pay-method input { position: absolute; opacity: 0; }
+  .pay-method:has(input:checked) {
+    border-color: var(--gold);
+    background: rgba(197, 165, 114, 0.07);
+  }
+  .pay-method .pm-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.15em; color: var(--gold-dim);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .pay-method:has(input:checked) .pm-label { color: var(--gold); }
+  .pay-method .pm-title { font-family: var(--font-kr); font-weight: 500; color: var(--text); font-size: 15px; margin-bottom: 4px; }
+  .pay-method .pm-sub { font-family: var(--font-display); font-style: italic; color: var(--text-muted); font-size: 12px; margin-bottom: 10px; }
+  .pay-method .pm-fee {
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--gold); margin-top: 10px;
+    padding-top: 10px; border-top: 1px dashed var(--line);
+  }
+
+  .pay-detail { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+
+  /* Consent */
+  .consent-box { display: flex; flex-direction: column; gap: 2px; }
+  .consent-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px 0; border-bottom: 1px dashed var(--line);
+    cursor: pointer;
+  }
+  .consent-item:last-child { border-bottom: none; }
+  .consent-item input[type="checkbox"] {
+    width: 18px; height: 18px; accent-color: var(--gold);
+    margin-top: 2px; flex-shrink: 0;
+  }
+  .consent-text { flex: 1; }
+  .consent-title {
+    font-family: var(--font-kr); color: var(--text);
+    font-size: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .consent-title .required { color: var(--gold); font-size: 11px; font-family: var(--font-mono); }
+  .consent-title .optional { color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); }
+  .consent-view-link {
+    margin-left: auto; font-size: 11px;
+    color: var(--text-muted); font-family: var(--font-mono);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .consent-view-link:hover { color: var(--gold); }
+  .consent-item-all {
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    margin-bottom: 8px; padding: 18px 0;
+  }
+  .consent-item-all .consent-title { font-weight: 500; }
+
+  /* Review summary card */
+  .review-summary { display: grid; gap: 16px; }
+  .review-card {
+    background: var(--bg-3);
+    border: 1px solid var(--line);
+    padding: 20px 22px;
+  }
+  .review-card .rc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .review-card .rc-title {
+    font-family: var(--font-kr); font-weight: 500;
+    font-size: 14px; color: var(--text);
+  }
+  .review-card .rc-edit {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--gold); letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer;
+    background: none; border: none;
+  }
+  .review-card .rc-row {
+    display: flex; justify-content: space-between;
+    padding: 6px 0; font-size: 13px;
+  }
+  .review-card .rc-row .l { color: var(--text-muted); }
+  .review-card .rc-row .v { color: var(--text); font-family: var(--font-mono); font-size: 12px; }
+
+  /* Form nav */
+  .form-nav {
+    margin-top: 40px; padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; gap: 16px;
+  }
+  .form-nav button {
+    flex: 1; max-width: 220px;
+  }
+
+  /* Success screen */
+  .success-card {
+    max-width: 640px; margin: 0 auto; text-align: center;
+    padding: 80px 48px 60px;
+    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+    border: 1px solid var(--line-strong);
+    position: relative; overflow: hidden;
+  }
+  .success-card::before {
+    content: ""; position: absolute;
+    top: -100px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse at center, rgba(197, 165, 114, 0.12), transparent 70%);
+  }
+  .success-icon {
+    width: 80px; height: 80px; border: 1px solid var(--gold);
+    border-radius: 50%; margin: 0 auto 28px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-size: 32px; position: relative;
+    z-index: 1;
+  }
+  .success-card h3 { font-family: var(--font-kr-display); font-size: 32px; font-weight: 600; color: var(--text); margin-bottom: 6px; position: relative; }
+  .success-card .en-sub { font-family: var(--font-display); font-style: italic; color: var(--gold); font-size: 18px; margin-bottom: 28px; position: relative; }
+  .success-card p { color: var(--text-dim); max-width: 440px; margin: 0 auto 24px; line-height: 1.75; font-size: 14.5px; position: relative; }
+  .success-card .email-echo {
+    font-family: var(--font-mono); font-size: 13px; color: var(--gold);
+    letter-spacing: 0.05em;
+    padding: 12px 18px; background: rgba(197, 165, 114, 0.07);
+    border: 1px solid var(--line);
+    display: inline-block; margin-bottom: 32px;
+    position: relative;
+  }
+  .success-card .next-steps { text-align: left; max-width: 460px; margin: 0 auto 32px; position: relative; }
+  .success-card .next-steps ol { list-style: none; counter-reset: s; }
+  .success-card .next-steps li {
+    counter-increment: s;
+    padding-left: 48px; position: relative;
+    padding-bottom: 18px; color: var(--text-dim);
+    font-size: 14px;
+  }
+  .success-card .next-steps li::before {
+    content: counter(s, decimal-leading-zero);
+    position: absolute; left: 0; top: -2px;
+    font-family: var(--font-mono); color: var(--gold);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+  }
+  .success-card .next-steps li strong { color: var(--text); font-weight: 500; }
+
+  /* ================================================
+     SCREEN 4 — CONFIRMATION EMAIL PREVIEW
+     ================================================ */
+  #email-preview { padding: 100px 20px 80px; display: none; }
+  #email-preview.active { display: block; }
+  .email-frame {
+    max-width: 640px; margin: 0 auto;
+    background: #f5f0e8;
+    color: #1a1814;
+    font-family: 'Georgia', 'Noto Serif KR', serif;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+  }
+  .email-frame .email-head-meta {
+    padding: 20px 24px;
+    background: #ebe4d6;
+    border-bottom: 1px solid #d8cfb9;
+    font-family: var(--font-mono);
+    font-size: 11px; color: #6b655d;
+    letter-spacing: 0.03em;
+  }
+  .email-frame .email-head-meta .row { display: flex; gap: 12px; padding: 3px 0; }
+  .email-frame .email-head-meta .l { width: 60px; color: #8a7d6b; }
+  .email-frame .email-brand {
+    padding: 40px 32px 32px;
+    background: #0a0a0a;
+    color: var(--gold);
+    text-align: center;
+  }
+  .email-frame .email-brand .logo {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 500;
+    letter-spacing: 0.4em;
+  }
+  .email-frame .email-brand .tag {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.25em; color: var(--gold-dim);
+    margin-top: 6px; text-transform: uppercase;
+  }
+  .email-body { padding: 44px 36px; }
+  .email-body h1 {
+    font-family: var(--font-kr-display); font-weight: 500;
+    font-size: 26px; color: #1a1814; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .email-body .greeting {
+    font-family: 'Georgia', serif; font-style: italic;
+    color: #8a7d6b; font-size: 15px; margin-bottom: 28px;
+  }
+  .email-body p {
+    font-size: 14.5px; line-height: 1.75; color: #3a342c;
+    margin-bottom: 16px;
+  }
+  .email-body .account-card {
+    background: #ebe4d6; padding: 20px 22px;
+    border-left: 3px solid var(--gold);
+    margin: 28px 0;
+  }
+  .email-body .account-card .kk {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.15em; color: #8a7d6b;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .email-body .account-card .vv {
+    font-family: var(--font-mono); font-size: 16px;
+    color: #1a1814; font-weight: 500;
+  }
+  .email-body .cta {
+    display: inline-block; background: #0a0a0a;
+    color: var(--gold);
+    padding: 14px 32px; text-decoration: none;
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px; letter-spacing: 0.04em;
+    margin: 12px 0 32px;
+  }
+  .email-body .steps {
+    background: #ebe4d6; padding: 24px;
+    margin: 28px 0;
+  }
+  .email-body .steps h3 {
+    font-family: var(--font-kr); font-weight: 600;
+    font-size: 14px; color: #1a1814;
+    margin-bottom: 18px; text-transform: none;
+  }
+  .email-body .steps ol {
+    padding-left: 18px;
+    font-size: 13.5px; line-height: 1.75;
+  }
+  .email-body .steps ol li { margin-bottom: 8px; }
+  .email-body .steps ol li strong { color: #1a1814; }
+  .email-body .divider {
+    border: 0; border-top: 1px solid #d8cfb9;
+    margin: 32px 0;
+  }
+  .email-body .signoff {
+    color: #6b655d; font-size: 13px; line-height: 1.7;
+    font-style: italic; font-family: 'Georgia', serif;
+  }
+  .email-foot {
+    padding: 24px 32px; background: #ebe4d6;
+    font-family: var(--font-mono); font-size: 10px;
+    color: #8a7d6b; text-align: center; letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+  .email-foot a { color: var(--gold-dim); }
+
+  /* Utility: floating mock-device toggle */
+  .device-toggle {
+    position: fixed; bottom: 20px; right: 20px;
+    z-index: 50; background: var(--bg-2);
+    border: 1px solid var(--line-strong);
+    padding: 8px; display: flex; gap: 4px;
+    border-radius: 24px;
+    font-family: var(--font-mono); font-size: 11px;
+  }
+  .device-toggle button {
+    background: transparent; border: none;
+    color: var(--text-dim); padding: 6px 14px;
+    cursor: pointer; border-radius: 18px;
+    transition: all 0.2s;
+  }
+  .device-toggle button.active { background: var(--gold); color: var(--bg); }
+  @media (max-width: 640px) { .device-toggle { display: none; } }
+
+  .screen-inner { max-width: 1240px; margin: 0 auto; transition: max-width 0.3s ease; }
+  body.mobile-view .screen-inner { max-width: 420px; }
+</style>
+</head>
+<body>
+
+<!-- Preview Nav (not part of production) -->
+<nav class="preview-nav">
+  <button onclick="showScreen('selector')" id="nav-selector" class="active">1 · Shop Selector</button>
+  <button onclick="showScreen('agp-intro')" id="nav-intro">2 · AGP Click-Through</button>
+  <button onclick="showScreen('agp-signup')" id="nav-signup">3 · Signup Form</button>
+  <button onclick="showScreen('email-preview')" id="nav-email">4 · Confirmation Email</button>
+</nav>
+
+<div class="device-toggle">
+  <button onclick="setDevice('desktop')" id="dev-desktop" class="active">DESKTOP</button>
+  <button onclick="setDevice('mobile')" id="dev-mobile">MOBILE</button>
+</div>
+
+<!-- ============================================
+     SCREEN 1 — SHOP SELECTOR
+     ============================================ -->
+<section id="selector" class="screen active">
+  <div class="screen-inner selector-wrap">
+    <div class="selector-head">
+      <span class="eyebrow">매장 · Shop</span>
+      <h1>어떻게 시작하시겠습니까</h1>
+      <div class="sub-en">Choose how you begin.</div>
+      <p>Aurum은 두 가지 방식으로 실물 금·은을 제공합니다. 한 번에 구매하는 실물 바·코인 또는 월 20만원부터 시작하는 자동 적립 저축 플랜 (AGP).</p>
+    </div>
+
+    <div class="selector-grid">
+      <!-- Option 1: One-time purchase (existing shop) -->
+      <div class="option-card" onclick="goToExistingShop()" onmousemove="cardMoveLight(event,this)">
+        <div class="icon dual"><span>AU</span><span>AG</span></div>
+        <h2>실물 금·은 매매</h2>
+        <div class="en-title">Physical Gold &amp; Silver — Direct Purchase</div>
+        <p>LBMA 승인 골드·실버 바, sovereign-issued 코인을 일회성으로 구매합니다. 국제 현물가 + 투명한 프리미엄으로 고객님 명의 금고에 즉시 배분 보관됩니다.</p>
+        <ul>
+          <li>
+            <div class="kr-label">
+              1 oz ~ 1 kg 바 · 1/2 oz 코인
+              <span class="en-note">Bars from 1 oz to 1kg · Coins from 1/2 oz</span>
+            </div>
+          </li>
+          <li>
+            <div class="kr-label">
+              한 번의 결제 · 영구 보관
+              <span class="en-note">One-time purchase, permanent allocation</span>
+            </div>
+          </li>
+          <li>
+            <div class="kr-label">
+              유선·카드·암호화폐 결제 지원
+              <span class="en-note">Wire, card, and crypto supported</span>
+            </div>
+          </li>
+        </ul>
+        <div class="card-cta">
+          <a href="#" onclick="event.preventDefault(); goToExistingShop();">
+            <span>제품 둘러보기 · Browse Products</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Option 2: AGP program (new flow) -->
+      <div class="option-card featured" onclick="showScreen('agp-intro')" onmousemove="cardMoveLight(event,this)">
+        <span class="featured-tag">Featured · 추천</span>
+        <div class="icon">AGP</div>
+        <h2>아름 골드 플랜</h2>
+        <div class="en-title">Aurum Gold Plan — Automated Accumulation</div>
+        <p>월 20만원부터 시작하는 그램 단위 자동 적립. 토스뱅크 자동이체, 신용카드, 암호화폐로 입금하고 100g 도달 시 실물 바로 무료 전환합니다.</p>
+        <ul>
+          <li>
+            <div class="kr-label">
+              월 200,000원부터 시작
+              <span class="en-note">Start from KRW 200,000 / month</span>
+            </div>
+          </li>
+          <li>
+            <div class="kr-label">
+              매일·매주·매월 자동 적립
+              <span class="en-note">Daily, weekly, or monthly auto-debit</span>
+            </div>
+          </li>
+          <li>
+            <div class="kr-label">
+              100g 도달 시 실물 바 무료 전환
+              <span class="en-note">Free conversion to physical at 100g</span>
+            </div>
+          </li>
+        </ul>
+        <div class="card-cta">
+          <a href="#" onclick="event.preventDefault(); showScreen('agp-intro');">
+            <span>AGP 시작하기 · Begin Enrollment</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 2 — AGP INTRO CLICK-THROUGH
+     ============================================ -->
+<section id="agp-intro" class="screen">
+  <div class="screen-inner intro-wrap">
+    <div class="intro-top">
+      <span class="step-count"><span class="current" id="intro-current">01</span> / <span>05</span></span>
+      <button class="skip" onclick="goToSignup()">SKIP TO ENROLLMENT →</button>
+    </div>
+
+    <div class="intro-card" id="intro-card">
+      <span class="eyebrow">AGP는 이렇게 작동합니다</span>
+
+      <div class="intro-icon" id="intro-icon">✍️</div>
+      <h2 class="intro-title-kr" id="intro-title-kr">가입</h2>
+      <div class="intro-title-en" id="intro-title-en">Enroll</div>
+      <p class="intro-desc" id="intro-desc">10분 내 온라인으로 가입하고 한국 표준 KYC (실명 확인, 휴대폰 인증)를 완료합니다. 모든 절차는 국내 금융기관 방식에 맞춰 설계되었습니다.</p>
+    </div>
+
+    <div class="intro-nav">
+      <button onclick="introPrev()" id="intro-prev" disabled>← Previous</button>
+      <div class="intro-dots" id="intro-dots">
+        <span class="active"></span><span></span><span></span><span></span><span></span>
+      </div>
+      <button class="next-btn" onclick="introNext()" id="intro-next">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 3 — AGP SIGNUP FORM
+     ============================================ -->
+<section id="agp-signup" class="screen">
+  <div class="screen-inner">
+    <div class="signup-wrap" id="signup-wrap">
+
+      <aside class="signup-sidebar" id="signup-sidebar">
+        <span class="eyebrow">AGP 가입 신청</span>
+        <h2>신규 가입</h2>
+        <div class="en">New Enrollment</div>
+        <nav class="signup-progress" id="signup-progress">
+          <div class="step active"><span class="num">01</span><span>본인 정보 · Identity</span></div>
+          <div class="step"><span class="num">02</span><span>투자자 프로필 · Profile</span></div>
+          <div class="step"><span class="num">03</span><span>AGP 플랜 설계 · Plan</span></div>
+          <div class="step"><span class="num">04</span><span>결제 수단 · Payment</span></div>
+          <div class="step"><span class="num">05</span><span>약관 동의 · Consent</span></div>
+          <div class="step"><span class="num">06</span><span>검토 및 제출 · Review</span></div>
+        </nav>
+      </aside>
+
+      <main class="signup-main" id="signup-main">
+
+        <!-- SECTION 1: 본인 정보 -->
+        <div class="form-section active" data-section="1">
+          <h3>본인 정보</h3>
+          <div class="section-en">Identity &amp; Contact Verification</div>
+          <p class="section-desc">한국 금융실명법에 따라 실명 확인이 필요합니다. 모든 정보는 암호화 전송·저장되며 KYC 심사에만 사용됩니다.</p>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">성명 (한글)<span class="en">Legal name — Korean</span><span class="required">필수</span></label>
+              <input class="field-input" type="text" placeholder="홍길동">
+            </div>
+            <div>
+              <label class="field-label">영문 성명<span class="en">Name in English</span><span class="required">필수</span></label>
+              <input class="field-input" type="text" placeholder="HONG GIL DONG">
+            </div>
+          </div>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">주민등록번호 앞 7자리<span class="en">RRN (first 7 digits)</span><span class="required">필수</span></label>
+              <input class="field-input mono" type="text" placeholder="YYMMDD-N" maxlength="8">
+              <div class="field-hint">실명 확인에만 사용 · 뒷자리는 저장하지 않습니다</div>
+            </div>
+            <div>
+              <label class="field-label">국적<span class="en">Nationality</span><span class="required">필수</span></label>
+              <select class="field-select">
+                <option>대한민국 · Republic of Korea</option>
+                <option>기타 · Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">휴대폰 번호 본인 인증<span class="en">Mobile verification via PASS</span><span class="required">필수</span></label>
+            <div class="field-with-button">
+              <input class="field-input mono" type="tel" placeholder="010-0000-0000">
+              <button class="inline-verify-btn">PASS 인증</button>
+            </div>
+            <div class="field-hint">PASS 앱 또는 문자 인증으로 본인 확인을 진행합니다</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">이메일 주소<span class="en">Email address</span><span class="required">필수</span></label>
+            <input class="field-input" type="email" placeholder="you@example.com">
+            <div class="field-hint">계정 확인 메일과 모든 거래 내역이 이 주소로 발송됩니다</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">주소<span class="en">Residential address</span><span class="required">필수</span></label>
+            <div class="field-with-button" style="margin-bottom:10px;">
+              <input class="field-input" type="text" placeholder="우편번호" readonly>
+              <button class="inline-verify-btn">주소 검색</button>
+            </div>
+            <input class="field-input" type="text" placeholder="기본 주소" style="margin-bottom:10px;" readonly>
+            <input class="field-input" type="text" placeholder="상세 주소 (동·호수 등)">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">신분증 업로드<span class="en">ID document upload</span><span class="required">필수</span></label>
+            <div class="id-upload">
+              <div class="upload-icon">⬆</div>
+              <div class="upload-title">주민등록증 앞·뒷면 또는 여권 업로드</div>
+              <div class="upload-hint">JPG, PNG, PDF · 최대 10MB · 얼굴과 이름이 선명하게 보여야 합니다</div>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="goToIntro()">← 이전 단계</button>
+            <button class="btn-primary" onclick="formNext()">다음 · Continue →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 2: 투자자 프로필 -->
+        <div class="form-section" data-section="2">
+          <h3>투자자 프로필</h3>
+          <div class="section-en">Investor Profile</div>
+          <p class="section-desc">AML(자금세탁방지) 및 FATCA 규정 준수를 위한 기본 정보입니다. 답변은 계정 한도 설정에 사용됩니다.</p>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">직업<span class="en">Occupation</span><span class="required">필수</span></label>
+              <input class="field-input" type="text" placeholder="예: 회사원, 자영업, 전문직">
+            </div>
+            <div>
+              <label class="field-label">연소득 범위<span class="en">Annual income bracket</span><span class="required">필수</span></label>
+              <select class="field-select">
+                <option>선택</option>
+                <option>3천만원 이하</option>
+                <option>3천만원 ~ 7천만원</option>
+                <option>7천만원 ~ 1.5억원</option>
+                <option>1.5억원 ~ 3억원</option>
+                <option>3억원 이상</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">자금의 출처<span class="en">Source of funds</span><span class="required">필수</span></label>
+            <select class="field-select">
+              <option>선택</option>
+              <option>근로 소득 · Employment income</option>
+              <option>사업 소득 · Business income</option>
+              <option>투자 수익 · Investment returns</option>
+              <option>상속 · 증여 · Inheritance or gift</option>
+              <option>퇴직금 · Retirement</option>
+              <option>기타 · Other</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">예상 월 적립액<span class="en">Expected monthly contribution</span><span class="required">필수</span></label>
+            <select class="field-select">
+              <option>20만원 ~ 50만원</option>
+              <option>50만원 ~ 100만원</option>
+              <option>100만원 ~ 300만원</option>
+              <option>300만원 ~ 1,000만원</option>
+              <option>1,000만원 이상</option>
+            </select>
+          </div>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">정치적 노출 인물(PEP) 여부<span class="en">PEP status</span><span class="required">필수</span></label>
+              <div class="radio-grid">
+                <label class="radio-card">
+                  <input type="radio" name="pep" checked>
+                  <div class="radio-inner"><div class="r-title">해당 없음</div><div class="r-sub">None</div></div>
+                </label>
+                <label class="radio-card">
+                  <input type="radio" name="pep">
+                  <div class="radio-inner"><div class="r-title">해당</div><div class="r-sub">Applicable</div></div>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">미국 세법 거주자(FATCA)<span class="en">U.S. tax resident</span><span class="required">필수</span></label>
+              <div class="radio-grid">
+                <label class="radio-card">
+                  <input type="radio" name="fatca" checked>
+                  <div class="radio-inner"><div class="r-title">아니오</div><div class="r-sub">No</div></div>
+                </label>
+                <label class="radio-card">
+                  <input type="radio" name="fatca">
+                  <div class="radio-inner"><div class="r-title">예</div><div class="r-sub">Yes</div></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="formPrev()">← 이전</button>
+            <button class="btn-primary" onclick="formNext()">다음 · Continue →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 3: AGP 플랜 설계 -->
+        <div class="form-section" data-section="3">
+          <h3>AGP 플랜 설계</h3>
+          <div class="section-en">Design Your Accumulation Plan</div>
+          <p class="section-desc">자산 구성, 적립액, 주기, 전환 목표를 설정하세요. 모든 설정은 가입 후 대시보드에서 언제든 변경 가능합니다.</p>
+
+          <div class="field-group">
+            <label class="field-label">자산 구성<span class="en">Asset composition</span><span class="required">필수</span></label>
+            <div class="radio-grid">
+              <label class="radio-card">
+                <input type="radio" name="composition" checked>
+                <div class="radio-inner">
+                  <div class="r-title">금 100%</div>
+                  <div class="r-sub">Gold only</div>
+                  <div class="r-detail">가장 전통적 · 변동성 낮음</div>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="composition">
+                <div class="radio-inner">
+                  <div class="r-title">은 100%</div>
+                  <div class="r-sub">Silver only</div>
+                  <div class="r-detail">공급 부족 · 산업 상승 잠재력</div>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="composition">
+                <div class="radio-inner">
+                  <div class="r-title">금 70% · 은 30%</div>
+                  <div class="r-sub">70/30 blend</div>
+                  <div class="r-detail">안정 + 성장 균형</div>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="composition">
+                <div class="radio-inner">
+                  <div class="r-title">직접 설정</div>
+                  <div class="r-sub">Custom ratio</div>
+                  <div class="r-detail">대시보드에서 조정</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">월 적립액 (KRW)<span class="en">Monthly contribution</span><span class="required">필수</span></label>
+              <input class="field-input mono" type="text" value="500,000">
+              <div class="field-hint">최소 200,000원 · 최대 10,000,000원</div>
+            </div>
+            <div>
+              <label class="field-label">적립 주기<span class="en">Contribution frequency</span><span class="required">필수</span></label>
+              <div class="radio-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <label class="radio-card"><input type="radio" name="freq"><div class="radio-inner"><div class="r-title">매일</div><div class="r-sub">Daily</div></div></label>
+                <label class="radio-card"><input type="radio" name="freq"><div class="radio-inner"><div class="r-title">매주</div><div class="r-sub">Weekly</div></div></label>
+                <label class="radio-card"><input type="radio" name="freq" checked><div class="radio-inner"><div class="r-title">매월</div><div class="r-sub">Monthly</div></div></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group two-col">
+            <div>
+              <label class="field-label">시작일<span class="en">Start date</span><span class="required">필수</span></label>
+              <input class="field-input" type="date">
+            </div>
+            <div>
+              <label class="field-label">자동 전환 목표<span class="en">Auto-conversion target</span></label>
+              <select class="field-select">
+                <option>100g 바 도달 시 전환</option>
+                <option>1kg 바 도달 시 전환</option>
+                <option>수동 결정</option>
+              </select>
+              <div class="field-hint">전환은 무료 · 언제든 변경 가능</div>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="formPrev()">← 이전</button>
+            <button class="btn-primary" onclick="formNext()">다음 · Continue →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 4: 결제 수단 -->
+        <div class="form-section" data-section="4">
+          <h3>결제 수단</h3>
+          <div class="section-en">Funding Method</div>
+          <p class="section-desc">세 가지 방식으로 AGP에 자금을 입금할 수 있습니다. 토스뱅크 자동이체가 수수료 가장 낮고 권장 방식입니다.</p>
+
+          <div class="field-group">
+            <div class="pay-methods">
+              <label class="pay-method">
+                <input type="radio" name="pay" checked>
+                <div class="pm-label">권장 · Recommended</div>
+                <div class="pm-title">토스뱅크 자동이체</div>
+                <div class="pm-sub">Toss Bank auto-debit</div>
+                <div class="pm-fee">수수료 · ~0.3%</div>
+              </label>
+              <label class="pay-method">
+                <input type="radio" name="pay">
+                <div class="pm-label">즉시 처리 · Instant</div>
+                <div class="pm-title">신용·체크카드</div>
+                <div class="pm-sub">Credit &amp; debit card</div>
+                <div class="pm-fee">수수료 · ~3.5%</div>
+              </label>
+              <label class="pay-method">
+                <input type="radio" name="pay">
+                <div class="pm-label">저비용 · Low-fee</div>
+                <div class="pm-title">암호화폐 (USDT·USDC)</div>
+                <div class="pm-sub">Stablecoin transfer</div>
+                <div class="pm-fee">수수료 · ~1.0%</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Conditional: Toss auto-debit detail -->
+          <div class="pay-detail">
+            <label class="field-label">계좌 인증<span class="en">Bank account verification (1원 송금)</span><span class="required">필수</span></label>
+            <div class="field-group two-col">
+              <div>
+                <label class="field-label" style="font-size:12px;color:var(--text-muted);">은행 선택</label>
+                <select class="field-select">
+                  <option>토스뱅크</option>
+                  <option>카카오뱅크</option>
+                  <option>KB국민은행</option>
+                  <option>신한은행</option>
+                  <option>우리은행</option>
+                  <option>하나은행</option>
+                  <option>IBK기업은행</option>
+                  <option>NH농협은행</option>
+                  <option>기타</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" style="font-size:12px;color:var(--text-muted);">계좌번호</label>
+                <input class="field-input mono" type="text" placeholder="0000-00-0000000">
+              </div>
+            </div>
+            <button class="inline-verify-btn" style="padding:12px 20px;">1원 송금으로 계좌 인증</button>
+            <div class="field-hint" style="margin-top:10px;">은행에서 1원과 함께 4자리 확인 코드가 입금됩니다. 해당 코드를 입력해 계좌 소유를 확인합니다.</div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="formPrev()">← 이전</button>
+            <button class="btn-primary" onclick="formNext()">다음 · Continue →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 5: 약관 동의 -->
+        <div class="form-section" data-section="5">
+          <h3>약관 동의</h3>
+          <div class="section-en">Terms &amp; Consent</div>
+          <p class="section-desc">필수 항목은 서비스 제공을 위해 반드시 동의가 필요합니다. 선택 항목은 마케팅 메일 수신 여부만 결정합니다.</p>
+
+          <div class="consent-box">
+            <label class="consent-item consent-item-all">
+              <input type="checkbox" id="consent-all">
+              <div class="consent-text">
+                <div class="consent-title">전체 약관에 동의합니다 <span class="kr" style="color:var(--text-muted); font-weight:300;">· All of the below</span></div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox" class="consent-req">
+              <div class="consent-text">
+                <div class="consent-title">
+                  서비스 이용약관 동의
+                  <span class="required">[필수]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox" class="consent-req">
+              <div class="consent-text">
+                <div class="consent-title">
+                  개인정보 수집·이용 동의 (PIPA)
+                  <span class="required">[필수]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox" class="consent-req">
+              <div class="consent-text">
+                <div class="consent-title">
+                  개인정보 국외이전 동의 (싱가포르)
+                  <span class="required">[필수]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox" class="consent-req">
+              <div class="consent-text">
+                <div class="consent-title">
+                  금융 정보 제공 동의 (오픈뱅킹)
+                  <span class="required">[필수]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox" class="consent-req">
+              <div class="consent-text">
+                <div class="consent-title">
+                  투자 위험 고지 확인
+                  <span class="required">[필수]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+
+            <label class="consent-item">
+              <input type="checkbox">
+              <div class="consent-text">
+                <div class="consent-title">
+                  마케팅 정보 수신 (이메일·SMS)
+                  <span class="optional">[선택]</span>
+                  <a class="consent-view-link" href="#">View →</a>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="formPrev()">← 이전</button>
+            <button class="btn-primary" onclick="formNext()">다음 · Continue →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 6: 검토 및 제출 -->
+        <div class="form-section" data-section="6">
+          <h3>검토 및 제출</h3>
+          <div class="section-en">Review &amp; Submit</div>
+          <p class="section-desc">제출 전 입력 내용을 확인하세요. 신청 후 확인 이메일이 발송되고 KYC 심사가 24시간 내 완료됩니다.</p>
+
+          <div class="review-summary">
+            <div class="review-card">
+              <div class="rc-head"><div class="rc-title">본인 정보 · Identity</div><button class="rc-edit" onclick="gotoSection(1)">편집</button></div>
+              <div class="rc-row"><span class="l">성명</span><span class="v">홍길동 / HONG GIL DONG</span></div>
+              <div class="rc-row"><span class="l">휴대폰</span><span class="v">010-1234-5678 ✓</span></div>
+              <div class="rc-row"><span class="l">이메일</span><span class="v">gildong@example.com</span></div>
+            </div>
+            <div class="review-card">
+              <div class="rc-head"><div class="rc-title">AGP 플랜 · Plan</div><button class="rc-edit" onclick="gotoSection(3)">편집</button></div>
+              <div class="rc-row"><span class="l">자산 구성</span><span class="v">금 100%</span></div>
+              <div class="rc-row"><span class="l">월 적립액</span><span class="v">₩500,000</span></div>
+              <div class="rc-row"><span class="l">적립 주기</span><span class="v">매월 1일</span></div>
+              <div class="rc-row"><span class="l">자동 전환</span><span class="v">100g 바 도달 시</span></div>
+            </div>
+            <div class="review-card">
+              <div class="rc-head"><div class="rc-title">결제 수단 · Payment</div><button class="rc-edit" onclick="gotoSection(4)">편집</button></div>
+              <div class="rc-row"><span class="l">방식</span><span class="v">토스뱅크 자동이체</span></div>
+              <div class="rc-row"><span class="l">계좌</span><span class="v">토스뱅크 ****-****-1234 ✓</span></div>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-secondary" onclick="formPrev()">← 이전</button>
+            <button class="btn-primary" onclick="submitForm()">신청 완료 · Submit →</button>
+          </div>
+        </div>
+
+        <!-- SECTION 7: 완료 -->
+        <div class="form-section" data-section="7">
+          <div class="success-card">
+            <div class="success-icon">✓</div>
+            <h3>신청이 접수되었습니다</h3>
+            <div class="en-sub">Your AGP enrollment has been received.</div>
+            <p>확인 이메일을 다음 주소로 발송했습니다. 이메일 내 확인 링크를 클릭하면 KYC 심사가 시작됩니다. 영업일 기준 24시간 내에 결과를 알려드립니다.</p>
+            <div class="email-echo">gildong@example.com</div>
+
+            <div class="next-steps">
+              <ol>
+                <li><strong>이메일 확인.</strong> 수신함에서 Aurum 확인 메일을 열어 링크를 클릭하세요.</li>
+                <li><strong>KYC 심사.</strong> 제출하신 신분증과 PASS 인증을 바탕으로 24시간 내 승인됩니다.</li>
+                <li><strong>첫 자동이체.</strong> 승인 후 설정하신 시작일에 첫 입금이 진행됩니다.</li>
+                <li><strong>대시보드.</strong> 그램 적립, 현물가, 보관료, 전환 진행률을 실시간으로 확인하세요.</li>
+              </ol>
+            </div>
+
+            <a href="#" class="btn-secondary" onclick="event.preventDefault(); showScreen('email-preview');">확인 이메일 미리보기 →</a>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 4 — CONFIRMATION EMAIL PREVIEW
+     ============================================ -->
+<section id="email-preview" class="screen">
+  <div class="screen-inner" style="max-width: 720px;">
+    <div style="text-align:center; margin-bottom: 32px;">
+      <span class="eyebrow">Email · Preview</span>
+      <h2 style="font-family: var(--font-kr-display); font-size: 28px; color: var(--text); margin: 12px 0 6px; font-weight: 500;">확인 이메일</h2>
+      <div style="font-family: var(--font-display); font-style: italic; color: var(--gold); font-size: 16px;">Account Verification Email</div>
+    </div>
+
+    <div class="email-frame">
+      <div class="email-head-meta">
+        <div class="row"><span class="l">From</span><span>Aurum Korea &lt;accounts@aurum.sg&gt;</span></div>
+        <div class="row"><span class="l">To</span><span>gildong@example.com</span></div>
+        <div class="row"><span class="l">Subject</span><span>[Aurum] AGP 가입을 거의 완료하셨습니다 — 이메일 확인 필요</span></div>
+      </div>
+
+      <div class="email-brand">
+        <div class="logo">AURUM</div>
+        <div class="tag">Singapore · Allocated Physical Metals</div>
+      </div>
+
+      <div class="email-body">
+        <h1>이메일 주소를 확인해 주세요</h1>
+        <div class="greeting">Please verify your email address.</div>
+
+        <p>홍길동 님, 안녕하세요.</p>
+        <p>아름 골드 플랜 (AGP) 가입 신청을 받았습니다. 계정 활성화를 위해 아래 버튼을 클릭해 이메일 주소를 확인해 주세요. 이 링크는 24시간 동안 유효합니다.</p>
+
+        <a href="#" class="cta">이메일 주소 확인 → Verify Email</a>
+
+        <div class="account-card">
+          <div class="kk">신청 번호 · Enrollment ID</div>
+          <div class="vv">AGP-KR-26041400137</div>
+        </div>
+
+        <div class="steps">
+          <h3>확인 후 진행되는 절차 · What happens next</h3>
+          <ol>
+            <li><strong>KYC 심사</strong> — 신분증과 PASS 본인 인증 정보를 확인합니다. 영업일 기준 24시간 이내 완료.</li>
+            <li><strong>계좌 등록 완료</strong> — 1원 송금 인증으로 토스뱅크 연결을 마무리합니다.</li>
+            <li><strong>첫 자동이체</strong> — 설정하신 시작일 (2026년 5월 1일)에 ₩500,000 자동 입금.</li>
+            <li><strong>그램 적립 시작</strong> — 입금액이 국제 현물가 + 2.0% 프리미엄으로 AGP 그램으로 전환됩니다.</li>
+          </ol>
+        </div>
+
+        <hr class="divider">
+
+        <p style="font-size: 13.5px; color: #6b655d;">질문이 있으시면 언제든 <a href="mailto:support@aurum.sg" style="color:var(--gold-dim);">support@aurum.sg</a> 또는 카카오톡 채널 @아름싱가포르로 연락 주세요. 한국어·영어 지원.</p>
+
+        <p class="signoff">고객님의 실물 자산을 지켜드리겠습니다.<br>— Aurum Team</p>
+      </div>
+
+      <div class="email-foot">
+        Aurum Korea · Operated by Aurum Pte. Ltd., Singapore<br>
+        10 Anson Road, International Plaza, Singapore 079903<br>
+        <br>
+        본 메일은 발신 전용입니다. 이 이메일을 신청하지 않으셨다면 <a href="#">여기를 클릭</a>하세요.<br>
+        <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Unsubscribe</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // --- Preview nav routing ---
+  const screens = ['selector', 'agp-intro', 'agp-signup', 'email-preview'];
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.preview-nav button').forEach(b => b.classList.remove('active'));
+    const map = {selector:'nav-selector','agp-intro':'nav-intro','agp-signup':'nav-signup','email-preview':'nav-email'};
+    document.getElementById(map[id]).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function setDevice(mode) {
+    document.getElementById('dev-desktop').classList.toggle('active', mode === 'desktop');
+    document.getElementById('dev-mobile').classList.toggle('active', mode === 'mobile');
+    document.body.classList.toggle('mobile-view', mode === 'mobile');
+  }
+
+  function goToExistingShop() {
+    alert('→ 현재 운영 중인 실물 매매 shop 페이지로 이동\n(In production: routes to existing shop page)');
+  }
+  function goToIntro() { showScreen('agp-intro'); }
+  function goToSignup() { showScreen('agp-signup'); formSection = 1; renderForm(); }
+
+  // --- AGP intro click-through ---
+  const introSteps = [
+    { icon: '✍️', kr: '가입', en: 'Enroll', desc: '10분 내 온라인으로 가입하고 한국 표준 KYC (실명 확인, 휴대폰 인증)를 완료합니다. 모든 절차는 국내 금융기관 방식에 맞춰 설계되었습니다.' },
+    { icon: '💰', kr: '입금', en: 'Fund', desc: '토스뱅크·한국 주요 은행에서 일회 또는 월간 자동이체. 신용카드 및 암호화폐 (USDT·USDC) 입금도 지원합니다. 최소 월 20만원부터.' },
+    { icon: '⚖️', kr: '그램 적립', en: 'Accumulate', desc: '입금액이 실시간 국제 현물가 + 2.0% 프리미엄으로 AGP 그램으로 전환됩니다. 국내 실물 프리미엄을 피하고 깔끔한 국제 시세에 접근하세요.' },
+    { icon: '📊', kr: '관리', en: 'Monitor', desc: '대시보드에서 보유 그램, KRW 가치, 손익, 보관료, 전환 기준 진행률을 실시간으로 확인하세요. 매일 백킹 리포트 공개.' },
+    { icon: '🥇', kr: '전환', en: 'Convert', desc: '100g (또는 1kg 기준) 도달 시 LBMA 승인 실물 바로 무료 전환. 또는 언제든 국제 현물가로 매도 후 KRW를 한국 은행 계좌로 수령.' }
+  ];
+  let introIdx = 0;
+  function renderIntro() {
+    const s = introSteps[introIdx];
+    document.getElementById('intro-current').textContent = String(introIdx + 1).padStart(2, '0');
+    document.getElementById('intro-icon').textContent = s.icon;
+    document.getElementById('intro-title-kr').textContent = s.kr;
+    document.getElementById('intro-title-en').textContent = s.en;
+    document.getElementById('intro-desc').textContent = s.desc;
+    document.getElementById('intro-prev').disabled = introIdx === 0;
+    document.getElementById('intro-next').textContent = introIdx === introSteps.length - 1 ? '가입 신청 시작 →' : 'Next →';
+    const dots = document.querySelectorAll('#intro-dots span');
+    dots.forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i === introIdx) d.classList.add('active');
+      else if (i < introIdx) d.classList.add('done');
+    });
+  }
+  function introPrev() { if (introIdx > 0) { introIdx--; renderIntro(); } }
+  function introNext() {
+    if (introIdx < introSteps.length - 1) { introIdx++; renderIntro(); }
+    else { goToSignup(); }
+  }
+
+  // --- Signup form ---
+  let formSection = 1;
+  function renderForm() {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    const el = document.querySelector(`.form-section[data-section="${formSection}"]`);
+    if (el) el.classList.add('active');
+    const steps = document.querySelectorAll('#signup-progress .step');
+    steps.forEach((st, i) => {
+      st.classList.remove('active', 'done');
+      if (i + 1 === formSection) st.classList.add('active');
+      else if (i + 1 < formSection) st.classList.add('done');
+    });
+    document.getElementById('signup-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function formNext() { if (formSection < 7) { formSection++; renderForm(); } }
+  function formPrev() { if (formSection > 1) { formSection--; renderForm(); } }
+  function gotoSection(n) { formSection = n; renderForm(); }
+  function submitForm() { formSection = 7; renderForm(); }
+
+  // --- Consent "all" toggle ---
+  document.addEventListener('change', (e) => {
+    if (e.target && e.target.id === 'consent-all') {
+      const checked = e.target.checked;
+      document.querySelectorAll('.consent-item input[type="checkbox"]').forEach(cb => {
+        if (cb.id !== 'consent-all') cb.checked = checked;
+      });
+    }
+  });
+
+  // --- Subtle light-tracking effect on option cards ---
+  function cardMoveLight(e, card) {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  }
+
+  // --- Init ---
+  renderIntro();
+  renderForm();
+</script>
+
+</body>
+</html>
