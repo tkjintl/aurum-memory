@@ -1,3 +1,39 @@
+## 2026-04-14 18:30 UTC — CEO Orchestrator
+
+**Request:** Produce Tier 3 Website Agent handoff DOCX — synthesize prototype + PDF markup + implementation brief + current repo state into one ready-to-paste document.
+**Classification:** Tier 3 — Website + Brand domains
+**Outcome:** Self-executed. DOCX handoff brief delivered via tmpfiles.
+
+**Files generated (tmpfiles — 60min expiry):**
+- 20260414_ceo_website_handoff_v1.docx — Full Website Agent handoff brief (Part A: 5 missed/partial PDF items, Part B: 4 new landing pages + visual foundation, Part C: 7 cherry-picked UI effects, Footer: consolidated file touch list + build checklist)
+  tmpfiles: https://tmpfiles.org/dl/33607145/20260414_ceo_website_handoff_v1.docx
+
+**Handoff prompts issued:**
+- Website Agent: The DOCX itself IS the handoff prompt (self-contained)
+
+**Memory files pulled beyond defaults:**
+- aurum_website_implementation_brief.md
+- aurum_agp_flow_handoff.md
+- aurum_agp_flow_prototype.html (downloaded, read in full)
+- asdfdsf.pdf (downloaded, read all 11 pages)
+- domain_website.md
+
+**Decisions recorded in aurum_context.md:**
+- none
+
+**Open items added:**
+- Website Agent: execute handoff brief (Part A missed items first, then Part B new pages)
+- Previous session JSX uploads may still be pending (ShopPages/UserPages/lib.jsx) — verify before starting new work
+
+**Cross-domain notes:**
+- PDF diff found 왜 Aurum인가 3-box layout NOT removed (was listed as implemented but left box persists in repo ShopPages.jsx line 122)
+- Storage bottom CTA still says "KRW 350만원부터" — should be "세계 시장가로" per PDF p7
+- Horizontal premium caption ("Average Korea Gold Premium 15-20%", "Silver Premium 30%+") never implemented
+- Flag emoji rendering issue persists — recommend SVG replacement
+- Portfolio stat (-0.02 S&P500 correlation) may not have been replaced with Morgan Stanley 10-20% — needs verification
+
+---
+
 ## 2026-04-14 16:30 UTC — Website Agent
 
 **Request:** Implement all 23 changes from 20260414_marketing_website_revision_handoff_v1.docx
