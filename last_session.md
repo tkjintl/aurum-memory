@@ -1,3 +1,25 @@
+## 2026-04-14 15:30 UTC — Marketing Agent
+
+**Request:** Read asdfdsf.pdf from memory repo (founder's website markup notes) and synthesize into a clean handoff document for the Website Agent
+**Outcome:** ✅ 23-change Website Revision Handoff DOCX delivered — covers all 11 pages of founder markup across Home, Why Gold, Storage, and AGP pages. Phased implementation plan included (CSS-only Phase 1 / JSX Phase 2).
+
+**Files generated:**
+- files/marketing/20260414_marketing_website_revision_handoff_v1.docx — Website Agent handoff: 23 changes (H-01 to H-06, W-01 to W-03, S-01 to S-04, A-01 to A-10) with OLD/NEW tables, implementation types, and data source specs
+  (tmpfiles: https://tmpfiles.org/dl/33584102/20260414_marketing_website_revision_handoff_v1.docx)
+  (⚠️ GitHub archive has truncated content — base64 too long for MCP tool parameter. Re-archive needed.)
+
+**Decisions recorded in aurum_context.md:**
+- none
+
+**Open items added:**
+- Re-archive 20260414_marketing_website_revision_handoff_v1.docx to GitHub (base64 truncation on first commit)
+- Website Agent: deliver all 23 changes per the handoff DOCX
+
+**Cross-domain notes:**
+- Full website revision spec now exists for Website Agent. Key items: 10만원 → 20만원 everywhere (canonical number), silver tracker new (right panel), KB Star data sources, flag logos broken in AGP, personal name 민준씨 → 고객님.
+
+---
+
 ## 2026-04-13 18:20 UTC — Website Agent
 
 **Request:** (1) Fix login — any email/password should work, test account wsl@aurum.com/1234; (2) Fix colours — Phase 3 CSS was broken (hex selectors don't match browser-normalized RGB inline styles); (3) Fix desktop sizing — too small, ~115% zoom needed.
