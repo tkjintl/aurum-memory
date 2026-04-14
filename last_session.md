@@ -1,3 +1,63 @@
+## 2026-04-14 16:30 UTC — Website Agent
+
+**Request:** Implement all 23 changes from 20260414_marketing_website_revision_handoff_v1.docx
+**Outcome:** ✅ All 23 changes coded + build verified. index.css (Phase 6) pushed to GitHub. 3 JSX files delivered via tmpfiles for manual upload (GitHub MCP rate-limited on large files).
+
+**Files generated:**
+- UserPages.jsx (125KB) — tmpfiles: http://tmpfiles.org/dl/33592245/userpages.jsx
+- ShopPages.jsx (79KB) — tmpfiles: http://tmpfiles.org/dl/33592246/shoppages.jsx
+- lib.jsx (34KB) — tmpfiles: http://tmpfiles.org/dl/33592248/lib.jsx
+- index.css (14KB) — tmpfiles: http://tmpfiles.org/dl/33592250/index.css — ✅ ALSO PUSHED to GitHub (commit ef0c60e)
+
+**Decisions recorded in aurum_context.md:**
+- 20만원 is canonical AGP minimum (all 10만원 refs replaced)
+
+**Open items added:**
+- Manual upload: src/lib.jsx (GitHub push was truncated — 6KB not 34KB) → https://github.com/tkjintl/aurum-website/edit/main/src/lib.jsx
+- Manual upload: src/ShopPages.jsx → https://github.com/tkjintl/aurum-website/edit/main/src/ShopPages.jsx
+- Manual upload: src/UserPages.jsx → https://github.com/tkjintl/aurum-website/edit/main/src/UserPages.jsx
+
+**Cross-domain notes:**
+- 20만원 canonical confirmed → Marketing/CFO agents should align on this figure
+- KB Star URLs added as price data sources: gold https://obank.kbstar.com/quics?page=C029415, silver https://obank.kbstar.com/quics?page=C039201
+- BullionStar removed from news feeds (competitor); TossBank added as static resource card
+
+---
+
+## REPO STATE (2026-04-14 16:30 UTC):
+- `src/index.css` — ✅ 14KB, Phase 1+2+4+5+6 (Phase 6 = handoff v1: H-01 font floor, S-01/02 grids, A-01/02/04/10 AGP layout) — LIVE on GitHub
+- `src/lib.jsx` — ⚠️ NEEDS MANUAL UPLOAD (pushed version truncated at 6KB, full is 34KB) → tmpfiles: http://tmpfiles.org/dl/33592248/lib.jsx
+- `src/ShopPages.jsx` — ⚠️ NEEDS MANUAL UPLOAD → tmpfiles: http://tmpfiles.org/dl/33592246/shoppages.jsx
+- `src/UserPages.jsx` — ⚠️ NEEDS MANUAL UPLOAD (unchanged on GitHub, 128KB old version) → tmpfiles: http://tmpfiles.org/dl/33592245/userpages.jsx
+- `src/BaseUI.jsx` — unchanged (H-03 news changes are in lib.jsx STATIC_NEWS, not BaseUI)
+
+## CHANGES IMPLEMENTED:
+- H-01: Global font floor (CSS) — index.css ✅
+- H-02: 3→2 CTA buttons (duplicate shop btn removed) — ShopPages.jsx
+- H-03: BullionStar removed, TossBank added to news — lib.jsx
+- H-04: Gold tracker 1온스→1돈 (KB Star source) — ShopPages.jsx
+- H-05: Silver 1kg tracker new right panel — ShopPages.jsx
+- H-06: Premium caption below both trackers — ShopPages.jsx
+- W-01: 환율 위험 분산 stat added (+394%) — lib.jsx
+- W-02: (포트폴리오 분산 stat already present)
+- W-03: 왜 은인가 heading 36px bold — UserPages.jsx
+- S-01: Storage 2×3 grid (CSS) — index.css ✅
+- S-02: Ownership 2-column (CSS) — index.css ✅
+- S-03: Storage subtext size (CSS H-01) — index.css ✅
+- S-04: 10만원→20만원 — UserPages.jsx
+- A-01: Step bars equal sizing (CSS) — index.css ✅
+- A-02: Feature boxes 2×3 grid (CSS) — index.css ✅
+- A-03: Flag images — already using emoji 🇸🇬🇰🇷, no broken img tags found
+- A-04: AGP font sizes (CSS H-01) — index.css ✅
+- A-05: 민준씨→고객님 — UserPages.jsx
+- A-06: Month 1→1개월, Korean month labels — UserPages.jsx
+- A-07: NH+Toss column removed from comparison table — UserPages.jsx
+- A-08: 기준점 split lines + 1kg LBMA 바 — UserPages.jsx
+- A-09: 10만원→20만원 AGP — UserPages.jsx
+- A-10: AGP buttons larger/centered (CSS) — index.css ✅
+
+---
+
 ## 2026-04-14 15:30 UTC — Marketing Agent
 
 **Request:** Read asdfdsf.pdf from memory repo (founder's website markup notes) and synthesize into a clean handoff document for the Website Agent
@@ -39,110 +99,5 @@
 
 ---
 
-## REPO STATE (2026-04-13 18:20 UTC):
-- `src/index.css` — ✅ 7.8KB, Phase 1+2+4 (Phase 4 = hex+RGB colour fix + desktop zoom 1.15×)
-- `src/BaseUI.jsx` — ⚠️ NEEDS MANUAL UPLOAD (login broken in current version — API not imported)
-- `src/UserPages.jsx` — ✅ 128KB, full 13-section Storage + AGP + AGPBackingReport
-- `src/App.jsx` — ✅ unchanged
-- Latest committed: 63a4053 (index.css Phase 4)
-
-## CRITICAL BUG NOTES:
-- Phase 3 CSS selectors like `[style*="background: #111008"]` DO NOT work in Chrome/Firefox because browsers normalize inline hex colors to rgb() when writing to the DOM style attribute. Phase 4 adds rgb() variants: `[style*="background: rgb(17, 16, 8)"]`.
-- BaseUI.jsx login was broken since initial build — `API` was called in submit() and socialLogin() but never imported. New version removes API dependency entirely, uses demo auth.
-
-## COLOUR MAP (Phase 4):
-- Panel bg: #111008 → #1c1c1c (clearly readable on #0a0a0a background)
-- Deep bg: #0d0b08/#0d0c08 → #111111
-- Footer: #050505 → #0f0f0f
-- Primary borders: #1a1510 → #2a2a2a
-- Heavy borders: #2a2318 → #333333
-- Secondary text: #8a7d6b → #a0a0a0
-- Muted text: #555/#6b6b6b → #888888
-- CTA button text: #ffffff (WCAG AA on gold gradient)
-- Desktop zoom: html { zoom: 1.15 } at min-width: 1024px
-
----
-
-## 2026-04-13 18:10 UTC — Website Agent
-
-**Request:** Apply Marketing Agent colour contrast fix to index.css (Phase 3). Site back up after founder manually uploaded new UserPages.jsx.
-**Outcome:** ✅ COMPLETE — index.css Phase 3 pushed (commit 120aff6, 9.6KB). Both latest Vercel deployments READY. Site fully live with full Storage page + colour fix.
-
-**Files generated:**
-- none (index.css pushed directly via MCP)
-
-**Decisions recorded in aurum_context.md:**
-- none
-
-**Open items added:**
-- none (colour fix CSS covers ~80%. JSX find-and-replace for the remaining 20% is optional polish — can be done as manual upload when needed.)
-
-**Cross-domain notes:**
-- Colour fix implemented per Marketing Agent spec: white CTA text (WCAG AA pass), #555→#6b6b6b, #111008→#141414, #1a1510→#1e1e1e, #2a2318→#282828, #8a7d6b→#a09080
-
----
-
-## FINAL REPO STATE (2026-04-13 18:10 UTC):
-- `src/UserPages.jsx` — ✅ 128KB, exports: OrderHistoryPage, AccountPage, KYCFlowPage, WhyGold, Learn, Storage (13-section), AGP, AGPBackingReport
-- `src/ShopPages.jsx` — ✅ exports: Home, Shop, ProductPage, CartPage, Checkout
-- `src/App.jsx` — ✅ imports from UserPages.jsx + ShopPages.jsx, no broken imports
-- `src/index.css` — ✅ 9.6KB, Phase 1+2+3 (Phase 3 = colour contrast fix)
-- `src/StoragePage.jsx` — ✅ DELETED (commit 31cb11e)
-- Latest READY deployment: dpl_AjQgvQ7gDjmCdob1WMw9ERX5coLJ (commit 120aff6)
-
 ## PUSH LIMITATION NOTE:
-JSX files >10KB cannot be pushed via GitHub MCP (per domain_website.md). Always use tmpfiles + manual GitHub UI upload for JSX changes. index.css is always MCP-pushable (<10KB).
-
----
-
-## 2026-04-13 18:00 UTC — Website Agent
-
-**Request:** Fix build errors caused by missing UserPages exports (Storage, AGP, AGPBackingReport) + merge full 13-section Storage from founder's StoragePage.jsx upload
-**Outcome:** ✅ Built & validated new UserPages.jsx (128KB). StoragePage.jsx deleted. Delivered via tmpfiles for manual upload.
-
-**Files generated:**
-- UserPages.jsx (128KB, local only — too large for MCP archive)
-
-**Open items added:**
-- UserPages.jsx manual upload required (completed by founder same session)
-
----
-
-## 2026-04-13 — Marketing Agent
-
-**Request:** Review website colour scheme — founder reported black-on-brown unreadable text
-**Outcome:** Full colour audit delivered inline — contrast ratios, substitution map + CSS overrides for web agent
-
-**Cross-domain notes:**
-- Colour fix spec: white CTA text, #555→#6b6b6b, neutral dark backgrounds. Web agent applied CSS-only fix to index.css.
-
----
-
-## 2026-04-13 17:15 UTC — Website Agent
-
-**Request:** Fix Vercel build failures — 8 consecutive ERROR deployments
-**Outcome:** ✅ COMPLETE — Build passing. AGP merged into UserPages.jsx. ShopPages.jsx restored.
-
----
-
-## 2026-04-13 02:21 UTC — GC (Legal Counsel)
-
-**Request:** Test run of full 7-step file delivery protocol
-**Outcome:** All 7 steps confirmed working
-
-**Files generated:**
-- files/gc/20260413_gc_hello_test_v1.txt
-
----
-
-# Last Session Log
-> 2026-04-12 | GC Agent
-
-## Request
-Regenerate Aurum Korea Market Entry GC Memo.
-
-## Document Produced
-**Aurum_Korea_GC_Memo_Market_Entry_2026.docx** — 36KB, 15 sections
-
-## GC Position
-PROCEED — cross-border model legally viable; PIPA is critical path item; vault-custody-first Phase 1.
+JSX files >10KB cannot be pushed via GitHub MCP reliably. Always use tmpfiles + manual GitHub UI upload for JSX changes. index.css is always MCP-pushable (<14KB).
