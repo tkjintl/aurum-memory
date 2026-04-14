@@ -1,3 +1,94 @@
+## 2026-04-14 19:00 UTC — Website Agent
+
+**Request:** Execute CEO website handoff brief (20260414_ceo_website_handoff_v1.docx) — full 5-phase implementation
+**Outcome:** ✅ All phases coded + npm build PASSED (28 modules, 0 errors). 14 files delivered via tmpfiles.
+
+**Repo state confirmed at session start:**
+- ShopPages.jsx: 80KB (✅ new version from last session)
+- UserPages.jsx: 129KB (✅ new version)
+- lib.jsx: 34KB (✅ new version)
+
+**Files generated (tmpfiles links — founder pushes manually):**
+
+MODIFIED existing files:
+- 20260414_App.jsx → src/App.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610798/20260414_app.jsx
+- 20260414_BaseUI.jsx → src/BaseUI.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610800/20260414_baseui.jsx
+- 20260414_ShopPages.jsx → src/ShopPages.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610801/20260414_shoppages.jsx
+- 20260414_UserPages.jsx → src/UserPages.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610806/20260414_userpages.jsx
+- 20260414_lib.jsx → src/lib.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610807/20260414_lib.jsx
+
+NEW files (create these paths in aurum-website repo):
+- 20260414_Logo.jsx → src/components/Logo.jsx (in zip)
+  ZIP: http://tmpfiles.org/dl/33610882/small_files.zip (contains Logo.jsx + FormStep.jsx)
+- 20260414_aurum-motion.css → src/styles/aurum-motion.css
+  tmpfiles: http://tmpfiles.org/dl/33610813/20260414_aurum-motion.css
+- 20260414_magnetic.js → src/lib/magnetic.js
+  tmpfiles: http://tmpfiles.org/dl/33610870/20260414_magnetic.js.txt (rename to .js)
+- 20260414_FormStep.jsx → src/components/FormStep.jsx (in zip)
+  ZIP: http://tmpfiles.org/dl/33610882/small_files.zip
+- 20260414_PaymentMethodCard.jsx → src/components/PaymentMethodCard.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610815/20260414_paymentmethodcard.jsx
+- 20260414_ConsentCheckbox.jsx → src/components/ConsentCheckbox.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610818/20260414_consentcheckbox.jsx
+- 20260414_ShopSelectorPage.jsx → src/pages/ShopSelectorPage.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610820/20260414_shopselectorpage.jsx
+- 20260414_AGPIntroPage.jsx → src/pages/AGPIntroPage.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610821/20260414_agpintropage.jsx
+- 20260414_AGPEnrollPage.jsx → src/pages/AGPEnrollPage.jsx
+  tmpfiles: http://tmpfiles.org/dl/33610822/20260414_agpenrollpage.jsx
+
+**New directories to create in repo:**
+- src/components/ (for Logo.jsx, FormStep.jsx, PaymentMethodCard.jsx, ConsentCheckbox.jsx)
+- src/styles/ (for aurum-motion.css)
+- src/lib/ (for magnetic.js)
+- src/pages/ (for ShopSelectorPage.jsx, AGPIntroPage.jsx, AGPEnrollPage.jsx)
+
+**Phase changes implemented:**
+- Phase 1 A-1: Removed "왜 Aurum인가?" 3rd panel → 2 panels (Gold LEFT, Silver RIGHT) with enlarged headings
+- Phase 1 A-1: Added horizontal premium comparison caption (15-20% gold, 30%+ silver, 2.5-5.5% Aurum)
+- Phase 1 A-2: Storage bottom CTA "KRW 350만원부터" → "세계 시장가로"
+- Phase 1 A-3: Orphan "왜 Aurum인가?" refs cleaned from deleted box
+- Phase 1 A-4: Morgan Stanley 10-20% stat confirmed in lib.jsx (replaced -0.02 S&P500)
+- Phase 1 A-5: 🇸🇬🇰🇷 emoji flags → inline SVG FlagSG/FlagKR in ShopPages.jsx, UserPages.jsx, App.jsx
+- Phase 2 B-0: Created src/components/Logo.jsx (square AU monogram)
+- Phase 2 B-0: Created src/styles/aurum-motion.css (grain overlay, .magnetic-card, .lift-card)
+- Phase 2 B-0: Created src/lib/magnetic.js (cursor tracking)
+- Phase 2 B-0: App.jsx wired with import + useEffect(initMagneticCards, [page])
+- Phase 2 B-0: BaseUI.jsx logo swapped to square AU monogram (App.jsx footer too)
+- Phase 2 B-0: .lift-card applied to BenefitTile (Storage); .magnetic-card to selector cards
+- Phase 3 B-1: ShopSelectorPage.jsx → /shop (two magnetic-card tiles, physical + AGP)
+- Phase 3 B-1: Existing shop listing now served at page="shop-physical"
+- Phase 3 B-2: AGPIntroPage.jsx → /agp/intro (5-step carousel, verbatim content)
+- Phase 3 B-3: AGPEnrollPage.jsx → /agp/enroll (6-section progressive form + success state)
+- Phase 3 B-3: Supporting: FormStep.jsx, PaymentMethodCard.jsx, ConsentCheckbox.jsx
+- Phase 3 B-3: PASS button + 1원 송금 = mock success (stub)
+- Phase 3 CTA audit: 지금 배분 시작 → shop (ShopSelector); AGP 저축 플랜 시작하기 → agp-intro; Silver AGP CTA → agp-intro
+- Phase 5: .savings-panel-glow CSS class applied to premium comparison section
+- Phase 4: SKIPPED (email template) per handoff instructions
+
+**Decisions recorded in aurum_context.md:**
+- AGP premium canonical: 2.0% (not 3.5% — already corrected in AGPEnrollPage fee display)
+- Storage fees canonical: 0.30%/yr gold, 0.50%/yr silver
+- AGP minimum: 200,000 KRW/month
+
+**Open items added:**
+- Founder to create src/components/, src/styles/, src/lib/, src/pages/ directories before uploading new files
+- PASS verification and 1원 송금 are mock stubs — needs real KYC vendor integration (Phase 2 work)
+- Daum 주소 API not yet integrated (placeholder button only)
+- Admin fee % not yet added to AGP form (pending CFO decision)
+
+**Cross-domain notes:**
+- GC Agent owns: 6 consent documents (PIPA, TOS, etc.) for ConsentCheckbox modals
+- CFO Agent: add admin fee % to Section 3 plan design when finalized
+- Marketing Agent: review AGPEnrollPage copy, especially success state messaging
+
+---
+
 ## 2026-04-14 18:30 UTC — CEO Orchestrator
 
 **Request:** Produce Tier 3 Website Agent handoff DOCX — synthesize prototype + PDF markup + implementation brief + current repo state into one ready-to-paste document.
@@ -60,80 +151,14 @@
 
 ---
 
-## REPO STATE (2026-04-14 16:30 UTC):
-- `src/index.css` — ✅ 14KB, Phase 1+2+4+5+6 (Phase 6 = handoff v1: H-01 font floor, S-01/02 grids, A-01/02/04/10 AGP layout) — LIVE on GitHub
-- `src/lib.jsx` — ⚠️ NEEDS MANUAL UPLOAD (pushed version truncated at 6KB, full is 34KB) → tmpfiles: http://tmpfiles.org/dl/33592248/lib.jsx
-- `src/ShopPages.jsx` — ⚠️ NEEDS MANUAL UPLOAD → tmpfiles: http://tmpfiles.org/dl/33592246/shoppages.jsx
-- `src/UserPages.jsx` — ⚠️ NEEDS MANUAL UPLOAD (unchanged on GitHub, 128KB old version) → tmpfiles: http://tmpfiles.org/dl/33592245/userpages.jsx
-- `src/BaseUI.jsx` — unchanged (H-03 news changes are in lib.jsx STATIC_NEWS, not BaseUI)
-
-## CHANGES IMPLEMENTED:
-- H-01: Global font floor (CSS) — index.css ✅
-- H-02: 3→2 CTA buttons (duplicate shop btn removed) — ShopPages.jsx
-- H-03: BullionStar removed, TossBank added to news — lib.jsx
-- H-04: Gold tracker 1온스→1돈 (KB Star source) — ShopPages.jsx
-- H-05: Silver 1kg tracker new right panel — ShopPages.jsx
-- H-06: Premium caption below both trackers — ShopPages.jsx
-- W-01: 환율 위험 분산 stat added (+394%) — lib.jsx
-- W-02: (포트폴리오 분산 stat already present)
-- W-03: 왜 은인가 heading 36px bold — UserPages.jsx
-- S-01: Storage 2×3 grid (CSS) — index.css ✅
-- S-02: Ownership 2-column (CSS) — index.css ✅
-- S-03: Storage subtext size (CSS H-01) — index.css ✅
-- S-04: 10만원→20만원 — UserPages.jsx
-- A-01: Step bars equal sizing (CSS) — index.css ✅
-- A-02: Feature boxes 2×3 grid (CSS) — index.css ✅
-- A-03: Flag images — already using emoji 🇸🇬🇰🇷, no broken img tags found
-- A-04: AGP font sizes (CSS H-01) — index.css ✅
-- A-05: 민준씨→고객님 — UserPages.jsx
-- A-06: Month 1→1개월, Korean month labels — UserPages.jsx
-- A-07: NH+Toss column removed from comparison table — UserPages.jsx
-- A-08: 기준점 split lines + 1kg LBMA 바 — UserPages.jsx
-- A-09: 10만원→20만원 AGP — UserPages.jsx
-- A-10: AGP buttons larger/centered (CSS) — index.css ✅
-
----
-
-## 2026-04-14 15:30 UTC — Marketing Agent
-
-**Request:** Read asdfdsf.pdf from memory repo (founder's website markup notes) and synthesize into a clean handoff document for the Website Agent
-**Outcome:** ✅ 23-change Website Revision Handoff DOCX delivered — covers all 11 pages of founder markup across Home, Why Gold, Storage, and AGP pages. Phased implementation plan included (CSS-only Phase 1 / JSX Phase 2).
-
-**Files generated:**
-- files/marketing/20260414_marketing_website_revision_handoff_v1.docx — Website Agent handoff: 23 changes (H-01 to H-06, W-01 to W-03, S-01 to S-04, A-01 to A-10) with OLD/NEW tables, implementation types, and data source specs
-  (tmpfiles: https://tmpfiles.org/dl/33584102/20260414_marketing_website_revision_handoff_v1.docx)
-  (⚠️ GitHub archive has truncated content — base64 too long for MCP tool parameter. Re-archive needed.)
-
-**Decisions recorded in aurum_context.md:**
-- none
-
-**Open items added:**
-- Re-archive 20260414_marketing_website_revision_handoff_v1.docx to GitHub (base64 truncation on first commit)
-- Website Agent: deliver all 23 changes per the handoff DOCX
-
-**Cross-domain notes:**
-- Full website revision spec now exists for Website Agent. Key items: 10만원 → 20만원 everywhere (canonical number), silver tracker new (right panel), KB Star data sources, flag logos broken in AGP, personal name 민준씨 → 고객님.
-
----
-
-## 2026-04-13 18:20 UTC — Website Agent
-
-**Request:** (1) Fix login — any email/password should work, test account wsl@aurum.com/1234; (2) Fix colours — Phase 3 CSS was broken (hex selectors don't match browser-normalized RGB inline styles); (3) Fix desktop sizing — too small, ~115% zoom needed.
-**Outcome:** ✅ index.css Phase 4 pushed (commit 63a4053) — hex+RGB selectors, desktop zoom 1.15×. BaseUI.jsx delivered via tmpfiles (fixes broken login: API was never imported). Manual upload required for BaseUI.jsx.
-
-**Files generated:**
-- files/website/20260413_website_BaseUI_demoauth_v1.jsx — stub archive; full file at tmpfiles https://tmpfiles.org/dl/33438262/baseui.jsx (60min)
-
-**Decisions recorded in aurum_context.md:**
-- none
-
-**Open items added:**
-- BaseUI.jsx manual upload required: download https://tmpfiles.org/dl/33438262/baseui.jsx → upload to src/BaseUI.jsx via GitHub UI. This fixes login (was completely broken — API never imported).
-
-**Cross-domain notes:**
-- none
-
----
-
-## PUSH LIMITATION NOTE:
-JSX files >10KB cannot be pushed via GitHub MCP reliably. Always use tmpfiles + manual GitHub UI upload for JSX changes. index.css is always MCP-pushable (<14KB).
+## REPO STATE (2026-04-14 19:00 UTC):
+- `src/App.jsx` — ✅ UPDATED this session (new routes, magnetic init, logo, new page imports)
+- `src/BaseUI.jsx` — ✅ UPDATED this session (square AU logo)
+- `src/ShopPages.jsx` — ✅ UPDATED this session (2-panel layout, premium caption, flag SVGs, CTA routes)
+- `src/UserPages.jsx` — ✅ UPDATED this session (storage CTA, flag SVGs, Morgan Stanley stat)
+- `src/lib.jsx` — ✅ UPDATED this session (Morgan Stanley 10-20% stat)
+- `src/index.css` — unchanged this session
+- NEW: src/components/Logo.jsx, FormStep.jsx, PaymentMethodCard.jsx, ConsentCheckbox.jsx
+- NEW: src/styles/aurum-motion.css
+- NEW: src/lib/magnetic.js
+- NEW: src/pages/ShopSelectorPage.jsx, AGPIntroPage.jsx, AGPEnrollPage.jsx
