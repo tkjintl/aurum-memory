@@ -1,5 +1,5 @@
 # Aurum Korea — Canonical Project Context
-> Last updated: 2026-04-13
+> Last updated: 2026-04-15
 
 ## Entity
 - **Company**: Aurum Korea Pte Ltd (Singapore, incorporation target May 2026)
@@ -28,8 +28,18 @@
 - Website: React 19 + Vite 8 (inline styles) → github.com/tkjintl/aurum-website (Vercel)
 - Data: Supabase (Postgres)
 - Payments: Toss Payments + Wire transfer
-- Live gold/forex: GoldAPI + open.er-api.com
+- Live gold/forex: Yahoo Finance (GC=F, SI=F, PL=F) via /api/prices + open.er-api.com for KRW
 - Memory: github.com/tkjintl/aurum-memory
+
+## Korean Market Price Source (CANONICAL — 2026-04-15)
+All Korean market comparison prices use **한국금거래소 매도가 (부가세 포함)**:
+- Formula: `spot_USD × krwRate × 1.10` (international spot + 10% VAT)
+- Gold per oz: `prices.gold × krwRate × 1.10`
+- Silver per kg: `prices.silver × 32.1507 × krwRate × 1.10`
+- USD-equivalent multiplier used in code: `spot × 1.10`
+- Source feed: same Yahoo Finance GC=F/SI=F as top ticker
+- **Do NOT use KB Star reference pricing** — removed as of 2026-04-15
+- Ticker displays this as `한국금거래소 금/g` in KRW per gram
 
 ## Brand — Corrected Colour Palette (audited 2026-04-13)
 
