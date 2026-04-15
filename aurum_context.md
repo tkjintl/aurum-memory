@@ -32,14 +32,18 @@
 - Memory: github.com/tkjintl/aurum-memory
 
 ## Korean Market Price Source (CANONICAL — 2026-04-15)
-All Korean market comparison prices use **한국금거래소 매도가 (부가세 포함)**:
-- Formula: `spot_USD × krwRate × 1.10` (international spot + 10% VAT)
-- Gold per oz: `prices.gold × krwRate × 1.10`
-- Silver per kg: `prices.silver × 32.1507 × krwRate × 1.10`
-- USD-equivalent multiplier used in code: `spot × 1.10`
-- Source feed: same Yahoo Finance GC=F/SI=F as top ticker
+All Korean market comparison prices reference **exgold.co.kr 매도가 (국내 도매시세, 부가세 포함)**:
+- **Label (ticker)**: "exgold 매도가 (1돈 / 부가세 포함)"
+- **Label (savings table)**: "exgold 매도가 (1돈 / 부가세 포함)" (KO), "exgold (VAT incl.)" (EN)
+- **Formula**: `spot_USD × krwRate × 1.10` mirrors exgold domestic wholesale methodology (international spot + 10% VAT)
+- **Gold per-don KRW**: `prices.gold × krwRate × 1.10 / 31.1035 × 3.75`
+- **Gold per-oz KRW**: `goldDonKrw × 8.29426` (1 oz = 8.29426 돈)
+- **Silver per-don KRW**: `prices.silver × krwRate × 1.10 / 31.1035 × 3.75`
+- **Silver per-kg KRW**: `silverDonKrw × 266.6667` (1 kg = 266.6667 돈)
+- **API note**: exgold.co.kr has no accessible REST JSON endpoint (JS-rendered). Yahoo Finance spot + ×1.10 is the implementation.
 - **Do NOT use KB Star reference pricing** — removed as of 2026-04-15
-- Ticker displays this as `한국금거래소 금/g` in KRW per gram
+- **Do NOT use 한국금거래소 label** — replaced by "exgold 매도가" as of 2026-04-15
+- Ticker displays per-don in KRW, unit suffix: /돈
 
 ## Brand — Corrected Colour Palette (audited 2026-04-13)
 
