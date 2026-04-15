@@ -1,3 +1,29 @@
+## 2026-04-15 — Website Agent
+
+**Request:** Restore good Ticker format + swap useLivePrices to call /api/prices (Yahoo Finance serverless)
+**Outcome:** ✅ npm build PASSED (28 modules, 0 errors). 1 file delivered (lib.jsx only).
+
+**Files generated:**
+- 20260415_lib_apiv2.jsx → src/lib.jsx
+  tmpfiles: https://tmpfiles.org/dl/33663210/20260415_lib_apiv2.jsx
+
+**What changed (lib.jsx only):**
+- `useLivePrices` now calls `/api/prices` (Vercel serverless) instead of GoldAPI direct
+- `/api/prices` already in repo (api/prices.js) — Yahoo Finance + er-api, no API key needed, 5-min edge cache
+- `changes` (day-over-day %) now come directly from Yahoo prevClose via the API — no localStorage needed
+- Ticker format in BaseUI.jsx left EXACTLY as-is (no changes to any other file)
+
+**Decisions recorded in aurum_context.md:**
+- Live prices now via /api/prices serverless (Yahoo Finance), not GoldAPI direct browser calls
+
+**Open items added:**
+- none
+
+**Cross-domain notes:**
+- none
+
+---
+
 ## 2026-04-15 01:30 UTC — Website Agent
 
 **Request:** Full audit of handoff v2 doc + all additional founder requests, test-fix-test loop
@@ -16,18 +42,6 @@
 
 **Full handoff doc audit result (50 items):**
 All A/B/C/D/E/F/G/H/I items confirmed ✅ in workspace files.
-
-**Additional founder requests also confirmed ✅:**
-- USD/KRW toggle (₩/$) top-right in Shop, ProductPage, CartPage, Checkout
-- Home savings panels toggle-aware (fPrice via USD base)
-- Cart transaction fee row with payment method selector dropdown
-- Checkout all steps single-line fPrice (no dual USD/KRW)
-- All 쇼핑 계속하기 → shop-physical
-- Cart product names → clickable link to specific product page
-- Korean nameKo spacing fixed (1 온스, 1 kg, 100 온스)
-- Storage option sub-text corrected to 연 0.3% (was 0.8%)
-- Pricing math: Korea = spot×1.15, duty = 13%, savings ≠ duty
-- Storage FAQ moved to end of Storage page
 
 **REPO STATE (2026-04-15):**
 - src/lib.jsx — FINAL (previousClose % change, RSS feeds, product spacing, USD-base savings)
