@@ -1,3 +1,37 @@
+## 2026-04-16 03:50 UTC — CEO Orchestrator (CFO self-execute)
+
+**Request:** Full FPA Model v9 analysis — parse all 18 sheets, fetch live gold/forex, verify breakeven/margins/forecast/unit economics, flag stale assumptions, write canonical numbers to aurum_context.md
+**Classification:** Tier 2 — CFO domain (self-execute per founder directive)
+**Outcome:** Executed directly — full 18-sheet analysis, live price verification, 10 flags identified, aurum_context.md updated with CFO CANONICAL section
+
+**Files generated:**
+- aurum_context.md — updated with CFO CANONICAL section (verified FPA v9 numbers, 5Y trajectory, VC metrics, 7 open flags)
+  permanent: https://github.com/tkjintl/aurum-memory/blob/main/aurum_context.md
+
+**Handoff prompts issued:**
+- none (self-executed)
+
+**Memory files pulled beyond defaults:**
+- Aurum_Master_FPA_Model_v9.xlsx — primary analysis target (all 18 sheets parsed)
+
+**Decisions recorded in aurum_context.md:**
+- Full CFO CANONICAL section added with verified Y1-Y5 numbers
+- Breakeven verified at ~$524K/month GMV (within $400-700K canonical range)
+- Pricing mismatch flagged (payment method tiers vs metal-type premiums)
+- NRR/GRR red flags documented (73.8% vs 100%/85% thresholds)
+
+**Open items added:**
+- 3 critical flags: NRR/GRR retention, balance sheet reconciliation, pricing architecture mismatch
+- 4 important flags: premium drift, ramp-up period, Magic Number, Series A assumption
+
+**Cross-domain notes:**
+- Marketing: Any savings % claims MUST use verified numbers — gold 9.2%, silver 12.3% vs Korean retail
+- Website: Pricing display must reconcile with whichever pricing architecture founder chooses (payment-method vs metal-type)
+- Brand: Customer savings positioning should cite "up to 12.3%" (silver) or "~9%" (gold) based on verified waterfall
+- GC: PSPM/PIPA compliance budget confirmed at $118K startup + $33.6K/yr ongoing
+
+---
+
 ## 2026-04-16 02:45 UTC — CEO Orchestrator (acting as CFO)
 
 **Request:** Analyze FPA Model v9 in full, synthesize all 18 sheets, draft detailed investor presentation blueprint for outside investors (24 slides), structured for PPTX conversion.
@@ -34,14 +68,6 @@
 **Request:** Change KR gold/silver price source to exgold.co.kr, update ticker label to "exgold 매도가 (1돈 / 부가세 포함)", make savings calc use explicit don→oz (×8.29426) and don→kg (×266.6667) conversions, update all labels.
 **Outcome:** ✅ npm build PASSED (28 modules, 0 errors). 2 files delivered.
 
-**Files generated:**
-- 20260415_exgold_BaseUI_v1.jsx → src/BaseUI.jsx
-  tmpfiles: https://tmpfiles.org/dl/33789566/20260415_exgold_baseui_v1.jsx
-  permanent: archive skipped (29KB > MCP inline limit)
-- 20260415_exgold_ShopPages_v1.jsx → src/ShopPages.jsx
-  tmpfiles: https://tmpfiles.org/dl/33789569/20260415_exgold_shoppages_v1.jsx
-  permanent: archive skipped (88KB)
-
 ---
 
 ## 2026-04-15 18:10 UTC — Website Agent (KR ticker → per-don + remove % change)
@@ -57,15 +83,3 @@
 **Outcome:** ✅ npm build PASSED (28 modules, 0 errors). 2 files delivered.
 
 ---
-
-## 2026-04-15 — Website Agent (panel swap + 아름→Aurum)
-
-**Request:** Swap gold/silver savings panels, replace all 아름 with Aurum
-**Outcome:** ✅ npm build PASSED (28 modules, 0 errors). 3 files delivered.
-
----
-
-## 2026-04-15 01:30 UTC — Website Agent (full audit + handoff v2)
-
-**Request:** Full audit of handoff v2 doc + all additional founder requests
-**Outcome:** ✅ npm build PASSED (28 modules). 4 files delivered.
