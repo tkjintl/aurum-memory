@@ -1,3 +1,31 @@
+## 2026-04-16 04:40 UTC — Marketing Agent
+
+**Request:** Production-ready 24-slide seed investor deck PPTX — Aurum Korea, Korean market, from blueprint MD in deliverables + canonical numbers from aurum_context.md
+**Outcome:** ✅ 24-slide PPTX delivered, 1.2MB, all slides QA-passed via LibreOffice PDF render + visual inspection
+
+**Files generated:**
+- 2026-04-16_aurum_korea_seed_deck_v1.pptx — 24-slide seed investor deck, full brand palette, charts, tables, Korean copy
+  tmpfiles: https://tmpfiles.org/dl/33855449/2026-04-16_aurum_korea_seed_deck_v1.pptx
+  permanent: https://github.com/tkjintl/aurum-memory/blob/main/deliverables/2026-04-16_aurum_korea_seed_deck_v1.pptx (pointer — file too large for inline GitHub)
+
+**Channel(s):** Investor / Fundraising
+**Mode:** Long-form educator / Institutional
+
+**Decisions recorded in aurum_context.md:**
+- none (deck uses existing canonical numbers only)
+
+**Open items added:**
+- Founder: replace "Founder I/II/III" placeholders with actual names + headshots when ready
+- Founder: update contact email placeholder (invest@aurumkorea.com) when live
+- Optional v2: add EBITDA line chart overlay on slide 7 (requires dual-axis pptxgenjs workaround)
+
+**Cross-domain notes:**
+- All savings % claims use verified CFO canonical numbers (9.2% gold / 12.3% silver)
+- NRR/GRR flag (73.8%) disclosed on slide 9 — honest signal to institutional investors
+- Slide 5 "Aurum Premium" bar shows 387 not 0 — correct per chart type (absolute value bar)
+
+---
+
 ## 2026-04-16 03:50 UTC — CEO Orchestrator (CFO self-execute)
 
 **Request:** Full FPA Model v9 analysis — parse all 18 sheets, fetch live gold/forex, verify breakeven/margins/forecast/unit economics, flag stale assumptions, write canonical numbers to aurum_context.md
@@ -42,18 +70,6 @@
 - Aurum_Investor_Presentation_Blueprint_v1.md — 24-slide investor deck blueprint, all financials pre-populated from FPA Model v9
   tmpfiles: https://tmpfiles.org/dl/33844821/aurum_investor_presentation_blueprint_v1.txt
   permanent: pointer at deliverables/2026-04-16_02-45-00_cfo_investor_deck_blueprint_v1.md (full file at tmpfiles)
-
-**Handoff prompts issued:**
-- none (self-executed)
-
-**Memory files pulled beyond defaults:**
-- none needed — all data from FPA Model v9 xlsx + live market research
-
-**Decisions recorded in aurum_context.md:**
-- none (no new canonical decisions — used existing)
-
-**Open items added:**
-- none
 
 **Cross-domain notes:**
 - Deck blueprint references live website (aurumkorea.com on Vercel, confirmed READY status)
