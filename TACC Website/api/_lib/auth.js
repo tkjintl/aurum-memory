@@ -78,12 +78,32 @@ export function verifyToken(token) {
 // + (ADMIN_PASSWORD || '1234') as shared.
 //
 // Returns: [{ email, id, password }]
+const WEAK_PASSWORDS = new Set(['1234', 'password', 'admin', 'aurum', '0000', '12345678']);
+let _warnedWeakPw = false;
+
 function loadRoster() {
   const raw = (process.env.ADMIN_USERS || '').trim();
   const sharedPw = process.env.ADMIN_PASSWORD || '';
+  const isProduction = process.env.VERCEL_ENV === 'production';
+
+  function rejectIfWeak(pw, source) {
+    if (isProduction && (WEAK_PASSWORDS.has(pw) || !pw || pw.length < 8)) {
+      if (!_warnedWeakPw) {
+        console.error(`[aurum] FATAL: weak/missing admin password from ${source}. Set ADMIN_USERS=email:STRONGPASS,... in Vercel env. Login is BLOCKED until fixed.`);
+        _warnedWeakPw = true;
+      }
+      return true;
+    }
+    if (pw && pw.length < 8 && !_warnedWeakPw) {
+      console.warn(`[aurum] WARN: admin password from ${source} is < 8 chars.`);
+      _warnedWeakPw = true;
+    }
+    return false;
+  }
 
   if (!raw) {
     const pw = sharedPw || DEFAULT_SHARED_PASSWORD;
+    if (rejectIfWeak(pw, 'default fallback')) return [];
     return DEFAULT_USERS.map((u) => ({ ...u, password: pw }));
   }
 
@@ -100,6 +120,7 @@ function loadRoster() {
       password = sharedPw;
     }
     if (!email) continue;
+    if (rejectIfWeak(password, `ADMIN_USERS (${email})`)) continue;
     const id = email.split('@')[0].toLowerCase();
     out.push({ email: email.toLowerCase(), id, password });
   }

@@ -9,7 +9,7 @@
 //     'mark_cleared'   — funds settled; sends admission email
 
 import { ok, bad, unauthorized, notFound, methodNotAllowed, readBody, getCookie } from '../_lib/http.js';
-import { verifyToken } from '../_lib/auth.js';
+import { verifyToken, signToken } from '../_lib/auth.js';
 import { getLead, saveLead, unbindCode } from '../_lib/storage.js';
 import { sendRaw, buildWireInstructionsEmail, buildAdmissionEmail, buildQuarterlyStatementEmail, buildWireReminderEmail, buildCapitalCallEmail } from '../_lib/email.js';
 import { getKrwPerKg } from '../_lib/krw.js';
@@ -39,6 +39,8 @@ const VALID_ACTIONS = new Set([
   // Notification triggers
   'send_quarterly_email',
   'send_wire_reminder',
+  // Resend any prior email (NDA invite / IOI reminder / wire instructions / admission)
+  'resend_email',
 ]);
 
 // Wire reference: AURUM-W-{LEAD_ID_SUFFIX}-{YYYYMMDD}
@@ -94,16 +96,37 @@ export default async function handler(req, res) {
 
     // verify_ioi — partner has confirmed the IOI submission. Generates wire
     // ref + snapshots spot at verify time + sends wire instructions email.
+    // B8: Accepts optional approved_ltv_pct — partner's decision (50–requested).
     if (body.action === 'verify_ioi') {
       if (!lead.ioi || !lead.ioi.submitted_at) return bad(res, 'no IOI submitted');
       if (lead.ioi_verified_at) return bad(res, 'IOI already verified');
+
+      // B8: LTV partner override
+      const requested = lead.ioi.ltv_pct;
+      let approved = body.approved_ltv_pct != null ? Number(body.approved_ltv_pct) : requested;
+      if (!isFinite(approved) || approved < 50) approved = 50;
+      if (approved > requested) approved = requested;
+      const ltvNotes = String(body.ltv_notes || '').slice(0, 1000);
 
       const spot = await getKrwPerKg();
       lead.ioi.krw_per_kg_at_verify = spot.krw_per_kg;
       lead.ioi.krw_at_verify = Math.round(lead.ioi.kg * spot.krw_per_kg);
       lead.ioi_verified_at = now;
       lead.ioi_verified_by = actor;
-      lead.audit.push({ at: now, actor, action: 'ioi_verified', krw_per_kg_at_verify: spot.krw_per_kg });
+      // Persist approved LTV separately from member-requested
+      lead.ltv = lead.ltv || {};
+      lead.ltv.approved_pct = approved;
+      lead.ltv.ceiling_pct = approved;
+      lead.ltv.margin_pct = lead.ltv.margin_pct || 80;
+      lead.ltv.drawn_krw = lead.ltv.drawn_krw || 0;
+      if (ltvNotes) lead.ltv.partner_notes = ltvNotes;
+      lead.audit.push({
+        at: now, actor, action: 'ioi_verified',
+        krw_per_kg_at_verify: spot.krw_per_kg,
+        ltv_requested: requested,
+        ltv_approved: approved,
+        ltv_notes: ltvNotes || undefined,
+      });
 
       // Initialize the wire panel
       lead.wire = lead.wire || {};
@@ -149,6 +172,37 @@ export default async function handler(req, res) {
       lead.wire = lead.wire || {};
       lead.wire.cleared_at = now;
       lead.status = 'admitted';
+
+      // B12: Snapshot live spot AT SETTLEMENT — locks gold cost basis used for
+      // growth indicators on portfolio + admin position summary thereafter.
+      try {
+        const settleSpot = await getKrwPerKg();
+        lead.ioi = lead.ioi || {};
+        lead.ioi.krw_per_kg_at_settle = settleSpot.krw_per_kg;
+        lead.ioi.krw_at_settle = lead.ioi.kg ? Math.round(lead.ioi.kg * settleSpot.krw_per_kg) : null;
+      } catch (e) {
+        console.warn('settle spot snapshot failed', e);
+      }
+
+      // B7: At launch, drawn = full ceiling (we pull LTV immediately when wire clears
+      // and gold settles).  Partner can override afterwards via the LTV facility form.
+      lead.ltv = lead.ltv || {};
+      const ceilingPct = lead.ltv.ceiling_pct || lead.ltv.approved_pct || (lead.ioi && lead.ioi.ltv_pct) || 60;
+      const settleSpotKrwPerKg = (lead.ioi && lead.ioi.krw_per_kg_at_settle) || 225_000_000;
+      const goldValueAtSettle = (lead.ioi && lead.ioi.kg ? lead.ioi.kg : 0) * settleSpotKrwPerKg;
+      const ceilingKrwAtSettle = goldValueAtSettle * (ceilingPct / 100);
+      // Only auto-set drawn if not already manually set
+      if (!lead.ltv.drawn_krw) {
+        lead.ltv.drawn_krw = Math.round(ceilingKrwAtSettle);
+        lead.ltv.drawn_set_at = now;
+        lead.ltv.drawn_auto = true;
+        lead.audit.push({
+          at: now, actor: 'system', action: 'ltv_auto_drawn',
+          drawn_krw: lead.ltv.drawn_krw,
+          ceiling_pct: ceilingPct,
+        });
+      }
+
       lead.audit.push({ at: now, actor, action: 'wire_marked_cleared' });
 
       await saveLead(lead);
@@ -156,7 +210,14 @@ export default async function handler(req, res) {
       // Send admission email
       let mailResult = { sent: false, reason: 'skipped' };
       if (lead.email) {
-        const tpl = buildAdmissionEmail({ lead });
+        // A7: Mint a 7-day magic-link token so OPEN PORTFOLIO is one-click sign-in
+        const mlToken = signToken({
+          sub: 'magic',
+          leadId: lead.id,
+          email: lead.email,
+          jti: 'adm_' + lead.id + '_' + Date.now(),
+        }, 60 * 60 * 24 * 7);
+        const tpl = buildAdmissionEmail({ lead, magicLinkToken: mlToken });
         try {
           mailResult = await sendRaw({
             to: lead.email,
@@ -431,6 +492,77 @@ export default async function handler(req, res) {
       if (!pos_id) return bad(res, 'missing pos_id');
       lead.positions = (lead.positions || []).filter((p) => p.id !== pos_id);
       lead.audit.push({ at: now, actor, action: 'position_removed', pos_id });
+    }
+
+    // ── resend_email — universal resend for any prior email ─────────────
+    // body.kind: 'nda_invite' | 'ioi_reminder' | 'wire_instructions' | 'admission'
+    if (body.action === 'resend_email') {
+      if (!lead.email) return bad(res, 'no email on lead');
+      const kind = String(body.kind || '').trim();
+      let mailResult = { sent: false, reason: 'unknown_kind' };
+      try {
+        if (kind === 'wire_instructions') {
+          if (!lead.wire || !lead.wire.instructions_sent_at) return bad(res, 'wire instructions never issued');
+          const tpl = buildWireInstructionsEmail({ lead, ioi: lead.ioi, wire: lead.wire });
+          mailResult = await sendRaw({
+            to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          });
+        } else if (kind === 'admission') {
+          if (!lead.wire || !lead.wire.cleared_at) return bad(res, 'member not yet admitted');
+          // Mint fresh magic-link token so the link is one-click
+          const mlToken = signToken({
+            sub: 'magic', leadId: lead.id, email: lead.email,
+            jti: 're_adm_' + lead.id + '_' + now,
+          }, 60 * 60 * 24 * 7);
+          const tpl = buildAdmissionEmail({ lead, magicLinkToken: mlToken });
+          mailResult = await sendRaw({
+            to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          });
+        } else if (kind === 'nda_invite') {
+          // Re-use the invitation email build path — just re-send the same code
+          if (!lead.code) return bad(res, 'no invitation code on lead');
+          // We don't have a separate buildInvitationEmail here, so use a simple resend via the approve.js path.
+          // Instead, send a custom-body reminder.
+          const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
+          const codeUrl = `${siteUrl}/code?c=${encodeURIComponent(lead.code)}`;
+          mailResult = await sendRaw({
+            to: lead.email,
+            subject: 'Reminder · Your Aurum invitation · 초대장 안내',
+            text: `Reminder: your AURUM invitation code is ${lead.code}.\n\nOpen: ${codeUrl}\n\nThe code unlocks the NDA which precedes the materials.\n\n— Aurum Partners`,
+            html: `<p>Reminder: your AURUM invitation code is <strong style="font-family:monospace;letter-spacing:0.16em">${lead.code}</strong>.</p><p><a href="${codeUrl}">Open invitation</a></p><p style="color:#888">The code unlocks the NDA which precedes the materials.</p><p>— Aurum Partners</p>`,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          });
+        } else if (kind === 'ioi_reminder') {
+          if (lead.nda_state !== 'approved') return bad(res, 'NDA not yet approved');
+          const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
+          const ioiUrl = lead.ioi_code ? `${siteUrl}/ioi?c=${encodeURIComponent(lead.ioi_code)}` : `${siteUrl}/ioi`;
+          mailResult = await sendRaw({
+            to: lead.email,
+            subject: 'Reminder · Your IOI form awaits · 의향서 작성 안내',
+            text: `When ready, indicate your interest at ${ioiUrl}\n\nThe form is non-binding — you may revise after submission.\n\n— Aurum Partners`,
+            html: `<p>When ready, indicate your interest:</p><p><a href="${ioiUrl}" style="display:inline-block;padding:10px 18px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:monospace;letter-spacing:0.18em">SUBMIT IOI →</a></p><p style="color:#888">The form is non-binding — you may revise after submission.</p><p>— Aurum Partners</p>`,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          });
+        } else {
+          return bad(res, 'unknown email kind');
+        }
+      } catch (e) {
+        console.error('resend_email error', e);
+        mailResult = { sent: false, reason: 'exception' };
+      }
+      lead.audit.push({
+        at: now, actor, action: 'email_resent', kind,
+        sent: !!(mailResult && mailResult.sent),
+        reason: mailResult && mailResult.reason,
+      });
+      await saveLead(lead);
+      return ok(res, { ok: true, lead, mail: mailResult });
     }
   }
 

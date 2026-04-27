@@ -269,6 +269,24 @@ async function opSubmitIoi(req, res) {
     korean_fx_bank: String(profile.korean_fx_bank || '').slice(0, 200),
     submitted_at: now,
   };
+  // Capture prior IOI state BEFORE we overwrite lead.ioi
+  const wasRevision = !!(lead.ioi && lead.ioi.submitted_at);
+  // If this is a revision after partner verified, reset verified state — partner
+  // must re-review the new numbers before wire instructions go out again.
+  if (wasRevision && lead.ioi_verified_at) {
+    lead.audit = lead.audit || [];
+    lead.audit.push({
+      at: now, actor: 'system', action: 'verified_reset_on_revision',
+      prior_kg: lead.ioi.kg, prior_ltv_pct: lead.ioi.ltv_pct,
+      new_kg: kg, new_ltv_pct: ltv_pct,
+    });
+    lead.ioi_verified_at = null;
+    lead.ioi_verified_by = null;
+    // Wire instructions timestamps cleared too — they'll be re-issued on re-verify
+    if (lead.wire) {
+      lead.wire.instructions_sent_at = null;
+    }
+  }
   lead.ioi = {
     krw,
     kg,
@@ -287,7 +305,6 @@ async function opSubmitIoi(req, res) {
     },
     submitted_at: now,
   };
-  const wasRevision = !!(lead.ioi && lead.ioi.submitted_at);
   lead.audit = lead.audit || [];
   lead.audit.push({
     at: now,

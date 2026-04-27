@@ -5,21 +5,20 @@
 //   1억 = 100,000,000   (hundred million)
 //
 // Per round-2 directive: formatKRW always returns 억/만 — even in EN mode.
-// The `lang` param is preserved for API compatibility but ignored.
+// Per round-A1 (launch readiness): rounds to nearest 만 universally.  The
+// trailing 원 amount (single digits up to 9,999) is dropped at display
+// time — values like "1억 5,977만 5,127원" become "1억 5,978만".  Raw
+// numbers are preserved in the database; only the display rounds.
 //
 // formatKRW(amount)
 //   formatKRW(500000000)   → '5억'
 //   formatKRW(471250000)   → '4억 7,125만'
+//   formatKRW(159775127)   → '1억 5,978만'   ← rounded up from 5,127원
 //   formatKRW(1200000000)  → '12억'
-//   formatKRW(471123456)   → '4억 7,112만 3,456원'
+//   formatKRW(8500)        → '8,500원'        ← only sub-1만 amounts keep 원
 //
-// parseKRW(input)  — accepts any of these and returns a number:
-//   '5억'                   → 500000000
-//   '5억 1,000만'           → 510000000
-//   '500,000,000'           → 500000000
-//   '500m'                  → 500000000  (Western shorthand if user typed it)
-//   ''                      → 0
-//   junk                    → NaN
+// parseKRW(input) is unchanged — still handles the full spectrum of
+// inputs including bare won, since user input may be precise.
 
 const EOK = 100_000_000;
 const MAN = 10_000;
@@ -28,15 +27,19 @@ export function formatKRW(amount, _lang) {
   if (amount == null || isNaN(amount)) return '0';
   const a = Math.round(amount);
   if (a === 0) return '0';
-  const eok = Math.floor(a / EOK);
-  const remainder = a % EOK;
+
+  // Sub-1만 amounts: show as raw won (rare edge case — gas, tip-jar amounts)
+  if (a < MAN) return `${a.toLocaleString('en-US')}원`;
+
+  // Round to nearest 만 for clean display
+  const rounded = Math.round(a / MAN) * MAN;
+  const eok = Math.floor(rounded / EOK);
+  const remainder = rounded % EOK;
   const man = Math.floor(remainder / MAN);
-  const won = remainder % MAN;
 
   const parts = [];
   if (eok) parts.push(`${eok.toLocaleString('en-US')}억`);
   if (man) parts.push(`${man.toLocaleString('en-US')}만`);
-  if (won) parts.push(`${won.toLocaleString('en-US')}원`);
   return parts.join(' ') || '0';
 }
 

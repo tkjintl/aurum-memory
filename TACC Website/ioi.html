@@ -456,7 +456,7 @@
 
           <!-- Wire breakdown — gold + fund cash position -->
           <div class="calc-row sub">
-            <span class="lbl"><span data-lang="en">GOLD ACQUISITION (1 kg @ spot × 1.03)</span><span data-lang="ko">금 매입 (kg당 시세 × 1.03)</span></span>
+            <span class="lbl"><span data-lang="en">GOLD ACQUISITION</span><span data-lang="ko">금 매입</span></span>
             <span class="val" id="calc-gold-acq">—</span>
           </div>
           <div class="calc-row sub">
@@ -467,9 +467,9 @@
           <!-- Divider -->
           <div class="calc-divider"></div>
 
-          <!-- Deployed in deals -->
+          <!-- Cash available (pre-deployment) — pool ready to invest -->
           <div class="calc-row primary">
-            <span class="lbl"><span data-lang="en">DEPLOYED IN DEALS</span><span data-lang="ko">투자 운용</span></span>
+            <span class="lbl"><span data-lang="en">CASH AVAILABLE</span><span data-lang="ko">투자 가능 현금</span></span>
             <span class="val" id="calc-deployed">—</span>
           </div>
           <div class="calc-row sub">
@@ -497,8 +497,8 @@
           </div>
         </div>
 
-        <p class="caveat" data-lang="en">Allocated kilogram amount is determined at trade execution price, not at IOI submission. Aurum targets execution within 2 business days of wire clearance, subject to market conditions and counterparty availability. Spot movement between submission and execution is borne by the member, with corresponding effect on allocated kg amount. LP interest is established upon vault confirmation. See Structural Memo § Procurement and Pricing for the full clause.</p>
-        <p class="caveat" data-lang="ko">할당 kg은 IOI 제출 시점이 아닌 거래 체결 시점의 가격으로 결정됩니다. Aurum은 송금 정산 후 영업일 2일 이내 체결을 목표로 하나, 시장 상황 및 거래상대방 가용성에 따릅니다. 제출과 체결 사이의 시세 변동은 회원이 부담하며, 할당 kg에 그대로 반영됩니다. LP 지분은 보관소 확인 시점에 성립됩니다. 자세한 사항은 Structural Memo의 Procurement and Pricing 항목을 참고하십시오.</p>
+        <p class="caveat" data-lang="en">Allocated kilogram amount is determined at trade execution price, not at IOI submission. Aurum targets execution promptly following wire clearance, subject to market conditions and dealer availability. Spot movement between submission and execution is borne by the member, with corresponding effect on allocated kg amount. LP interest is established upon vault confirmation. After vault confirmation, the KRW value of your gold — and therefore your LTV ceiling and cash available to deploy — moves with daily LBMA spot. See FAQ Q.IX and Structural Memo §4.3 for the full procurement buffer and pricing clause.</p>
+        <p class="caveat" data-lang="ko">할당 kg은 IOI 제출 시점이 아닌 거래 체결 시점의 가격으로 결정됩니다. Aurum은 송금 정산 후 신속한 체결을 목표로 하나, 시장 상황 및 딜러 가용성에 따릅니다. 제출과 체결 사이의 시세 변동은 회원이 부담하며, 할당 kg에 그대로 반영됩니다. LP 지분은 보관소 확인 시점에 성립됩니다. 보관소 확인 후에는, 보유 금의 KRW 가치 — 그리고 LTV 한도 및 투자 가능 현금 — 이 일일 LBMA 시세에 따라 변동합니다. 자세한 조달 버퍼 및 가격 조항은 FAQ Q.IX 및 Structural Memo §4.3을 참조하십시오.</p>
       </div>
 
       <!-- IV. Acknowledge & sign — DASHBOARD CHROME -->
@@ -523,11 +523,11 @@
             <div class="val" id="review-ltv">50%</div>
           </div>
           <div class="ioi-fact">
-            <div class="lbl"><span data-lang="en">INVESTABLE CASH</span><span data-lang="ko">투자 가능 현금</span></div>
+            <div class="lbl"><span data-lang="en">CASH AVAILABLE</span><span data-lang="ko">투자 가능 현금</span></div>
             <div class="val" id="review-cash">—</div>
           </div>
           <div class="ioi-fact">
-            <div class="lbl"><span data-lang="en">WORKING CAPITAL</span><span data-lang="ko">운용 자본</span></div>
+            <div class="lbl"><span data-lang="en">TOTAL HOLDINGS</span><span data-lang="ko">총 보유 자산</span></div>
             <div class="val" id="review-total">—</div>
           </div>
         </div>
@@ -557,8 +557,8 @@
           <li>
             <input type="checkbox" name="cb_spot_caveat" required>
             <div>
-              <span data-lang="en">I understand the KRW figure shown is <em>indicative</em>. Final settlement is at gold spot on the day of wire receipt, plus two business days to convert.</span>
-              <span data-lang="ko">표시된 KRW 금액은 <em>참고용</em>이며, 최종 정산은 송금 도착일 + 영업일 2일의 환전 기간 후 시세로 계산됨을 이해합니다.</span>
+              <span data-lang="en">I understand the KRW figure shown is <em>indicative</em>. Final settlement is at gold spot at the time the fund executes the bar purchase, promptly following wire clearance.</span>
+              <span data-lang="ko">표시된 KRW 금액은 <em>참고용</em>이며, 최종 정산은 펀드의 금괴 매입 체결 시점의 금 시세에 따라 계산됨을 이해합니다.</span>
             </div>
           </li>
         </ul>
@@ -641,14 +641,14 @@ function formatKRW(amount) {
   var a = Math.round(amount);
   if (a === 0) return '0';
   var EOK = 100000000, MAN = 10000;
-  var eok = Math.floor(a / EOK);
-  var rem = a % EOK;
+  if (a < MAN) return a.toLocaleString('en-US') + '원';
+  var rounded = Math.round(a / MAN) * MAN;
+  var eok = Math.floor(rounded / EOK);
+  var rem = rounded % EOK;
   var man = Math.floor(rem / MAN);
-  var won = rem % MAN;
   var parts = [];
   if (eok) parts.push(eok.toLocaleString('en-US') + '억');
   if (man) parts.push(man.toLocaleString('en-US') + '만');
-  if (won) parts.push(won.toLocaleString('en-US') + '원');
   return parts.join(' ') || '0';
 }
 function parseKRW(s) {
@@ -700,7 +700,7 @@ function fetchSpot() {
     return r.json();
   }).then(function(j) { state.spot = j; updateCalc(); })
   .catch(function() {
-    // Hard fallback: $4,700/oz × 32.1507 oz/kg × ~1,440 USD/KRW × 1.03 markup ≈ ₩2.24億/kg
+    // Hard fallback: $4,700/oz × 32.1507 oz/kg × ~1,440 USD/KRW × 1.03 procurement buffer ≈ ₩2.24億/kg
     state.spot = { krw_per_kg: 225000000, source: 'fallback' }; updateCalc();
   });
 }
@@ -825,10 +825,10 @@ function updateCalc() {
   document.getElementById('kg-plus').disabled = kg >= 500;
 
   var ltv = Number(document.getElementById('ltv-slider').value);
-  var krw_per_kg = state.spot.krw_per_kg;     // post-3%-markup price
+  var krw_per_kg = state.spot.krw_per_kg;     // post procurement-buffer price
 
   // Math:
-  // goldAcq    = kg * krw_per_kg                       (member's gold purchase cost, post-markup)
+  // goldAcq    = kg * krw_per_kg                       (member's gold purchase cost, post procurement buffer)
   // fundCash   = goldAcq * 0.20                         (20% on top, fund cash position)
   // wireTotal  = goldAcq + fundCash
   // goldHeld   = goldAcq                                (the physical kg @ purchase price)

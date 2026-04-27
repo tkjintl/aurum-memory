@@ -6,12 +6,14 @@ import { generateLeadId } from './_lib/auth.js';
 import { saveLead, leadsCount } from './_lib/storage.js';
 import { sendRaw, buildPartnerNotice, buildInquiryReceivedEmail } from './_lib/email.js';
 
-const REQUIRED = ['name', 'email', 'country', 'wealth', 'nda_ack'];
+const REQUIRED = ['name', 'email', 'country', 'hear_about', 'reverse_solicitation_ack'];
 const ALLOWED  = [
-  'name', 'name_ko', 'email', 'phone_cc', 'phone', 'country', 'wealth',
+  'name', 'email', 'country', 'hear_about', 'note', 'reverse_solicitation_ack',
+  // Legacy fields — accepted for backward compatibility (older form versions / API clients)
+  'name_ko', 'phone_cc', 'phone', 'wealth',
   'occupation', 'source_of_wealth',
   'interest_deals', 'interest_gold', 'interest_familyoffice', 'interest_all',
-  'referral', 'note', 'nda_ack',
+  'referral', 'nda_ack',
 ];
 
 export default async function handler(req, res) {
@@ -30,7 +32,10 @@ export default async function handler(req, res) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(body.email))) {
     return bad(res, 'invalid email');
   }
-  if (!body.nda_ack) return bad(res, 'NDA acknowledgement required');
+  // Accept either the new reverse_solicitation_ack or the legacy nda_ack
+  if (!body.reverse_solicitation_ack && !body.nda_ack) {
+    return bad(res, 'acknowledgement required');
+  }
 
   // Build clean lead record
   const id = generateLeadId();
@@ -39,10 +44,13 @@ export default async function handler(req, res) {
   for (const k of ALLOWED) {
     if (body[k] !== undefined) lead[k] = String(body[k]).slice(0, 4000);
   }
-  // Booleans for interest checkboxes
+  // Booleans for interest checkboxes (legacy fields)
   for (const k of ['interest_deals', 'interest_gold', 'interest_familyoffice', 'interest_all']) {
     lead[k] = !!body[k] && body[k] !== '0' && body[k] !== 'false';
   }
+  // Normalize: new schema uses reverse_solicitation_ack; we set both flags true
+  // so downstream code that checks either continues to work.
+  lead.reverse_solicitation_ack = true;
   lead.nda_ack = true;
   lead.meta = {
     user_agent: String(body._meta?.user_agent || req.headers['user-agent'] || '').slice(0, 500),

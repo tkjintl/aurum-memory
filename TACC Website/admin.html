@@ -97,7 +97,7 @@ input,textarea,select{font-family:inherit;color:inherit}
 .nav-hamburger:hover{background:var(--goldWash);border-color:var(--gold)}
 
 /* Mobile drawer */
-.nav-drawer{position:fixed;top:0;right:0;bottom:0;width:80%;max-width:320px;background:var(--bg-2);border-left:1px solid var(--goldBorder);box-shadow:-12px 0 32px rgba(0,0,0,0.5);z-index:200;padding:24px 22px;display:flex;flex-direction:column;gap:20px;transform:translateX(100%);transition:transform .35s cubic-bezier(.25,.1,.25,1)}
+.nav-drawer{position:fixed;top:0;right:0;bottom:0;width:80%;max-width:320px;background:var(--bg-2);border-left:1px solid var(--goldBorder);box-shadow:-12px 0 32px rgba(0,0,0,0.5);z-index:9999;padding:24px 22px;display:flex;flex-direction:column;gap:20px;transform:translateX(100%);transition:transform .35s cubic-bezier(.25,.1,.25,1);overflow-y:auto}
 .nav-drawer.open{transform:translateX(0)}
 .drawer-close{align-self:flex-end;background:transparent;border:0;color:var(--goldD);font-size:24px;cursor:pointer;padding:4px 10px;transition:color .2s}
 .drawer-close:hover{color:var(--gold)}
@@ -109,7 +109,7 @@ input,textarea,select{font-family:inherit;color:inherit}
 .drawer-link:hover{color:var(--goldB);border-color:var(--goldBorder);background:var(--goldWash)}
 .drawer-link.drawer-danger{color:var(--red);border-color:rgba(199,112,97,0.30)}
 .drawer-link.drawer-danger:hover{background:rgba(199,112,97,0.06);border-color:rgba(199,112,97,0.50)}
-.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:190;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9000;opacity:0;pointer-events:none;transition:opacity .3s}
 .drawer-backdrop.open{opacity:1;pointer-events:auto}
 .btn-gold{font-family:var(--mono);font-size:10px;letter-spacing:0.26em;color:var(--bg);padding:7px 13px;border:1px solid var(--gold);background:var(--gold);transition:all .2s;white-space:nowrap;flex-shrink:0}
 .btn-gold:hover:not(:disabled){background:var(--goldB);border-color:var(--goldB)}
@@ -171,7 +171,7 @@ input,textarea,select{font-family:inherit;color:inherit}
 /* Tier bar chart (used by BY TIER) */
 .tier-bars{display:flex;flex-direction:column;gap:3px;width:100%}
 .tier-row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.16em}
-.tier-row .tlbl{flex:0 0 60px;color:var(--goldD);text-transform:uppercase}
+.tier-row .tlbl{flex:0 0 64px;color:var(--goldD);text-transform:uppercase;white-space:nowrap}
 .tier-row .tbar{flex:1;height:5px;background:var(--border);position:relative;overflow:hidden}
 .tier-row .tbar .tfill{height:100%;background:var(--gold);width:0;transition:width 1s cubic-bezier(.25,.1,.25,1) 0.2s}
 .tier-row .tnum{flex:0 0 22px;text-align:right;color:var(--text);font-weight:500}
@@ -184,7 +184,7 @@ input,textarea,select{font-family:inherit;color:inherit}
   .stat-val{font-size:24px}
   .stat-lbl{font-size:8.5px;letter-spacing:0.22em}
   .tier-row{font-size:8.5px}
-  .tier-row .tlbl{flex:0 0 52px}
+  .tier-row .tlbl{flex:0 0 56px}
 }
 @media (max-width:760px){
   .stats{padding:0}
@@ -253,12 +253,84 @@ input,textarea,select{font-family:inherit;color:inherit}
   .detail{padding:18px 16px 60px}
   .section{margin:0 0 22px}
 }
+/* Bars table — collapse to card-like rows on mobile so serials don't word-wrap */
+.bars-table{table-layout:auto}
+.bars-table td:first-child{white-space:nowrap}
+@media (max-width:680px){
+  .bars-table{display:block;width:100%}
+  .bars-table thead{display:none}
+  .bars-table tbody,.bars-table tr,.bars-table td{display:block;width:100%;box-sizing:border-box}
+  .bars-table tr{padding:10px 0;border-bottom:1px solid var(--rule);margin-bottom:6px}
+  .bars-table td{padding:3px 0 !important;text-align:left !important;border:0 !important}
+  .bars-table td:first-child{font-size:13px !important;color:var(--goldB) !important;letter-spacing:0.16em !important;margin-bottom:4px}
+  .bars-table td:nth-child(2)::before{content:'KG: ';color:var(--goldD);font-size:9px;letter-spacing:0.20em;text-transform:uppercase}
+  .bars-table td:nth-child(3)::before{content:'STATUS: ';color:var(--goldD);font-size:9px;letter-spacing:0.20em;text-transform:uppercase}
+  .bars-table td:nth-child(4)::before{content:'CUSTODIAN: ';color:var(--goldD);font-size:9px;letter-spacing:0.20em;text-transform:uppercase}
+  .bars-table td:last-child{margin-top:8px}
+}
+
+/* LTV update form, Bars assign form — responsive grids stack on mobile */
+@media (max-width:680px){
+  [style*="grid-template-columns:1.5fr 0.7fr 1fr 1.5fr auto"],
+  [style*="grid-template-columns:1.4fr 0.7fr 0.7fr 1.2fr auto"]{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+}
+
 .det-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.32em;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .det-eyebrow .id{color:var(--muted);font-size:9px}
+@media (max-width:680px){
+  .det-eyebrow{font-size:9px;letter-spacing:0.20em;gap:8px}
+  .det-eyebrow .member-status-pill{font-size:9px;letter-spacing:0.20em;padding:5px 9px}
+}
 .det-name{font-family:var(--serif);font-weight:500;font-size:42px;line-height:1.05;letter-spacing:-0.015em;color:var(--text);margin:0 0 6px}
 .det-name em{font-style:italic;color:var(--gold)}
 .det-name .ko{display:inline-block;font-family:var(--serifKr);font-weight:300;color:var(--goldD);font-size:24px;margin-left:14px;letter-spacing:0}
 .det-sub{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:15.5px;margin:0 0 28px}
+
+/* Identity line: email · country · tier · code */
+.det-identity{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;color:var(--sub);margin:0 0 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.det-identity a{color:var(--goldB);text-decoration:none;border-bottom:1px solid var(--goldBorder)}
+.det-identity .sep{color:var(--muted);opacity:0.5}
+.det-identity .code-mono{color:var(--goldB);letter-spacing:0.16em}
+.det-identity .code-mono.revoked{color:var(--red);text-decoration:line-through}
+
+/* Header money cards — KRW primary, USD secondary, growth % on NAV card */
+.hdr-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 14px}
+.hdr-card{padding:18px 20px;border:1px solid var(--goldBorder);background:var(--card);display:flex;flex-direction:column;gap:6px}
+.hdr-card-single{grid-column:1/-1}
+.hdr-card-nav{background:linear-gradient(180deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border-color:var(--goldBorder);border-left:3px solid var(--gold)}
+.hdr-card-action{background:rgba(197,165,114,0.04);border-color:var(--goldBorderS)}
+.hdr-card-lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:0.28em;color:var(--goldD);text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hdr-card-amt{font-family:var(--serif);font-size:30px;font-weight:500;color:var(--text);line-height:1.05;letter-spacing:-0.01em}
+.hdr-card-amt.gold{color:var(--goldB)}
+.hdr-card-sub{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:0.06em}
+.hdr-card-growth{font-family:var(--mono);font-size:11px;letter-spacing:0.04em}
+.hdr-action-btn{margin-top:8px;align-self:flex-start;padding:8px 14px;font-family:var(--mono);font-size:10px;letter-spacing:0.22em}
+@media (max-width:680px){.hdr-cards{grid-template-columns:1fr}.hdr-card-amt{font-size:24px}}
+
+/* Supporting metrics line below cards */
+.hdr-meta{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 22px;padding:10px 14px;border:1px solid var(--rule);background:rgba(0,0,0,0.20);font-family:var(--mono);font-size:10.5px;letter-spacing:0.06em;color:var(--sub)}
+.hdr-meta strong{color:var(--text);font-weight:500}
+
+/* Resend dropdown menu */
+.hdr-resend{position:relative;display:inline-block}
+.hdr-resend-btn{background:transparent;border:1px solid var(--goldBorder);color:var(--goldD);font-family:var(--mono);font-size:9.5px;letter-spacing:0.24em;padding:6px 12px;cursor:pointer;transition:all .2s}
+.hdr-resend-btn:hover{color:var(--goldB);border-color:var(--gold)}
+.hdr-resend-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:240px;background:var(--bg-2);border:1px solid var(--goldBorder);box-shadow:0 12px 32px rgba(0,0,0,0.5);z-index:50}
+.hdr-resend-opt{display:block;width:100%;text-align:left;background:transparent;border:0;padding:11px 16px;font-family:var(--mono);font-size:10.5px;letter-spacing:0.16em;color:var(--text);cursor:pointer;border-bottom:1px solid var(--rule);transition:background .2s}
+.hdr-resend-opt:last-child{border-bottom:0}
+.hdr-resend-opt:hover{background:var(--goldWash);color:var(--goldB)}
+
+/* Personal info accordion — collapsed by default */
+.det-accordion{margin:0 0 24px}
+.det-accordion summary{cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:0.24em;color:var(--goldD);padding:10px 0;list-style:none;outline:none;transition:color .2s}
+.det-accordion summary::-webkit-details-marker{display:none}
+.det-accordion summary:hover{color:var(--goldB)}
+.det-accordion[open] summary{margin-bottom:14px}
+.det-accordion[open] summary::before{content:'▾'}
+.det-accordion summary::before{content:'▸';margin-right:8px;color:var(--gold)}
 
 .status-bar{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 28px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .status-pill{font-family:var(--mono);font-size:9.5px;letter-spacing:0.26em;padding:8px 12px;border:1px solid var(--border);background:transparent;color:var(--sub);transition:all .2s;display:inline-flex;align-items:center;gap:7px}
@@ -387,6 +459,126 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 /* IOI panel — facts grid */
 .ioi-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:14px;padding:14px;background:rgba(197,165,114,0.04);border:1px solid var(--goldBorder)}
+
+/* LTV hero block — leads with the % so eye lands on the headline number (B1) */
+.ltv-hero{display:flex;align-items:center;gap:24px;padding:18px 22px;background:linear-gradient(135deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
+.ltv-hero-pct{font-family:var(--serif);font-weight:500;font-size:56px;line-height:1;color:var(--gold);letter-spacing:-0.02em}
+.ltv-hero-pct .pct-sym{font-size:30px;color:var(--goldD);margin-left:2px}
+.ltv-hero-meta{display:flex;flex-direction:column;gap:6px;flex:1}
+.ltv-hero-lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:0.32em;color:var(--goldD);text-transform:uppercase}
+.ltv-hero-sub{font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:0.10em}
+@media (max-width:640px){.ltv-hero{padding:14px 16px;gap:16px}.ltv-hero-pct{font-size:42px}.ltv-hero-pct .pct-sym{font-size:22px}}
+
+/* LTV partner-decision block — shown during IOI verify (B8) */
+.ltv-decision{margin-top:14px;padding:18px 20px;background:rgba(197,165,114,0.06);border:1px solid var(--goldBorder);border-left:3px solid var(--gold);display:flex;flex-direction:column;gap:14px}
+.ltv-decision-head{font-family:var(--mono);font-size:9.5px;letter-spacing:0.32em;color:var(--gold);text-transform:uppercase}
+.ltv-decision-row{display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:center}
+.ltv-decision-cell{display:flex;flex-direction:column;gap:6px}
+.ltv-decision-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.26em;color:var(--goldD);text-transform:uppercase}
+.ltv-decision-val{font-family:var(--serif);font-size:32px;font-weight:500;color:var(--goldB);line-height:1}
+.ltv-decision-input .ltv-input-row{display:flex;align-items:center;gap:14px}
+.ltv-decision-input input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;cursor:pointer}
+.ltv-decision-input input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer;box-shadow:0 0 0 3px rgba(197,165,114,0.20)}
+.ltv-decision-input input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer;border:0}
+.ltv-decision-hint{font-family:var(--serifKr);font-style:italic;font-size:12px;color:var(--muted)}
+.ltv-decision textarea{width:100%;min-height:60px;padding:10px 12px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--serifKr);font-size:13.5px;line-height:1.5;resize:vertical}
+.ltv-decision .btn-big{align-self:flex-start;margin-top:6px}
+@media (max-width:640px){.ltv-decision-row{grid-template-columns:1fr;gap:12px}}
+
+/* POSITION SUMMARY block — top of CUSTODY tab (B7+B11)
+   Grid of 4 cards (gold/invested/cash/equity) styled like .ioi-facts but
+   with hierarchy that singles out EQUITY VALUE as the headline. */
+.pos-sum{padding:0;background:transparent;border:0;display:flex;flex-direction:column;gap:14px}
+.pos-sum-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(135deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
+.pos-sum-status{font-family:var(--mono);font-size:10.5px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase}
+.growth-pill{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:0.18em;padding:4px 10px;border:1px solid currentColor;border-radius:2px}
+.growth-pill.growth-up{color:var(--green);border-color:rgba(122,168,133,0.40);background:rgba(122,168,133,0.06)}
+.growth-pill.growth-down{color:var(--red);border-color:rgba(199,112,97,0.40);background:rgba(199,112,97,0.06)}
+
+.pos-sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--goldBorder);background:var(--card)}
+.pos-sum-grid-5{grid-template-columns:repeat(5,1fr)}
+.pos-row{padding:14px 14px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:6px;position:relative;min-height:120px;min-width:0}
+.pos-sum-grid-5 .pos-row{padding:12px 10px;gap:5px;min-height:115px}
+.pos-row:last-child{border-right:0}
+.pos-row-primary{background:rgba(197,165,114,0.04)}
+.pos-row-ltv{background:linear-gradient(180deg,rgba(197,165,114,0.06),transparent);border-left:2px solid var(--goldBorder)}
+.pos-row-equity{background:linear-gradient(180deg,rgba(197,165,114,0.08),rgba(197,165,114,0.02))}
+.pos-row-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--goldD);text-transform:uppercase;line-height:1.3}
+.pos-sum-grid-5 .pos-row-lbl{font-size:8.5px;letter-spacing:0.18em;white-space:normal}
+.pos-row-equity .pos-row-lbl{color:var(--gold)}
+.pos-row-ltv .pos-row-lbl{color:var(--gold)}
+.pos-row-val{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.pos-row-amt{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--text);letter-spacing:-0.005em;line-height:1.15;word-break:keep-all;overflow-wrap:normal}
+.pos-sum-grid-5 .pos-row-amt{font-size:15.5px;line-height:1.1}
+.pos-row-amt.gold{color:var(--goldB);font-size:20px}
+.pos-sum-grid-5 .pos-row-amt.gold{font-size:17px}
+.pos-row-sub{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:0.04em;line-height:1.4;word-break:break-word}
+.pos-sum-grid-5 .pos-row-sub{font-size:8.5px;letter-spacing:0.02em;line-height:1.35}
+.pos-row-growth{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:0.04em}
+.pos-sum-grid-5 .pos-row-growth{font-size:9.5px}
+.pos-muted{color:var(--muted)}
+
+/* 4-cell leverage strip — surfaces drawn / ceiling / bank margin / margin headroom */
+.pos-sum-leverage{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-top:0;background:rgba(0,0,0,0.20)}
+.lev-cell{padding:12px 16px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:4px}
+.lev-cell:last-child{border-right:0}
+.lev-cell-headroom{background:rgba(199,112,97,0.04)}
+.lev-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.26em;color:var(--goldD);text-transform:uppercase}
+.lev-val{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--text);line-height:1.1;letter-spacing:-0.005em}
+.lev-cell-headroom .lev-val{font-size:16px}
+.lev-sub{font-family:var(--mono);font-size:9px;letter-spacing:0.06em;color:var(--muted);text-transform:uppercase}
+
+.pos-sum-foot{display:flex;justify-content:space-between;gap:14px;padding:10px 14px;border:1px solid var(--rule);background:rgba(0,0,0,0.20);font-family:var(--mono);font-size:10px;letter-spacing:0.10em;color:var(--muted);flex-wrap:wrap}
+.pos-sum-foot strong{color:var(--text);font-weight:500;font-family:var(--serif);font-size:12.5px}
+
+.growth-up{color:var(--green)}
+.growth-down{color:var(--red)}
+.growth-flat{color:var(--muted)}
+
+@media (max-width:1100px){
+  .pos-sum-grid-5{grid-template-columns:repeat(3,1fr)}
+  .pos-sum-leverage{grid-template-columns:repeat(2,1fr)}
+  .lev-cell:nth-child(2n){border-right:0}
+  .lev-cell:nth-last-child(-n+2){border-top:1px solid var(--rule)}
+}
+@media (max-width:960px){
+  .pos-sum-grid:not(.pos-sum-grid-5){grid-template-columns:1fr 1fr}
+  .pos-row{border-right:0;border-bottom:1px solid var(--rule)}
+  .pos-row:nth-child(2n){border-right:0}
+  .pos-row:nth-child(odd){border-right:1px solid var(--rule)}
+  .pos-row:nth-last-child(-n+2){border-bottom:0}
+}
+@media (max-width:680px){
+  .pos-sum-grid,.pos-sum-grid-5{grid-template-columns:1fr}
+  .pos-row{border-right:0;border-bottom:1px solid var(--rule)}
+  .pos-row:last-child{border-bottom:0}
+  .pos-row-amt{font-size:20px}
+  .pos-row-amt.gold{font-size:22px}
+  .pos-sum-leverage{grid-template-columns:1fr}
+  .lev-cell{border-right:0;border-bottom:1px solid var(--rule)}
+  .lev-cell:last-child{border-bottom:0}
+}
+
+/* MEMBER STATUS pill — top of detail header */
+.member-status-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;font-family:var(--mono);font-size:10px;letter-spacing:0.28em;text-transform:uppercase;border:1px solid currentColor;background:rgba(0,0,0,0.20)}
+.member-status-pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.member-status-pill.status-member{color:var(--green);border-color:rgba(122,168,133,0.40);background:rgba(122,168,133,0.08)}
+.member-status-pill.status-pending{color:var(--gold);border-color:var(--goldBorder);background:var(--goldWash)}
+.member-status-pill.status-prospect{color:var(--goldD);border-color:var(--border)}
+
+/* Fund overview band on /admin home (B10) — partner-only, activates on first wire cleared */
+.fund-band{padding:22px 28px;margin-bottom:22px;background:linear-gradient(135deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
+.fund-band-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.fund-band-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:0.32em;color:var(--gold);text-transform:uppercase}
+.fund-band-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.fund-band-cell{display:flex;flex-direction:column;gap:4px}
+.fund-band-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.28em;color:var(--goldD);text-transform:uppercase}
+.fund-band-val{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--text)}
+.fund-band-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.fund-band-status{margin-top:14px;padding-top:14px;border-top:1px solid var(--goldBorder);font-family:var(--mono);font-size:10px;letter-spacing:0.26em;color:var(--gold);text-transform:uppercase}
+@media (max-width:1100px){.fund-band-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
+@media (max-width:720px){.fund-band-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.fund-band-grid{grid-template-columns:1fr}.fund-band-val{font-size:20px}}
 .ioi-fact{display:flex;flex-direction:column;gap:4px}
 .ioi-fact .lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.26em;color:var(--goldD);text-transform:uppercase}
 .ioi-fact .val{font-family:var(--mono);font-size:14px;color:var(--text)}
@@ -578,6 +770,47 @@ input,textarea,select{font-family:inherit;color:inherit}
     </div>
   </div>
 
+  <!-- B10: FUND OVERVIEW band — partner-only, activates on first wire cleared.
+       USD-primary view (partners think in USD for fund-level decisions). KRW shown beneath. -->
+  <div class="fund-band" id="fund-band" style="display:none">
+    <div class="fund-band-head">
+      <div class="fund-band-eyebrow">FUND OVERVIEW · 펀드 현황 <span style="color:var(--muted);margin-left:10px">USD</span></div>
+      <div class="fund-band-eyebrow" id="fund-band-aum-growth" style="color:var(--green)"></div>
+    </div>
+    <div class="fund-band-grid">
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">TOTAL NAV</div>
+        <div class="fund-band-val" id="fb-aum">—</div>
+        <div class="fund-band-sub" id="fb-aum-krw">—</div>
+        <div class="fund-band-sub" id="fb-aum-sub">— members · — kg</div>
+      </div>
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">GOLD HELD</div>
+        <div class="fund-band-val" id="fb-gold">—</div>
+        <div class="fund-band-sub" id="fb-gold-krw">—</div>
+        <div class="fund-band-sub" id="fb-gold-sub">@ live spot</div>
+      </div>
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">INVESTED</div>
+        <div class="fund-band-val" id="fb-invested">—</div>
+        <div class="fund-band-sub" id="fb-invested-krw">—</div>
+        <div class="fund-band-sub" id="fb-invested-sub">— deals funded</div>
+      </div>
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">CASH AVAILABLE</div>
+        <div class="fund-band-val" id="fb-cash">—</div>
+        <div class="fund-band-sub" id="fb-cash-krw">—</div>
+        <div class="fund-band-sub">drawn LTV + fund cash − invested</div>
+      </div>
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">FUND LTV</div>
+        <div class="fund-band-val" id="fb-ltv">—</div>
+        <div class="fund-band-sub" id="fb-ltv-sub">drawn / gold value</div>
+      </div>
+    </div>
+    <div class="fund-band-status" id="fb-status">—</div>
+  </div>
+
   <!-- stats -->
   <div class="stats" id="stats">
     <div class="stat">
@@ -660,9 +893,10 @@ const TIER_LBL = {
   '2m_5m':'$2M – $5M · Senior',
   '5m_plus':'$5M+ · Principal',
 };
-const TIER_SHORT = {'250k_500k':'$250–500K','500k_2m':'$500K–2M','2m_5m':'$2–5M','5m_plus':'$5M+'};
+const TIER_SHORT = {'250k_500k':'250-500K','500k_2m':'500K-2M','2m_5m':'2-5M','5m_plus':'5M+'};
 const COUNTRY_LBL = {KR:'South Korea',SG:'Singapore',HK:'Hong Kong SAR',JP:'Japan',US:'United States',GB:'United Kingdom',AU:'Australia',CA:'Canada',CH:'Switzerland',AE:'UAE',OTHER:'Other'};
 const STATUS_LBL = {new:'NEW',reviewing:'REVIEWING',approved:'APPROVED',sent:'SENT',declined:'DECLINED'};
+const HEAR_ABOUT_LBL = {member:'Existing member',advisor:'Advisor / family office',partner:'Aurum partner',personal:'Personal connection',community:'HNW community'};
 
 let state = {
   userId: null,
@@ -718,13 +952,20 @@ function showApp() {
   load();
 }
 
-$('btn-logout').addEventListener('click', async () => {
+async function doLogout() {
   try { await api('POST', '/api/logout'); } catch {}
   state.userId = null; state.email = null; state.selected = null; state.leads = [];
   redirectToLogin();
-});
+}
+function doRefresh() { load(); toast('REFRESHED', 'ok'); }
+function doExportNda() {
+  window.location.href = '/api/admin/nda-archive?format=csv';
+  toast('NDA MANIFEST DOWNLOADING…', 'ok');
+}
 
-$('btn-refresh').addEventListener('click', () => { load(); toast('REFRESHED', 'ok'); });
+$('btn-logout').addEventListener('click', doLogout);
+$('btn-refresh').addEventListener('click', doRefresh);
+$('btn-export-nda').addEventListener('click', doExportNda);
 
 // ── Hamburger drawer (mobile) ─────────────────────────────────────────────
 (function initDrawer() {
@@ -733,17 +974,16 @@ $('btn-refresh').addEventListener('click', () => { load(); toast('REFRESHED', 'o
   const close = $('drawer-close');
   if (!ham || !drawer) return;
 
-  // Inject backdrop element
+  // Inject backdrop element BEFORE the drawer in DOM so it stacks behind it
   const backdrop = document.createElement('div');
   backdrop.className = 'drawer-backdrop';
   backdrop.id = 'drawer-backdrop';
-  document.body.appendChild(backdrop);
+  drawer.parentNode.insertBefore(backdrop, drawer);
 
   function openDrawer() {
     drawer.classList.add('open');
     backdrop.classList.add('open');
     drawer.setAttribute('aria-hidden', 'false');
-    // Mirror partner pill into drawer
     const pp = $('partner-pill');
     if (pp) $('drawer-partner').textContent = pp.textContent;
   }
@@ -756,21 +996,14 @@ $('btn-refresh').addEventListener('click', () => { load(); toast('REFRESHED', 'o
   close.addEventListener('click', closeDrawer);
   backdrop.addEventListener('click', closeDrawer);
 
-  // Wire drawer actions to existing handlers
+  // A11: Drawer actions DIRECTLY call handlers — bypass hidden-button .click()
   const drawerRefresh = $('drawer-refresh');
   const drawerExport  = $('drawer-export');
   const drawerLogout  = $('drawer-logout');
-  if (drawerRefresh) drawerRefresh.addEventListener('click', () => { closeDrawer(); load(); toast('REFRESHED', 'ok'); });
-  if (drawerExport)  drawerExport.addEventListener('click', () => { closeDrawer(); $('btn-export-nda').click(); });
-  if (drawerLogout)  drawerLogout.addEventListener('click', () => { closeDrawer(); $('btn-logout').click(); });
+  if (drawerRefresh) drawerRefresh.addEventListener('click', () => { closeDrawer(); doRefresh(); });
+  if (drawerExport)  drawerExport.addEventListener('click',  () => { closeDrawer(); doExportNda(); });
+  if (drawerLogout)  drawerLogout.addEventListener('click',  () => { closeDrawer(); doLogout(); });
 })();
-
-$('btn-export-nda').addEventListener('click', () => {
-  // Triggers a CSV download — the browser handles the file naming via the
-  // Content-Disposition header set by the endpoint.
-  window.location.href = '/api/admin/nda-archive?format=csv';
-  toast('NDA MANIFEST DOWNLOADING…', 'ok');
-});
 
 // ── load ─────────────────────────────────────────────────────────────────
 async function load() {
@@ -778,6 +1011,7 @@ async function load() {
     const j = await api('GET', '/api/admin/list');
     state.leads = j.leads || [];
     state.stats = j.stats || null;
+    fetchLiveSpot();      // non-blocking: feeds state.liveSpot for LTV / fund band
     renderStats();
     renderFilters();
     renderList();
@@ -802,6 +1036,21 @@ async function load() {
   }
 }
 
+// Live spot fetch — used by LTV panel + fund band for live KRW/kg + USD/KRW rate
+async function fetchLiveSpot() {
+  try {
+    const r = await fetch('/api/ioi?op=spot', { credentials: 'same-origin', cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j && j.krw_per_kg) {
+      state.liveSpot = j;
+      // Re-render anything spot-dependent
+      renderFundBand();
+      if (state.selected) renderDetail();
+    }
+  } catch {}
+}
+
 // ── stats ────────────────────────────────────────────────────────────────
 // Animate a numeric value from 0 → final over a duration (ease-out cubic)
 function animateNumber(el, finalVal, ms) {
@@ -818,7 +1067,110 @@ function animateNumber(el, finalVal, ms) {
   requestAnimationFrame(tick);
 }
 
+// B10: Fund-level overview — USD-primary view; aggregates AUM / Gold / Invested
+//      / Cash Available / Fund LTV % across all wire-cleared leads.
+//      Hidden until at least one wire clears.
+function renderFundBand() {
+  const band = document.getElementById('fund-band');
+  if (!band) return;
+  const leads = (state.leads || []).filter((l) => l.wire && l.wire.cleared_at);
+  if (leads.length === 0) {
+    band.style.display = 'none';
+    return;
+  }
+  band.style.display = 'block';
+
+  const liveSpot = (state.liveSpot && state.liveSpot.krw_per_kg) || 225_000_000;
+  // USD/KRW for fund-level USD display.  Falls back to ~1,440 if spot endpoint hasn't responded.
+  const usdKrw = (state.liveSpot && state.liveSpot.usd_krw) || 1440;
+
+  let totalKg = 0, goldNow = 0, goldCost = 0;
+  let investedCost = 0, investedMarked = 0;
+  let totalDrawn = 0, totalFundCash = 0;
+  let totalDealsFunded = 0;
+  for (const l of leads) {
+    const kg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
+    const settleSpot = (l.ioi && l.ioi.krw_per_kg_at_settle) || (l.ioi && l.ioi.krw_per_kg_at_verify) || (l.ioi && l.ioi.krw_per_kg_at_submit) || liveSpot;
+    totalKg += kg;
+    goldNow += kg * liveSpot;
+    goldCost += kg * settleSpot;
+    totalFundCash += Math.round((kg * settleSpot) * 0.20);
+    totalDrawn += (l.ltv && l.ltv.drawn_krw) || 0;
+    const positions = l.positions || [];
+    investedCost += positions.reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
+    investedMarked += positions.reduce((s, p) => s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0), 0);
+    totalDealsFunded += positions.length;
+  }
+
+  // NAV = gold + fund_cash + investment growth (drawn cancels: it's both an asset (cash) and a liability)
+  const aumNow = goldNow + totalFundCash + (investedMarked - investedCost);
+  const aumCost = goldCost + totalFundCash;
+  const aumGrowthPct = aumCost > 0 ? ((aumNow - aumCost) / aumCost) * 100 : 0;
+  const cashAvailable = Math.max(0, totalDrawn + totalFundCash - investedMarked);
+  const fundLtvPct = goldNow > 0 ? (totalDrawn / goldNow) * 100 : 0;
+
+  // KRW → USD conversion helper
+  const usd = (krw) => krw / usdKrw;
+  const fmtUsd = (krw) => {
+    const v = usd(krw);
+    if (v === 0) return '$0';
+    if (v >= 1_000_000) return '$' + (v / 1_000_000).toFixed(2) + 'M';
+    if (v >= 1_000) return '$' + (v / 1_000).toFixed(0) + 'K';
+    return '$' + Math.round(v).toLocaleString();
+  };
+
+  // USD-primary display, KRW shown as secondary line
+  $('fb-aum').textContent = fmtUsd(aumNow);
+  $('fb-aum-krw').textContent = fmtKrw(aumNow) + ' KRW';
+  $('fb-aum-sub').textContent = `${leads.length} member${leads.length === 1 ? '' : 's'} · ${totalKg.toFixed(1)} kg`;
+
+  $('fb-gold').textContent = fmtUsd(goldNow);
+  $('fb-gold-krw').textContent = fmtKrw(goldNow) + ' KRW';
+  $('fb-gold-sub').textContent = `${totalKg.toFixed(2)} kg @ ${fmtUsd(liveSpot)}/kg`;
+
+  if (investedCost > 0) {
+    $('fb-invested').textContent = fmtUsd(investedMarked);
+    $('fb-invested-krw').textContent = fmtKrw(investedMarked) + ' KRW';
+  } else {
+    $('fb-invested').textContent = '—';
+    $('fb-invested-krw').textContent = '';
+  }
+  $('fb-invested-sub').textContent = `${totalDealsFunded} deal${totalDealsFunded === 1 ? '' : 's'} funded`;
+
+  $('fb-cash').textContent = fmtUsd(cashAvailable);
+  $('fb-cash-krw').textContent = fmtKrw(cashAvailable) + ' KRW';
+
+  $('fb-ltv').textContent = fundLtvPct.toFixed(1) + '%';
+  $('fb-ltv-sub').textContent = `${fmtUsd(totalDrawn)} drawn / ${fmtUsd(goldNow)} gold`;
+
+  // AUM growth indicator on band header
+  const aumGrowth = $('fund-band-aum-growth');
+  if (aumGrowthPct > 0.05) {
+    aumGrowth.textContent = `↑ ${aumGrowthPct.toFixed(1)}% NAV`;
+    aumGrowth.style.color = 'var(--green)';
+  } else if (aumGrowthPct < -0.05) {
+    aumGrowth.textContent = `↓ ${Math.abs(aumGrowthPct).toFixed(1)}% NAV`;
+    aumGrowth.style.color = 'var(--red)';
+  } else {
+    aumGrowth.textContent = 'flat';
+    aumGrowth.style.color = 'var(--muted)';
+  }
+
+  // Status line — narrative
+  let status;
+  if (investedCost === 0) {
+    status = 'Capital ready · Awaiting deployment across cohort';
+  } else if (cashAvailable < 1_000_000) {
+    status = 'Fully deployed · all positions live';
+  } else {
+    const deployedPct = (investedMarked / (investedMarked + cashAvailable)) * 100;
+    status = `${deployedPct.toFixed(0)}% deployed · ${totalDealsFunded} deal${totalDealsFunded === 1 ? '' : 's'} funded`;
+  }
+  $('fb-status').textContent = status;
+}
+
 function renderStats() {
+  renderFundBand();
   const s = state.stats || {};
   const total = s.total || 0;
   const new_ = s.new || 0;
@@ -1033,56 +1385,273 @@ function renderDetail() {
     business:'Business income', investment:'Investment proceeds',
     inheritance:'Inheritance', profession:'Professional practice', other:'Other'
   })[l.source_of_wealth] || l.source_of_wealth || '—';
-  const facts = [
-    ['EMAIL', l.email ? `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>` : '—'],
-    ['PHONE', phone.trim() ? esc(phone.trim()) : '—'],
-    ['COUNTRY', esc(COUNTRY_LBL[l.country] || l.country || '—')],
-    ['INVESTABLE ASSETS', `<em>${esc(TIER_LBL[l.wealth] || l.wealth || '—')}</em>`],
-    ['OCCUPATION', l.occupation ? esc(l.occupation) : '—'],
-    ['SOURCE OF WEALTH', esc(sowLbl)],
-    ['INTERESTS', interests.length ? interests.map(esc).join(' · ') : '—'],
-    ['INTRODUCED BY', l.referral ? esc(l.referral) : '—'],
-    ['SUBMITTED', esc(fmtDate(l.submitted_at_ms))],
-    ['INVITATION CODE', l.code
-      ? (l.code_revoked
-          ? `<span style="color:var(--red);font-family:var(--mono);text-decoration:line-through">${esc(l.code)}</span> <span style="color:var(--red);font-family:var(--mono);font-size:10px;letter-spacing:.24em">REVOKED</span>`
-          : `<span style="font-family:var(--mono);color:var(--goldB);letter-spacing:.16em">${esc(l.code)}</span>`)
-      : '<span style="color:var(--muted);font-style:italic">not yet issued</span>'],
-  ];
+  const facts = [];
+  facts.push(['EMAIL', l.email ? `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>` : '—']);
+  facts.push(['COUNTRY', esc(COUNTRY_LBL[l.country] || l.country || '—')]);
+  if (l.hear_about) facts.push(['HEARD VIA', esc(HEAR_ABOUT_LBL[l.hear_about] || l.hear_about)]);
+  // Legacy fields — only show if populated (old leads pre-schema-change)
+  if (phone.trim()) facts.push(['PHONE', esc(phone.trim())]);
+  if (l.wealth) facts.push(['INVESTABLE ASSETS', `<em>${esc(TIER_LBL[l.wealth] || l.wealth)}</em>`]);
+  if (l.occupation) facts.push(['OCCUPATION', esc(l.occupation)]);
+  if (l.source_of_wealth) facts.push(['SOURCE OF WEALTH', esc(sowLbl)]);
+  if (interests.length) facts.push(['INTERESTS', interests.map(esc).join(' · ')]);
+  if (l.referral) facts.push(['INTRODUCED BY', esc(l.referral)]);
+  facts.push(['SUBMITTED', esc(fmtDate(l.submitted_at_ms))]);
+  facts.push(['INVITATION CODE', l.code
+    ? (l.code_revoked
+        ? `<span style="color:var(--red);font-family:var(--mono);text-decoration:line-through">${esc(l.code)}</span> <span style="color:var(--red);font-family:var(--mono);font-size:10px;letter-spacing:.24em">REVOKED</span>`
+        : `<span style="font-family:var(--mono);color:var(--goldB);letter-spacing:.16em">${esc(l.code)}</span>`)
+    : '<span style="color:var(--muted);font-style:italic">not yet issued</span>']);
 
   const statuses = ['new','reviewing','approved','declined'];
 
+  // Derive overall member-stage status (more useful than internal "new/reviewing/approved")
+  let memberStage, memberStageClass;
+  if (l.wire && l.wire.cleared_at) {
+    memberStage = 'MEMBER';
+    memberStageClass = 'status-member';
+  } else if (l.wire && l.wire.instructions_sent_at) {
+    memberStage = 'WIRE PENDING';
+    memberStageClass = 'status-pending';
+  } else if (l.ioi && l.ioi.submitted_at) {
+    memberStage = 'IOI SUBMITTED';
+    memberStageClass = 'status-pending';
+  } else if (l.nda_state === 'approved') {
+    memberStage = 'NDA SIGNED';
+    memberStageClass = 'status-pending';
+  } else if (l.code) {
+    memberStage = 'CODE ISSUED';
+    memberStageClass = 'status-prospect';
+  } else {
+    memberStage = 'PROSPECT';
+    memberStageClass = 'status-prospect';
+  }
+
+  // Compute joined date for status pill
+  const joinedDate = l.wire && l.wire.cleared_at ? fmtDate(l.wire.cleared_at).split(',')[0] : null;
+
+  // ── Money math for header strip (KRW-primary, USD-secondary) ──
+  const totalKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
+  const liveSpot = (state.liveSpot && state.liveSpot.krw_per_kg) || (l.ioi && l.ioi.krw_per_kg_at_submit) || 225_000_000;
+  const usdKrw = (state.liveSpot && state.liveSpot.usd_krw) || 1440;
+  const settleSpot = (l.ioi && l.ioi.krw_per_kg_at_settle) || (l.ioi && l.ioi.krw_per_kg_at_verify) || (l.ioi && l.ioi.krw_per_kg_at_submit) || liveSpot;
+
+  const positions = l.positions || [];
+  const investedCost = positions.reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
+  const investedMarked = positions.reduce((s, p) => s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0), 0);
+  const drawnKrw = (l.ltv && l.ltv.drawn_krw) || 0;
+
+  // CONTRIBUTED — gold acquisition portion (locked at settlement). The 20% fund cash
+  // is wired alongside but not displayed as part of "contributed to gold."
+  const contributedKrw = (l.ioi && (l.ioi.krw_at_settle || l.ioi.krw_at_verify || l.ioi.krw_at_submit)) || 0;
+
+  // FULL WIRE = gold acquisition + 20% Fund Cash Position. This is the cost basis
+  // for performance math (the actual amount the member wired into the fund).
+  const fullWireKrw = Math.round(contributedKrw * 1.20);
+
+  // CURRENT NAV — gold (live) + fund_cash + investment growth (drawn cancels out)
+  const goldNow = totalKg * liveSpot;
+  const goldCost = totalKg * settleSpot;
+  const fundCashContribution = Math.round(goldCost * 0.20);
+  const navNow = goldNow + fundCashContribution + (investedMarked - investedCost);
+  // Performance: NAV vs full wire (true cost basis, what they actually paid)
+  const navGrowthPct = fullWireKrw > 0 ? ((navNow - fullWireKrw) / fullWireKrw) * 100 : 0;
+
+  // Gold growth %
+  const goldGrowthPct = settleSpot > 0 && totalKg > 0 ? ((liveSpot - settleSpot) / settleSpot) * 100 : 0;
+
+  // % deployed in deals (member's portion)
+  const totalCapital = drawnKrw + fundCashContribution;
+  const deployedPct = totalCapital > 0 ? (investedCost / totalCapital) * 100 : 0;
+
+  // Helpers
+  const fmtUsd = (krw) => {
+    const v = krw / usdKrw;
+    if (v === 0) return '$0';
+    if (v >= 1_000_000) return '$' + (v / 1_000_000).toFixed(2) + 'M';
+    if (v >= 1_000) return '$' + (v / 1_000).toFixed(0) + 'K';
+    return '$' + Math.round(v).toLocaleString();
+  };
+  const growthSpan = (pct) => {
+    if (Math.abs(pct) < 0.05) return '<span class="growth-flat">flat</span>';
+    if (pct > 0) return `<span class="growth-up">↑ ${pct.toFixed(1)}%</span>`;
+    return `<span class="growth-down">↓ ${Math.abs(pct).toFixed(1)}%</span>`;
+  };
+
+  // ── State-dependent money cards ──
+  let moneyCards = '';
+  let supportingLine = '';
+
+  if (l.wire && l.wire.cleared_at) {
+    // MEMBER — full card pair with NAV
+    moneyCards = `
+      <div class="hdr-cards">
+        <div class="hdr-card">
+          <div class="hdr-card-lbl">CONTRIBUTED</div>
+          <div class="hdr-card-amt">${fmtKrw(contributedKrw)}</div>
+          <div class="hdr-card-sub">${fmtUsd(contributedKrw)} gold + ${fmtUsd(fundCashContribution)} reserve · ${esc(fmtDate(l.wire.cleared_at).split(',')[0])}</div>
+        </div>
+        <div class="hdr-card hdr-card-nav">
+          <div class="hdr-card-lbl">CURRENT NAV <span class="hdr-card-growth">${growthSpan(navGrowthPct)}</span></div>
+          <div class="hdr-card-amt gold">${fmtKrw(navNow)}</div>
+          <div class="hdr-card-sub">${fmtUsd(navNow)} · today vs ${fmtKrw(fullWireKrw)} wired</div>
+        </div>
+      </div>
+    `;
+    const ltvCeiling = (l.ltv && (l.ltv.approved_pct || l.ltv.ceiling_pct)) || 75;
+    supportingLine = `
+      <div class="hdr-meta">
+        <span>Gold ${fmtKrw(goldNow)} (${fmtUsd(goldNow)}) ${growthSpan(goldGrowthPct)}</span>
+        <span>LTV ${ltvCeiling}%</span>
+        <span>${totalKg.toFixed(2)} kg</span>
+        <span>${deployedPct.toFixed(0)}% deployed</span>
+      </div>
+    `;
+  } else if (l.wire && l.wire.instructions_sent_at) {
+    // WIRE PENDING — wire instructions sent, awaiting receipt
+    const dueKrw = (l.ioi && l.ioi.krw_at_verify) || (l.ioi && l.ioi.krw_at_submit) || 0;
+    const wireDays = Math.floor((Date.now() - l.wire.instructions_sent_at) / (24*3600*1000));
+    moneyCards = `
+      <div class="hdr-cards">
+        <div class="hdr-card">
+          <div class="hdr-card-lbl">COMMITMENT VERIFIED</div>
+          <div class="hdr-card-amt">${l.ioi.kg.toFixed(2)} kg @ ${l.ltv && l.ltv.approved_pct ? l.ltv.approved_pct : l.ioi.ltv_pct}% LTV</div>
+          <div class="hdr-card-sub">${fmtKrw(dueKrw)} · ${fmtUsd(dueKrw)}</div>
+        </div>
+        <div class="hdr-card hdr-card-action">
+          <div class="hdr-card-lbl">WIRE STATUS</div>
+          <div class="hdr-card-amt" style="font-size:18px">Awaiting receipt</div>
+          <div class="hdr-card-sub">Sent ${wireDays === 0 ? 'today' : wireDays + ' day' + (wireDays === 1 ? '' : 's') + ' ago'}</div>
+        </div>
+      </div>
+    `;
+    supportingLine = `<div class="hdr-meta"><span>Wire ref: <strong style="color:var(--text);font-family:var(--mono)">${esc(l.wire.ref || '—')}</strong></span></div>`;
+  } else if (l.ioi && l.ioi.submitted_at) {
+    // IOI SUBMITTED — awaiting partner verification, surface VERIFY action right here
+    const krw = l.ioi.krw_at_submit || 0;
+    moneyCards = `
+      <div class="hdr-cards">
+        <div class="hdr-card">
+          <div class="hdr-card-lbl">COMMITMENT INDICATED</div>
+          <div class="hdr-card-amt">${l.ioi.kg.toFixed(2)} kg · ${l.ioi.ltv_pct}% LTV</div>
+          <div class="hdr-card-sub">${fmtKrw(krw)} · ${fmtUsd(krw)}</div>
+        </div>
+        <div class="hdr-card hdr-card-action">
+          <div class="hdr-card-lbl">AWAITING VERIFICATION</div>
+          <div class="hdr-card-amt" style="font-size:14px;color:var(--sub)">Submitted ${esc(relTime(l.ioi.submitted_at))} ago</div>
+          <button class="btn-gold hdr-action-btn" data-action="scroll-to-ioi">REVIEW & VERIFY →</button>
+        </div>
+      </div>
+    `;
+  } else if (l.nda_state === 'approved') {
+    moneyCards = `
+      <div class="hdr-card hdr-card-single">
+        <div class="hdr-card-lbl">STATUS</div>
+        <div class="hdr-card-amt" style="font-size:18px">Awaiting IOI submission</div>
+        <div class="hdr-card-sub">NDA approved ${esc(fmtDate(l.nda_approved_at || l.nda_state_at).split(',')[0])}</div>
+      </div>
+    `;
+  } else if (l.code) {
+    moneyCards = `
+      <div class="hdr-card hdr-card-single">
+        <div class="hdr-card-lbl">STATUS</div>
+        <div class="hdr-card-amt" style="font-size:18px">Code issued · awaiting NDA</div>
+        <div class="hdr-card-sub">${l.email_sent_at ? 'Email sent ' + esc(fmtDate(l.email_sent_at).split(',')[0]) : 'Email not yet sent'}</div>
+      </div>
+    `;
+  } else {
+    // Pre-code prospect — show triage actions instead
+    moneyCards = `
+      <div class="hdr-card hdr-card-single">
+        <div class="hdr-card-lbl">PROSPECT · NOT YET INVITED</div>
+        <div class="hdr-card-amt" style="font-size:18px">Inquiry received ${esc(relTime(l.submitted_at_ms))} ago</div>
+        <div class="hdr-card-sub">Use APPROVE & SEND → to issue invitation code, or DECLINE.</div>
+      </div>
+    `;
+  }
+
+  // ── Resend dropdown — gated by lead state ──
+  const resendOptions = [];
+  if (l.code && !l.code_revoked && l.nda_state !== 'approved') {
+    resendOptions.push({ id: 'resend-nda-invite', label: 'Resend NDA invitation' });
+  }
+  if (l.nda_state === 'approved' && !(l.ioi && l.ioi.submitted_at)) {
+    resendOptions.push({ id: 'resend-ioi-link', label: 'Resend IOI form link' });
+  }
+  if (l.ioi_verified_at && !(l.wire && l.wire.cleared_at)) {
+    resendOptions.push({ id: 'resend-wire-instructions', label: 'Resend wire instructions' });
+  }
+  if (l.wire && l.wire.cleared_at) {
+    resendOptions.push({ id: 'resend-admission', label: 'Resend portfolio access' });
+  }
+
+  const resendDropdown = resendOptions.length > 0 ? `
+    <div class="hdr-resend">
+      <button class="hdr-resend-btn" id="hdr-resend-btn">⋯ RESEND</button>
+      <div class="hdr-resend-menu" id="hdr-resend-menu" style="display:none">
+        ${resendOptions.map((o) => `<button class="hdr-resend-opt" data-action="${o.id}">${esc(o.label)}</button>`).join('')}
+      </div>
+    </div>
+  ` : '';
+
+  // Triage pills — only show for early-stage leads (no code yet)
+  const showTriagePills = !l.code;
+
   d.innerHTML = `
     <button class="back-mob" id="back-mob">← BACK TO LIST</button>
+
+    <!-- Status row -->
     <div class="det-eyebrow">
-      ${esc(STATUS_LBL[l.status] || 'NEW')}
-      <span class="id">${esc(l.id)}</span>
+      <span class="member-status-pill ${memberStageClass}"><span class="dot"></span>${memberStage}${joinedDate ? ` · joined ${esc(joinedDate)}` : ''}</span>
+      <span style="margin-left:auto;display:inline-flex;gap:14px;align-items:center">
+        ${resendDropdown}
+        <span class="id">${esc(l.id)}</span>
+      </span>
     </div>
+
+    <!-- Name -->
     <h1 class="det-name">${esc(l.name||'Unnamed')}${l.name_ko?`<span class="ko">${esc(l.name_ko)}</span>`:''}</h1>
-    <p class="det-sub">Inquiry received <em>${esc(relTime(l.submitted_at_ms))}</em> ago.</p>
 
-    <div class="status-bar">
-      ${statuses.map((s) => `
-        <button class="status-pill ${s} ${l.status===s||(s==='approved'&&l.status==='sent')?'on':''}" data-status="${s}">
-          <span class="dot"></span>${STATUS_LBL[s]}
-        </button>
-      `).join('')}
+    <!-- Identity line: email · country · tier · code -->
+    <div class="det-identity">
+      ${l.email ? `<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>` : '—'}
+      <span class="sep">·</span>
+      ${esc(COUNTRY_LBL[l.country] || l.country || '—')}
+      <span class="sep">·</span>
+      ${esc(TIER_SHORT[l.wealth] || l.wealth || '—')} tier
+      ${l.code ? `<span class="sep">·</span>code <span class="code-mono${l.code_revoked ? ' revoked' : ''}">${esc(l.code)}</span>` : ''}
     </div>
 
-    <div class="facts">
-      ${facts.map(([lbl,val]) => `
-        <div class="fact"><div class="fact-lbl">${lbl}</div><div class="fact-val">${val}</div></div>
-      `).join('')}
-    </div>
+    ${moneyCards}
+    ${supportingLine}
 
-    ${l.note ? `<div class="note-block"><span class="lbl">NOTE FROM MEMBER</span>${esc(l.note)}</div>` : ''}
+    ${showTriagePills ? `
+      <div class="status-bar">
+        ${statuses.map((s) => `
+          <button class="status-pill ${s} ${l.status===s||(s==='approved'&&l.status==='sent')?'on':''}" data-status="${s}">
+            <span class="dot"></span>${STATUS_LBL[s]}
+          </button>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    <!-- Personal info, collapsed by default -->
+    <details class="det-accordion">
+      <summary>▾ Personal info, source of wealth, interests</summary>
+      <div class="facts">
+        ${facts.map(([lbl,val]) => `
+          <div class="fact"><div class="fact-lbl">${lbl}</div><div class="fact-val">${val}</div></div>
+        `).join('')}
+      </div>
+      ${l.note ? `<div class="note-block"><span class="lbl">NOTE FROM MEMBER</span>${esc(l.note)}</div>` : ''}
+    </details>
 
     <!-- Tab nav: 5-tab consolidation. Smart-default tab determined by lead state. -->
     <div class="tab-nav" id="tab-nav-${esc(l.id)}">
       <button class="tab-btn" data-tab="prospects">PROSPECTS</button>
       <button class="tab-btn" data-tab="custody">CUSTODY</button>
       <button class="tab-btn" data-tab="investments">INVESTMENTS</button>
-      <button class="tab-btn" data-tab="comms">COMMS</button>
+      <button class="tab-btn" data-tab="comms">DOCUMENTS</button>
       <button class="tab-btn" data-tab="audit">AUDIT</button>
     </div>
 
@@ -1136,6 +1705,11 @@ function renderDetail() {
     </div>
 
     <div class="section" data-tab="custody">
+      <h2 class="sec-h">POSITION SUMMARY · 포지션 요약</h2>
+      ${renderPositionSummary(l)}
+    </div>
+
+    <div class="section" data-tab="custody">
       <h2 class="sec-h">BARS · 금괴</h2>
       ${renderBarsPanel(l)}
     </div>
@@ -1146,8 +1720,13 @@ function renderDetail() {
     </div>
 
     <div class="section" data-tab="comms">
-      <h2 class="sec-h">DOCUMENTS · 문서</h2>
+      <h2 class="sec-h">MEMBER LIBRARY · 멤버 자료</h2>
       ${renderDocsPanel(l)}
+    </div>
+
+    <div class="section" data-tab="comms">
+      <h2 class="sec-h">NOTIFICATIONS · 알림 발송</h2>
+      ${renderNotificationsPanel(l)}
     </div>
 
     <div class="section" data-tab="investments">
@@ -1161,12 +1740,7 @@ function renderDetail() {
     </div>
 
     <div class="section" data-tab="comms">
-      <h2 class="sec-h">NOTIFICATIONS · 알림 발송</h2>
-      ${renderNotificationsPanel(l)}
-    </div>
-
-    <div class="section" data-tab="comms">
-      <h2 class="sec-h">PARTNER NOTES · 메모</h2>
+      <h2 class="sec-h">INTERNAL NOTES · 내부 메모 <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--goldD);margin-left:8px">NOT SHARED WITH MEMBER</span></h2>
       ${l.notes && l.notes.length ? `
         <div class="notes-list">
           ${l.notes.slice().reverse().map((n) => `
@@ -1222,31 +1796,64 @@ function renderDetail() {
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
-  // ── Tab consolidation ─────────────────────────────────────────────────
+  // ── Tab consolidation (A10: localStorage persistence) ─────────────────
   const tabNav = d.querySelector('.tab-nav');
   if (tabNav) {
-    // Smart default: pick the most relevant tab based on lead state
+    const leadId = state.selected ? state.selected.id : null;
+    const storedKey = leadId ? `aurum:tab:${leadId}` : null;
+    let storedTab = null;
+    try { if (storedKey) storedTab = localStorage.getItem(storedKey); } catch {}
+
     let defaultTab = 'prospects';
     if (state.selected && state.selected.bars && state.selected.bars.length > 0) defaultTab = 'custody';
     if (state.selected && state.selected.positions && state.selected.positions.length > 0) defaultTab = 'investments';
     if (state.selected && state.selected.wire && state.selected.wire.cleared_at && (!state.selected.bars || state.selected.bars.length === 0)) defaultTab = 'custody';
 
-    function activateTab(tab) {
+    const validTabs = Array.from(tabNav.querySelectorAll('.tab-btn')).map((b) => b.dataset.tab);
+    const initialTab = storedTab && validTabs.includes(storedTab) ? storedTab : defaultTab;
+
+    function activateTab(tab, persist = true) {
       tabNav.querySelectorAll('.tab-btn').forEach((b) => {
         b.classList.toggle('active', b.dataset.tab === tab);
       });
       d.querySelectorAll('.section[data-tab]').forEach((s) => {
         s.classList.toggle('tab-hidden', s.dataset.tab !== tab);
       });
+      if (persist && storedKey) {
+        try { localStorage.setItem(storedKey, tab); } catch {}
+      }
     }
-    // Wire tab clicks
     tabNav.querySelectorAll('.tab-btn').forEach((b) => {
-      b.addEventListener('click', () => activateTab(b.dataset.tab));
-      // Add count badge
+      b.addEventListener('click', () => activateTab(b.dataset.tab, true));
       const cnt = d.querySelectorAll(`.section[data-tab="${b.dataset.tab}"]`).length;
       if (cnt > 0) b.insertAdjacentHTML('beforeend', `<span class="tab-count">${cnt}</span>`);
     });
-    activateTab(defaultTab);
+    activateTab(initialTab, false);
+  }
+
+  // ── B8: LTV approval slider — live-update button label as partner moves it ──
+  const ltvSlider = d.querySelector('#approved-ltv');
+  const ltvSliderVal = d.querySelector('#approved-ltv-val');
+  const ltvVerifyBtn = d.querySelector('#ioi-verify-btn');
+  if (ltvSlider) {
+    ltvSlider.addEventListener('input', () => {
+      const v = ltvSlider.value;
+      if (ltvSliderVal) ltvSliderVal.textContent = v + '%';
+      if (ltvVerifyBtn) ltvVerifyBtn.textContent = `VERIFY @ ${v}% LTV → SEND WIRE INSTRUCTIONS`;
+    });
+  }
+
+  // ── Header resend dropdown ──
+  const resendBtn = d.querySelector('#hdr-resend-btn');
+  const resendMenu = d.querySelector('#hdr-resend-menu');
+  if (resendBtn && resendMenu) {
+    resendBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resendMenu.style.display = resendMenu.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', (e) => {
+      if (!resendBtn.contains(e.target) && !resendMenu.contains(e.target)) resendMenu.style.display = 'none';
+    });
   }
 }
 
@@ -1495,11 +2102,11 @@ function renderIoiPanel(l) {
   const krwAtSettle = i.krw_at_settle ? fmtKrw(i.krw_at_settle) : '— (post-conversion)';
 
   // Calculator math (matches /ioi.html):
-  //   goldAcq    = krw_at_submit (gold value, post-3% markup)
+  //   goldAcq    = krw_at_submit (gold value at LBMA spot, effective procurement cost)
   //   fundCash   = goldAcq × 0.20  (20% Fund Cash Position on top)
   //   wireTotal  = goldAcq + fundCash
   //   ltvDraw    = goldAcq × (ltv/100)
-  //   deployed   = ltvDraw + fundCash    ← Investable Capital
+  //   deployed   = ltvDraw + fundCash    ← Cash Available (pre-deployment pool)
   //   total      = goldAcq + fundCash    ← Total Holdings (== wire)
   const goldAcq    = i.krw_at_submit || 0;
   const fundCash   = Math.round(goldAcq * 0.20);
@@ -1513,7 +2120,7 @@ function renderIoiPanel(l) {
     ['Non-binding indication acknowledged', cb.indicative],
     ['Read materials', cb.materials],
     ['Will commit within 7 BD of wire instructions', cb.seven_day],
-    ['Spot-caveat acknowledged (settle = wire+2BD)', cb.spot_caveat],
+    ['Spot-caveat acknowledged (execution price applies)', cb.spot_caveat],
   ];
 
   const actions = verified
@@ -1531,12 +2138,12 @@ function renderIoiPanel(l) {
     </div>
     <div class="ioi-facts">
       <div class="ioi-fact"><div class="lbl">Commitment</div><div class="val gold">${i.kg ? i.kg.toFixed(2) : '—'} kg</div><div class="sub">primary, signed</div></div>
-      <div class="ioi-fact"><div class="lbl">Gold @ IOI</div><div class="val">${krwAtSubmit}</div><div class="sub">post 3% markup</div></div>
+      <div class="ioi-fact"><div class="lbl">Gold @ IOI</div><div class="val">${krwAtSubmit}</div><div class="sub">effective procurement cost</div></div>
       <div class="ioi-fact"><div class="lbl">Fund Cash Position</div><div class="val">${fmtKrw(fundCash)}</div><div class="sub">20% on top of gold</div></div>
       <div class="ioi-fact"><div class="lbl">Wire total</div><div class="val gold">${fmtKrw(wireTotal)}</div><div class="sub">gold + fund cash</div></div>
       <div class="ioi-fact"><div class="lbl">LTV requested</div><div class="val">${i.ltv_pct}%</div><div class="sub">on gold value</div></div>
       <div class="ioi-fact"><div class="lbl">LTV draw on gold</div><div class="val">${fmtKrw(ltvDraw)}</div><div class="sub">${i.ltv_pct}% × gold</div></div>
-      <div class="ioi-fact"><div class="lbl">Investable Capital</div><div class="val">${fmtKrw(investableCapital)}</div><div class="sub">LTV draw + fund cash</div></div>
+      <div class="ioi-fact"><div class="lbl">Cash Available</div><div class="val">${fmtKrw(investableCapital)}</div><div class="sub">LTV draw + fund cash</div></div>
       <div class="ioi-fact"><div class="lbl">Total Holdings</div><div class="val gold">${fmtKrw(totalHoldings)}</div><div class="sub">gold + fund cash (= wire)</div></div>
       <div class="ioi-fact"><div class="lbl">KRW @ Verify</div><div class="val">${krwAtVerify}</div></div>
       <div class="ioi-fact"><div class="lbl">KRW @ Settle</div><div class="val">${krwAtSettle}</div></div>
@@ -1590,6 +2197,10 @@ function renderWirePanel(l) {
   </div>`;
 }
 
+// ── Position Summary — top of CUSTODY tab. The "where do they stand right
+//     now" view. GOLD HELD / INVESTED / CASH AVAILABLE / EQUITY VALUE.
+//     Per spec: Fund Cash NEVER appears as a separate line on member or
+//     per-member partner view. Only inside the partner FUND OVERVIEW band.
 // ── Bars panel — assign serial numbers to allocated kg ────────────────
 function renderBarsPanel(l) {
   // Bars only relevant after wire clears (member is admitted). Show empty state otherwise.
@@ -1673,36 +2284,164 @@ function renderBarsPanel(l) {
   </div>`;
 }
 
+// ── POSITION SUMMARY (B7/B11) ──────────────────────────────────────────
+// Activates on wire-cleared. Single-glance view: GOLD HELD / INVESTED /
+// CASH AVAILABLE / EQUITY VALUE with growth %. Drawn shown as audit-only
+// foot line (partner reference, never a primary number).
+function renderPositionSummary(l) {
+  if (!l.wire || !l.wire.cleared_at) {
+    return `<div class="flow-panel f-empty">Position summary activates after wire clears.</div>`;
+  }
+
+  const totalKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
+  const goldCostBasisPerKg = (l.ioi && (l.ioi.krw_per_kg_at_settle || l.ioi.krw_per_kg_at_verify || l.ioi.krw_per_kg_at_submit)) || 225_000_000;
+  const liveSpot = (state.liveSpot && state.liveSpot.krw_per_kg) || goldCostBasisPerKg;
+
+  // GOLD — physical, at live LBMA spot
+  const goldCost = totalKg * goldCostBasisPerKg;
+  const goldNow = totalKg * liveSpot;
+  const goldGrowthPct = goldCost > 0 ? ((goldNow - goldCost) / goldCost) * 100 : 0;
+
+  // INVESTED — deal book at MTM
+  const positions = l.positions || [];
+  const investedCost = positions.reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
+  const investedMarked = positions.reduce((s, p) => s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0), 0);
+  const hasPositions = positions.length > 0;
+  const investedGrowthPct = investedCost > 0 ? ((investedMarked - investedCost) / investedCost) * 100 : 0;
+
+  // LTV mechanics — front and center per spec
+  const ltvCeilingPct = (l.ltv && (l.ltv.approved_pct || l.ltv.ceiling_pct)) || (l.ioi && l.ioi.ltv_pct) || 75;
+  const ltvCeilingKrw = goldNow * (ltvCeilingPct / 100);    // ceiling re-marks with live gold
+  const drawnKrw = (l.ltv && l.ltv.drawn_krw) || 0;
+  const ltvDeployable = Math.max(0, ltvCeilingKrw - drawnKrw);
+  const ltvUtilizationPct = ltvCeilingKrw > 0 ? (drawnKrw / ltvCeilingKrw) * 100 : 0;
+  const currentEffectiveLtv = goldNow > 0 ? (drawnKrw / goldNow) * 100 : 0;
+
+  // Bank margin trigger — gold needs to drop X% from here to push LTV to 80%
+  // 80% = drawn / (gold × (1 + dropPct))  →  dropPct = drawn/(0.80×gold) − 1, expressed as drop magnitude
+  const bankMarginPct = 80;
+  const goldAtMarginCall = drawnKrw > 0 ? drawnKrw / (bankMarginPct / 100) : 0;
+  const marginHeadroomDropPct = goldNow > 0 && drawnKrw > 0
+    ? Math.max(0, (1 - (goldAtMarginCall / goldNow)) * 100)
+    : null;  // null when no draw — no margin risk
+
+  // FUND CASH — the 20% Fund Cash Position (per FAQ Q.IX). Member contribution.
+  const fundCashContribution = l.ioi ? Math.round((l.ioi.krw_at_submit || 0) * 0.20) : 0;
+  // Cash deployed in deals reduces the available pool; remainder is uninvested fund cash
+  const fundCashUninvested = Math.max(0, fundCashContribution - investedCost);
+
+  // EQUITY VALUE — NAV (drawn cancels: it's both cash asset and loan liability)
+  const equityNow = goldNow + fundCashContribution + (investedMarked - investedCost);
+  const equityCost = goldCost + fundCashContribution;
+  const equityGrowthPct = equityCost > 0 ? ((equityNow - equityCost) / equityCost) * 100 : 0;
+
+  // Status line
+  let statusLine = 'Capital ready · awaiting deployment';
+  if (hasPositions) {
+    const totalCapital = drawnKrw + fundCashContribution;
+    const deployedPct = totalCapital > 0 ? (investedCost / totalCapital) * 100 : 0;
+    if (deployedPct >= 99) statusLine = 'Fully deployed · all positions live';
+    else if (deployedPct >= 1) statusLine = `${deployedPct.toFixed(0)}% deployed · ${positions.length} position${positions.length === 1 ? '' : 's'}`;
+  }
+
+  // Margin headroom severity color
+  let marginColor = 'var(--green)';
+  let marginUrgency = '';
+  if (marginHeadroomDropPct !== null) {
+    if (marginHeadroomDropPct < 10) { marginColor = 'var(--red)'; marginUrgency = ' · ⚠ TIGHT'; }
+    else if (marginHeadroomDropPct < 20) { marginColor = 'var(--gold)'; marginUrgency = ' · CAUTION'; }
+  }
+
+  return `<div class="pos-sum">
+    <div class="pos-sum-head">
+      <div class="pos-sum-status">${esc(statusLine)}</div>
+      ${growthBadge(goldGrowthPct, 'spot vs cost')}
+    </div>
+    <div class="pos-sum-grid pos-sum-grid-5">
+      <div class="pos-row pos-row-primary">
+        <div class="pos-row-lbl">GOLD HELD</div>
+        <div class="pos-row-val"><div class="pos-row-amt">${fmtKrw(goldNow)}</div><div class="pos-row-sub">${totalKg.toFixed(2)} kg @ ${fmtKrw(liveSpot)}/kg</div></div>
+        <div class="pos-row-growth">${growthInline(goldGrowthPct)}</div>
+      </div>
+      <div class="pos-row">
+        <div class="pos-row-lbl">INVESTED</div>
+        <div class="pos-row-val"><div class="pos-row-amt">${hasPositions ? fmtKrw(investedMarked) : '<span class="pos-muted">—</span>'}</div><div class="pos-row-sub">${hasPositions ? `cost ${fmtKrw(investedCost)} · ${positions.length} position${positions.length === 1 ? '' : 's'}` : 'no positions yet'}</div></div>
+        <div class="pos-row-growth">${hasPositions ? growthInline(investedGrowthPct) : '<span class="pos-muted">—</span>'}</div>
+      </div>
+      <div class="pos-row pos-row-ltv">
+        <div class="pos-row-lbl">LTV AVAILABLE</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt">${fmtKrw(ltvDeployable)}</div>
+          <div class="pos-row-sub">${ltvCeilingPct}% ceiling on gold · ${ltvUtilizationPct.toFixed(0)}% drawn</div>
+        </div>
+        <div class="pos-row-growth"><span class="pos-muted">drawn ${fmtKrw(drawnKrw)}</span></div>
+      </div>
+      <div class="pos-row">
+        <div class="pos-row-lbl">FUND CASH</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt">${fmtKrw(fundCashUninvested)}</div>
+          <div class="pos-row-sub">20% on top of gold (member contribution)</div>
+        </div>
+        <div class="pos-row-growth"><span class="pos-muted">${investedCost > 0 ? fmtKrw(investedCost) + ' deployed' : 'uninvested'}</span></div>
+      </div>
+      <div class="pos-row pos-row-equity">
+        <div class="pos-row-lbl">EQUITY VALUE</div>
+        <div class="pos-row-val"><div class="pos-row-amt gold">${fmtKrw(equityNow)}</div><div class="pos-row-sub">vs wire ${fmtKrw(equityCost)}</div></div>
+        <div class="pos-row-growth">${growthInline(equityGrowthPct)}</div>
+      </div>
+    </div>
+    <div class="pos-sum-leverage">
+      <div class="lev-cell">
+        <div class="lev-lbl">LEVERAGE</div>
+        <div class="lev-val">${currentEffectiveLtv.toFixed(1)}%</div>
+        <div class="lev-sub">current LTV vs gold</div>
+      </div>
+      <div class="lev-cell">
+        <div class="lev-lbl">CEILING</div>
+        <div class="lev-val">${ltvCeilingPct}%</div>
+        <div class="lev-sub">approved facility</div>
+      </div>
+      <div class="lev-cell">
+        <div class="lev-lbl">BANK MARGIN</div>
+        <div class="lev-val">${bankMarginPct}%</div>
+        <div class="lev-sub">hard call trigger</div>
+      </div>
+      <div class="lev-cell lev-cell-headroom" style="color:${marginColor}">
+        <div class="lev-lbl">MARGIN HEADROOM</div>
+        <div class="lev-val">${marginHeadroomDropPct === null ? '—' : '−' + marginHeadroomDropPct.toFixed(1) + '%'}${marginUrgency}</div>
+        <div class="lev-sub">${marginHeadroomDropPct === null ? 'no draw' : 'gold drop to trigger'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function growthInline(pct) {
+  if (pct === 0 || isNaN(pct)) return '<span class="pos-muted">flat</span>';
+  if (pct > 0) return `<span class="growth-up">↑ ${pct.toFixed(1)}%</span>`;
+  return `<span class="growth-down">↓ ${Math.abs(pct).toFixed(1)}%</span>`;
+}
+function growthBadge(pct, label) {
+  if (pct === 0 || isNaN(pct)) return '';
+  const cls = pct > 0 ? 'growth-up' : 'growth-down';
+  const arrow = pct > 0 ? '↑' : '↓';
+  return `<span class="growth-pill ${cls}">${arrow} ${Math.abs(pct).toFixed(1)}% ${label}</span>`;
+}
+
 // ── LTV panel — manage drawn / ceiling / facility ─────────────────────
 function renderLtvPanel(l) {
   if (!l.wire || !l.wire.cleared_at) {
     return `<div class="flow-panel f-empty">LTV management activates after wire clears.</div>`;
   }
-  const ltv = l.ltv || { drawn_krw: 0, ceiling_pct: (l.ioi && l.ioi.ltv_pct) || 65, margin_pct: 80, facility_id: '' };
-  const totalKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
-  // Approximate gold value at 471M/kg fallback (real spot fetched on member side)
-  const goldValueApprox = totalKg * 471_000_000;
-  const ceilingKrw = goldValueApprox * (ltv.ceiling_pct / 100);
-  const deployable = Math.max(0, ceilingKrw - (ltv.drawn_krw || 0));
+  const ltv = l.ltv || { drawn_krw: 0, ceiling_pct: (l.ioi && l.ioi.ltv_pct) || 75, margin_pct: 80, facility_id: '' };
+
+  // Note: live LTV state (utilization, drawn, ceiling, margin headroom) is shown
+  // in the Position Summary card pair + leverage strip in the CUSTODY tab top.
+  // This panel is the partner-side credit facility update form only.
 
   return `<div class="flow-panel f-active">
-    <div class="flow-row">
-      <span class="flow-pip"></span>
-      <div class="flow-body">
-        <div class="flow-head">CREDIT FACILITY</div>
-        <div class="flow-msg">${fmtKrw(ltv.drawn_krw || 0)} drawn against a ${ltv.ceiling_pct}% ceiling</div>
-        <div class="flow-meta">
-          ${ltv.facility_id ? `Facility ID: <span style="font-family:var(--mono);color:var(--text)">${esc(ltv.facility_id)}</span>` : '<span class="warn">No facility ID</span>'}
-          ${ltv.updated_at ? `<span>Updated ${esc(fmtDate(ltv.updated_at))}</span>` : ''}
-        </div>
-      </div>
-    </div>
-
-    <div class="ioi-facts" style="margin-top:14px">
-      <div class="ioi-fact"><div class="lbl">Drawn</div><div class="val gold">${fmtKrw(ltv.drawn_krw || 0)}</div></div>
-      <div class="ioi-fact"><div class="lbl">Ceiling (${ltv.ceiling_pct}%)</div><div class="val">${fmtKrw(ceilingKrw)}</div><div class="sub">on ${totalKg.toFixed(2)} kg @ approx</div></div>
-      <div class="ioi-fact"><div class="lbl">Deployable</div><div class="val">${fmtKrw(deployable)}</div></div>
-      <div class="ioi-fact"><div class="lbl">Margin %</div><div class="val">${ltv.margin_pct}%</div></div>
+    <div class="flow-meta" style="margin-bottom:8px">
+      ${ltv.facility_id ? `Facility ID: <span style="font-family:var(--mono);color:var(--text)">${esc(ltv.facility_id)}</span>${ltv.updated_at ? ` · Updated ${esc(fmtDate(ltv.updated_at))}` : ''}` : '<span class="warn">No facility ID on file</span>'}
+      &nbsp;·&nbsp;<span style="color:var(--muted)">Live utilization, ceiling, margin headroom shown in Position Summary above.</span>
     </div>
 
     <div style="margin-top:14px;padding:14px;background:rgba(255,255,255,0.02);border:1px solid var(--border)">
@@ -1710,11 +2449,12 @@ function renderLtvPanel(l) {
       <div style="display:grid;grid-template-columns:1.4fr 0.7fr 0.7fr 1.2fr auto;gap:10px;align-items:end">
         <div>
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Drawn (KRW)</div>
-          <input id="ltv-drawn-input" type="number" step="1000000" placeholder="0" value="${ltv.drawn_krw || ''}" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
+          <input id="ltv-drawn-input" type="text" inputmode="numeric" placeholder="e.g. 6.83억 or 683000000" value="${ltv.drawn_krw ? Number(ltv.drawn_krw).toLocaleString('en-US') : ''}" data-krw-input="1" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
+          <div id="ltv-drawn-input-helper" style="font-family:var(--serifKr);font-style:italic;font-size:10.5px;color:var(--goldD);margin-top:4px;min-height:14px">${ltv.drawn_krw ? '≈ ' + fmtKrw(ltv.drawn_krw) : ''}</div>
         </div>
         <div>
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Ceiling %</div>
-          <input id="ltv-ceiling-input" type="number" step="1" min="0" max="100" value="${ltv.ceiling_pct || 65}" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
+          <input id="ltv-ceiling-input" type="number" step="1" min="50" max="75" value="${ltv.ceiling_pct || 75}" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
         </div>
         <div>
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Margin %</div>
@@ -2091,16 +2831,50 @@ function fmtKrw(amount) {
   const a = Math.round(amount);
   if (a === 0) return '0';
   const EOK = 100_000_000, MAN = 10_000;
-  const eok = Math.floor(a / EOK);
-  const remainder = a % EOK;
+  if (a < MAN) return a.toLocaleString('en-US') + '원';
+  const rounded = Math.round(a / MAN) * MAN;
+  const eok = Math.floor(rounded / EOK);
+  const remainder = rounded % EOK;
   const man = Math.floor(remainder / MAN);
-  const won = remainder % MAN;
   const parts = [];
   if (eok) parts.push(eok.toLocaleString('en-US') + '억');
   if (man) parts.push(man.toLocaleString('en-US') + '만');
-  if (won) parts.push(won.toLocaleString('en-US') + '원');
   return parts.join(' ') || '0';
 }
+
+// B3: Parse a KRW input that may include 억/만, commas, or k/m/b shortcuts
+function parseKrwInput(input) {
+  if (input == null) return 0;
+  let s = String(input).trim();
+  if (!s) return 0;
+  s = s.replace(/[₩,\s원]/g, '');
+  const w = /^(\d+(?:\.\d+)?)\s*([kmbt])$/i.exec(s);
+  if (w) {
+    const mult = { k:1e3, m:1e6, b:1e9, t:1e12 }[w[2].toLowerCase()];
+    return Math.round(parseFloat(w[1]) * mult);
+  }
+  let total = 0, used = false;
+  const eokM = /(\d+(?:\.\d+)?)억/.exec(s);
+  if (eokM) { total += parseFloat(eokM[1]) * 1e8; s = s.replace(eokM[0], ''); used = true; }
+  const manM = /(\d+(?:\.\d+)?)만/.exec(s);
+  if (manM) { total += parseFloat(manM[1]) * 1e4; s = s.replace(manM[0], ''); used = true; }
+  if (used) {
+    const rest = s.replace(/[^\d.]/g, '');
+    if (rest) total += parseFloat(rest);
+    return Math.round(total);
+  }
+  const n = Number(s);
+  return isNaN(n) ? 0 : Math.round(n);
+}
+
+// B3: Delegated input listener — any input with data-krw-input gets the helper line
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (!t.matches || !t.matches('input[data-krw-input]')) return;
+  const parsed = parseKrwInput(t.value);
+  const helper = document.getElementById(t.id + '-helper');
+  if (helper) helper.textContent = parsed > 0 ? '≈ ' + fmtKrw(parsed) : '';
+});
 
 function renderNdaArchive(l, archive) {
   const items = archive.map((a, idx) => {
@@ -2234,13 +3008,25 @@ async function doAction(action, btn) {
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
   else if (action === 'ioi-verify') {
-    if (!confirm('Verify this IOI and send wire instructions to the member?')) return;
+    const approvedInput = $('approved-ltv');
+    const notesInput = $('approved-ltv-notes');
+    const requested = (l.ioi && l.ioi.ltv_pct) || 75;
+    const approved = approvedInput ? parseInt(approvedInput.value, 10) : requested;
+    const notes = notesInput ? notesInput.value.trim() : '';
+    const msg = approved < requested
+      ? `Verify this IOI at ${approved}% LTV (member requested ${requested}%) and send wire instructions?`
+      : `Verify this IOI at ${approved}% LTV and send wire instructions?`;
+    if (!confirm(msg)) return;
     try {
-      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'verify_ioi' });
+      const j = await api('POST', '/api/admin/update', {
+        id: l.id, action: 'verify_ioi',
+        approved_ltv_pct: approved,
+        ltv_notes: notes,
+      });
       state.selected = j.lead;
       upsertLead(j.lead);
       renderDetail();
-      if (j.mail && j.mail.sent) toast('IOI VERIFIED · wire instructions sent', 'ok');
+      if (j.mail && j.mail.sent) toast(`IOI VERIFIED @ ${approved}% LTV · wire instructions sent`, 'ok');
       else toast('IOI VERIFIED · email not sent (' + (j.mail?.reason || '?') + ')', 'err');
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
@@ -2265,14 +3051,53 @@ async function doAction(action, btn) {
       else toast('ADMITTED · email failed (' + (j.mail?.reason || '?') + ')', 'err');
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
-  else if (action === 'wire-resend') {
+  else if (action === 'scroll-to-ioi') {
+    // Used by header VERIFY card — switch to Prospects tab and scroll to IOI panel
+    const tabBtn = document.querySelector('.tab-btn[data-tab="prospects"]');
+    if (tabBtn) tabBtn.click();
+    setTimeout(() => {
+      const ioiSection = Array.from(document.querySelectorAll('.sec-h')).find(h => h.textContent.includes('IOI'));
+      if (ioiSection) ioiSection.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }, 100);
+  }
+  else if (action === 'wire-resend' || action === 'resend-wire-instructions') {
     if (!confirm('Re-send the wire instructions email to the member?')) return;
     try {
-      // Resend by re-running verify_ioi — backend is idempotent on the email path
-      // but won't double-snapshot spot. Simpler: just re-call with action=verify_ioi.
-      // Since verify_ioi rejects already-verified, we need a different path.
-      // For now we approximate: just notify partner.
-      toast('Use VERIFY → on a fresh IOI to issue. Instructions are sent automatically.', 'err');
+      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'wire_instructions' });
+      state.selected = j.lead;
+      upsertLead(j.lead);
+      renderDetail();
+      toast(j.mail && j.mail.sent ? 'WIRE INSTRUCTIONS RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
+    } catch (e) { toast('FAILED · ' + e.message, 'err'); }
+  }
+  else if (action === 'resend-nda-invite') {
+    if (!confirm('Re-send the NDA invitation email to the member?')) return;
+    try {
+      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'nda_invite' });
+      state.selected = j.lead;
+      upsertLead(j.lead);
+      renderDetail();
+      toast(j.mail && j.mail.sent ? 'NDA INVITE RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
+    } catch (e) { toast('FAILED · ' + e.message, 'err'); }
+  }
+  else if (action === 'resend-ioi-link') {
+    if (!confirm('Re-send the IOI form link to the member?')) return;
+    try {
+      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'ioi_reminder' });
+      state.selected = j.lead;
+      upsertLead(j.lead);
+      renderDetail();
+      toast(j.mail && j.mail.sent ? 'IOI LINK RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
+    } catch (e) { toast('FAILED · ' + e.message, 'err'); }
+  }
+  else if (action === 'resend-admission') {
+    if (!confirm('Re-send the portfolio access link to the member?')) return;
+    try {
+      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'admission' });
+      state.selected = j.lead;
+      upsertLead(j.lead);
+      renderDetail();
+      toast(j.mail && j.mail.sent ? 'PORTFOLIO ACCESS RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
   // ── Bars ────────────────────────────────────────────
@@ -2308,11 +3133,11 @@ async function doAction(action, btn) {
   }
   // ── LTV ─────────────────────────────────────────────
   else if (action === 'ltv-set') {
-    const drawn_krw = parseFloat($('ltv-drawn-input').value) || 0;
-    const ceiling_pct = parseFloat($('ltv-ceiling-input').value) || 65;
+    const drawn_krw = parseKrwInput($('ltv-drawn-input').value);
+    const ceiling_pct = parseFloat($('ltv-ceiling-input').value) || 75;
     const margin_pct = parseFloat($('ltv-margin-input').value) || 80;
     const facility_id = ($('ltv-facility-input').value || '').trim();
-    if (ceiling_pct < 0 || ceiling_pct > 100) { toast('CEILING 0-100', 'err'); return; }
+    if (ceiling_pct < 50 || ceiling_pct > 75) { toast('CEILING 50-75', 'err'); return; }
     if (margin_pct < 0 || margin_pct > 100) { toast('MARGIN 0-100', 'err'); return; }
     if (margin_pct < ceiling_pct) { toast('MARGIN MUST BE ≥ CEILING', 'err'); return; }
     try {

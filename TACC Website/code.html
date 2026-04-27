@@ -168,9 +168,9 @@ document.getElementById('form').addEventListener('submit', async (e) => {
     });
     const j = await r.json().catch(()=>({}));
     if (r.ok && j.ok) {
-      // Always land on /nda first. /nda decides whether to forward to /memo
-      // (if the partner already approved the NDA) or to show the upload gate.
-      location.href = '/nda';
+      // Route based on lead state, returned by /api/verify-code.
+      // wire cleared → /portfolio  ·  NDA approved → /memo  ·  else → /nda
+      location.href = j.next_path || '/nda';
       return;
     }
     const isKo = document.documentElement.classList.contains('lang-ko');

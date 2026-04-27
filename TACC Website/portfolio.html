@@ -79,6 +79,27 @@
 
     /* ─────────── Stats row ─────────── */
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0 0 40px;border:1px solid var(--goldBorder);background:var(--card)}
+
+    /* B9: Member position summary — GOLD / INVESTED / CASH AVAILABLE / EQUITY VALUE */
+    .member-pos{padding:28px 32px;margin:0 0 40px;background:linear-gradient(180deg,var(--goldWash),transparent);border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
+    .member-pos-row{display:grid;grid-template-columns:180px 1fr 130px;gap:20px;align-items:baseline;padding:12px 0}
+    .member-pos-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.30em;color:var(--goldD);text-transform:uppercase}
+    .member-pos-val{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--text)}
+    .member-pos-equity .member-pos-val{font-size:30px;color:var(--goldB)}
+    .member-pos-equity .member-pos-lbl{color:var(--gold)}
+    .member-pos-growth{text-align:right;font-family:var(--mono);font-size:11px;letter-spacing:0.04em}
+    .member-pos-rule{height:1px;background:var(--goldBorder);margin:8px 0}
+    .member-pos-status{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);font-family:var(--mono);font-size:10px;letter-spacing:0.28em;color:var(--gold);text-transform:uppercase}
+    .member-pos-ltv-details{margin-top:12px;border-top:1px dashed var(--border);padding-top:12px}
+    .member-pos-ltv-details summary{font-family:var(--mono);font-size:10px;letter-spacing:0.24em;color:var(--goldD);cursor:pointer;text-transform:uppercase;padding:4px 0}
+    .member-pos-ltv-rows{display:flex;flex-direction:column;gap:8px;margin-top:10px;padding-left:14px}
+    .member-pos-ltv-rows > div{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+    .member-pos-val-inline{font-family:var(--mono);font-size:13px;color:var(--text)}
+    .member-pos-ltv-foot{font-family:var(--serifKr);font-style:italic;font-size:12px;color:var(--muted);line-height:1.6;padding-top:6px}
+    .growth-up{color:var(--green)}
+    .growth-down{color:var(--red)}
+    .growth-flat{color:var(--muted)}
+    @media (max-width:720px){.member-pos{padding:22px 22px}.member-pos-row{grid-template-columns:1fr;gap:4px;padding:10px 0}.member-pos-growth{text-align:left}}
     .stat{padding:22px 24px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
     .stat:last-child{border-right:0}
     .stat .lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.30em;color:var(--goldD);text-transform:uppercase}
@@ -138,7 +159,7 @@
     .bar-custodian{font-family:var(--serifKr);font-size:12px;color:var(--muted);font-style:italic}
 
     /* ─────────── State B: LTV slider visual ─────────── */
-    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 65%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
+    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 75%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
     .ltv-fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .4s ease}
     .ltv-marker{position:absolute;top:-8px;bottom:-8px;width:1px;background:var(--text)}
     .ltv-marker.ceiling{background:var(--gold)}
@@ -542,27 +563,59 @@
       </div>
     </div>
 
-    <!-- Top stats -->
+    <!-- Member position summary — B9: GOLD / INVESTED / CASH AVAILABLE / EQUITY VALUE -->
+    <div class="member-pos">
+      <div class="member-pos-row">
+        <div class="member-pos-lbl"><span data-lang="en">GOLD HELD</span><span data-lang="ko">보유 금</span></div>
+        <div class="member-pos-val" id="mp-gold">— kg</div>
+        <div class="member-pos-growth" id="mp-gold-growth"></div>
+      </div>
+      <div class="member-pos-row">
+        <div class="member-pos-lbl"><span data-lang="en">INVESTED</span><span data-lang="ko">투자 운용</span></div>
+        <div class="member-pos-val" id="mp-invested">—</div>
+        <div class="member-pos-growth" id="mp-invested-growth"></div>
+      </div>
+      <div class="member-pos-row">
+        <div class="member-pos-lbl"><span data-lang="en">CASH AVAILABLE</span><span data-lang="ko">투자 가능 현금</span></div>
+        <div class="member-pos-val" id="mp-cash">—</div>
+        <div class="member-pos-growth"><span class="growth-flat" data-lang="en">ready to deploy</span><span class="growth-flat" data-lang="ko">투자 대기 중</span></div>
+      </div>
+      <div class="member-pos-rule"></div>
+      <div class="member-pos-row member-pos-equity">
+        <div class="member-pos-lbl"><span data-lang="en">EQUITY VALUE</span><span data-lang="ko">자산 가치</span></div>
+        <div class="member-pos-val" id="mp-equity">—</div>
+        <div class="member-pos-growth" id="mp-equity-growth"></div>
+      </div>
+      <div class="member-pos-status" id="mp-status"></div>
+      <details class="member-pos-ltv-details" id="mp-ltv-details" style="display:none">
+        <summary><span data-lang="en">Credit facility detail</span><span data-lang="ko">신용 시설 상세</span></summary>
+        <div class="member-pos-ltv-rows">
+          <div><span class="member-pos-lbl"><span data-lang="en">Approved LTV</span><span data-lang="ko">승인된 LTV</span></span><span class="member-pos-val-inline" id="mp-ltv-pct">—</span></div>
+          <div><span class="member-pos-lbl"><span data-lang="en">Drawn against gold</span><span data-lang="ko">금 담보 차입</span></span><span class="member-pos-val-inline" id="mp-ltv-drawn">—</span></div>
+          <div class="member-pos-ltv-foot" data-lang="en">Cash Available includes a leverage line against your gold collateral, drawn at fund-level. See Structural Memo §3.2 for terms.</div>
+          <div class="member-pos-ltv-foot" data-lang="ko">투자 가능 현금에는 금 담보 기반 차입이 포함되어 있으며, 펀드 수준에서 인출됩니다. 상세 조항은 Structural Memo §3.2를 참조하십시오.</div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Original stats kept as supporting detail (positions count, gold spot, etc.) -->
     <div class="stats">
       <div class="stat">
-        <span class="lbl"><span data-lang="en">GOLD HELD</span><span data-lang="ko">보유 금</span></span>
-        <span class="val gold" id="v-kg">— kg</span>
+        <span class="lbl"><span data-lang="en">GOLD VALUE @ SPOT</span><span data-lang="ko">현재 시세</span></span>
+        <span class="val" id="v-spot">—</span>
         <span class="sub" id="v-bars-count">—</span>
       </div>
       <div class="stat">
-        <span class="lbl"><span data-lang="en">GOLD VALUE</span><span data-lang="ko">금 가치</span></span>
-        <span class="val" id="v-value">—</span>
-        <span class="sub" id="v-spot">—</span>
-      </div>
-      <div class="stat">
-        <span class="lbl"><span data-lang="en">LTV</span><span data-lang="ko">LTV</span></span>
-        <span class="val" id="v-ltv">—</span>
-        <span class="sub" id="v-ltv-sub">—</span>
-      </div>
-      <div class="stat">
-        <span class="lbl"><span data-lang="en">POSITIONS</span><span data-lang="ko">포지션</span></span>
+        <span class="lbl"><span data-lang="en">DEALS</span><span data-lang="ko">투자 건수</span></span>
         <span class="val" id="v-positions">—</span>
         <span class="sub" id="v-positions-sub">—</span>
+      </div>
+      <!-- vestigial fields for backwards JS compat -->
+      <div style="display:none">
+        <span id="v-kg">— kg</span>
+        <span id="v-value">—</span>
+        <span id="v-ltv">—</span>
+        <span id="v-ltv-sub">—</span>
       </div>
     </div>
 
@@ -588,7 +641,7 @@
         <div class="card-head">
           <div class="lhs">
             <span class="roman">II.</span>
-            <h2 class="h"><span data-lang="en">LTV · <em>deployable</em></span><span data-lang="ko">LTV · <em>가용</em></span></h2>
+            <h2 class="h"><span data-lang="en">LTV · <em>available</em></span><span data-lang="ko">LTV · <em>가용</em></span></h2>
           </div>
           <span class="label">CREDIT</span>
         </div>
@@ -607,7 +660,7 @@
             <span class="val" id="ltv-drawn">—</span>
           </div>
           <div class="ltv-row">
-            <span class="lbl"><span data-lang="en">DEPLOYABLE</span><span data-lang="ko">가용</span></span>
+            <span class="lbl"><span data-lang="en">AVAILABLE</span><span data-lang="ko">가용</span></span>
             <span class="val" id="ltv-deployable">—</span>
           </div>
           <div class="ltv-row">
@@ -725,20 +778,19 @@
 // ─── KRW formatter — always 억/만 ────────────────────────
 // Pass roundTo='man' to round the input to nearest 만 (drops sub-만 noise).
 // Default keeps full precision down to 원.
-function formatKRW(amount, roundTo) {
+function formatKRW(amount, _roundTo) {
   if (amount == null || isNaN(amount)) return '—';
   var a = Math.round(amount);
   if (a === 0) return '0';
   var EOK = 100000000, MAN = 10000;
-  if (roundTo === 'man') a = Math.round(a / MAN) * MAN;
-  var eok = Math.floor(a / EOK);
-  var rem = a % EOK;
+  if (a < MAN) return a.toLocaleString('en-US') + '원';
+  var rounded = Math.round(a / MAN) * MAN;
+  var eok = Math.floor(rounded / EOK);
+  var rem = rounded % EOK;
   var man = Math.floor(rem / MAN);
-  var won = rem % MAN;
   var parts = [];
   if (eok) parts.push(eok.toLocaleString('en-US') + '억');
   if (man) parts.push(man.toLocaleString('en-US') + '만');
-  if (won) parts.push(won.toLocaleString('en-US') + '원');
   return parts.join(' ') || '0';
 }
 
@@ -954,8 +1006,8 @@ function renderLimbo(d) {
     }
   } else {
     wirePillEl.innerHTML = '<span data-lang="en">AWAITING CLEARANCE</span><span data-lang="ko">정산 대기</span>';
-    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank — typically 2 business days.</span>' +
-                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중 — 일반적으로 2 영업일 소요됩니다.</span>';
+    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank.</span>' +
+                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중.</span>';
     statusTextEl.innerHTML = '<span data-lang="en">Your wire has been received and is clearing. Bar assignment follows.</span>' +
                              '<span data-lang="ko">송금이 수령되어 정산 진행 중입니다. 곧 금괴 배정이 진행됩니다.</span>';
     if (d.wire.ref) {
@@ -998,37 +1050,98 @@ function renderLimbo(d) {
 
 // ─── STATE B · Vault render ──────────────────────────────
 function renderVault(d) {
-  // Top stats: GOLD HELD / GOLD VALUE / LTV / POSITIONS
+  // ─── Compute totals ───────────────────────────────────
   var totalKg = (d.bars || []).reduce(function(a, b) { return a + (b.kg || 0); }, 0);
-  if (totalKg === 0 && d.ioi && d.ioi.kg) totalKg = d.ioi.kg; // fallback to committed kg before bars assigned
-  document.getElementById('v-kg').textContent = totalKg.toFixed(2) + ' kg';
+  if (totalKg === 0 && d.ioi && d.ioi.kg) totalKg = d.ioi.kg;
   var nBars = (d.bars || []).length;
-  document.getElementById('v-bars-count').innerHTML = nBars > 0
+  var nPositions = (d.positions || []).length;
+
+  // Spot: live now vs settle-snapshot (cost basis)
+  var liveSpot = (d.spot && d.spot.krw_per_kg) || 225000000;
+  var settleSpot = (d.ioi && d.ioi.krw_per_kg_at_settle)
+    || (d.ioi && d.ioi.krw_per_kg_at_verify)
+    || (d.ioi && d.ioi.krw_per_kg_at_submit)
+    || liveSpot;
+
+  // GOLD HELD — kg × live spot (cost basis = settle-snapshot for growth %)
+  var goldNow = totalKg * liveSpot;
+  var goldCost = totalKg * settleSpot;
+  var goldGrowthPct = settleSpot > 0 ? ((liveSpot - settleSpot) / settleSpot) * 100 : 0;
+
+  // INVESTED — sum positions (cost vs marked)
+  var positions = d.positions || [];
+  var investedCost = positions.reduce(function(s, p) { return s + (p.invested_at_krw || p.committed_krw || 0); }, 0);
+  var investedMarked = positions.reduce(function(s, p) { return s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0); }, 0);
+  var investedGrowthPct = investedCost > 0 ? ((investedMarked - investedCost) / investedCost) * 100 : null;
+
+  // CASH AVAILABLE — drawn LTV + fund cash (member's 20% contribution) − invested
+  var ltv = d.ltv || { drawn_krw: 0, ceiling_pct: 60, margin_pct: 80 };
+  var drawnKrw = ltv.drawn_krw || 0;
+  var fundCashContribution = Math.round(goldCost * 0.20);
+  var cashAvailable = Math.max(0, drawnKrw + fundCashContribution - investedMarked);
+
+  // EQUITY VALUE — gold + fund_cash + investment growth (drawn cancels out)
+  var equityNow = goldNow + fundCashContribution + (investedMarked - investedCost);
+  var equityCost = goldCost + fundCashContribution;
+  var equityGrowthPct = equityCost > 0 ? ((equityNow - equityCost) / equityCost) * 100 : 0;
+
+  // ─── Helpers ──────────────────────────────────────────
+  function growthHtml(pct) {
+    if (pct === null || pct === undefined) return '<span class="growth-flat">—</span>';
+    if (Math.abs(pct) < 0.05) return '<span class="growth-flat">flat</span>';
+    if (pct >= 0) return '<span class="growth-up">↑ ' + pct.toFixed(1) + '%</span>';
+    return '<span class="growth-down">↓ ' + Math.abs(pct).toFixed(1) + '%</span>';
+  }
+
+  // ─── Populate B9 position summary ─────────────────────
+  document.getElementById('mp-gold').textContent = totalKg.toFixed(2) + ' kg / ' + formatKRW(goldNow);
+  document.getElementById('mp-gold-growth').innerHTML = nBars > 0 ? growthHtml(goldGrowthPct) : '<span class="growth-flat">assigning bars</span>';
+  document.getElementById('mp-invested').textContent = investedCost === 0 ? '—' : formatKRW(investedMarked);
+  document.getElementById('mp-invested-growth').innerHTML = investedCost === 0 ? '<span class="growth-flat">no positions yet</span>' : growthHtml(investedGrowthPct);
+  document.getElementById('mp-cash').textContent = formatKRW(cashAvailable);
+  document.getElementById('mp-equity').textContent = formatKRW(equityNow);
+  document.getElementById('mp-equity-growth').innerHTML = growthHtml(equityGrowthPct);
+
+  // Status line
+  var statusEl = document.getElementById('mp-status');
+  if (investedCost === 0) {
+    statusEl.textContent = 'Capital ready · Awaiting deployment';
+  } else if (cashAvailable < 1000000) {
+    statusEl.textContent = 'Fully deployed';
+  } else {
+    var pctDeployed = (investedMarked / (investedMarked + cashAvailable)) * 100;
+    statusEl.textContent = pctDeployed.toFixed(0) + '% deployed · ' + nPositions + ' deal' + (nPositions === 1 ? '' : 's');
+  }
+
+  // Credit facility detail (collapsed by default if drawn > 0)
+  if (drawnKrw > 0) {
+    var det = document.getElementById('mp-ltv-details');
+    if (det) {
+      det.style.display = 'block';
+      document.getElementById('mp-ltv-pct').textContent = (ltv.ceiling_pct || ltv.approved_pct || 75) + '%';
+      document.getElementById('mp-ltv-drawn').textContent = formatKRW(drawnKrw);
+    }
+  }
+
+  // ─── Vestigial top-stat fields kept for compat ────────
+  var vKg = document.getElementById('v-kg'); if (vKg) vKg.textContent = totalKg.toFixed(2) + ' kg';
+  var vBarsCount = document.getElementById('v-bars-count');
+  if (vBarsCount) vBarsCount.innerHTML = nBars > 0
     ? (nBars === 1 ? '1 bar' : nBars + ' bars')
     : '<span data-lang="en">assigning</span><span data-lang="ko">배정 중</span>';
-
-  // Gold value at current spot
-  var spotKrwPerKg = d.spot ? d.spot.krw_per_kg : 225000000;
-  var goldValue = totalKg * spotKrwPerKg;
-  document.getElementById('v-value').textContent = formatKRW(goldValue, 'man');
-  document.getElementById('v-spot').textContent = 'spot ' + formatKRW(spotKrwPerKg, 'man') + '/kg';
-
-  // LTV
-  var ltv = d.ltv || { drawn_krw: 0, ceiling_pct: 65, margin_pct: 80 };
-  var ceilingKrw = goldValue * (ltv.ceiling_pct / 100);
-  var drawnKrw = ltv.drawn_krw || 0;
-  var deployable = Math.max(0, ceilingKrw - drawnKrw);
-  var marginKrw = goldValue * (ltv.margin_pct / 100);
-  var headroom = Math.max(0, marginKrw - ceilingKrw);
-  var drawnPctOfGold = goldValue > 0 ? (drawnKrw / goldValue) * 100 : 0;
-
-  document.getElementById('v-ltv').textContent = drawnPctOfGold.toFixed(0) + '% drawn';
-  document.getElementById('v-ltv-sub').textContent = formatKRW(deployable, 'man') + ' available';
-
-  // Positions
-  var nPositions = (d.positions || []).length;
-  document.getElementById('v-positions').textContent = nPositions === 0 ? '0 active' : nPositions + ' active';
-  document.getElementById('v-positions-sub').innerHTML = nPositions === 0
+  var vValue = document.getElementById('v-value'); if (vValue) vValue.textContent = formatKRW(goldNow);
+  var vSpot = document.getElementById('v-spot'); if (vSpot) vSpot.textContent = formatKRW(liveSpot) + '/kg';
+  var vLtv = document.getElementById('v-ltv');
+  if (vLtv) vLtv.textContent = ((drawnKrw / Math.max(goldNow, 1)) * 100).toFixed(0) + '% drawn';
+  var vLtvSub = document.getElementById('v-ltv-sub');
+  if (vLtvSub) {
+    var ceilingKrwLocal = goldNow * (ltv.ceiling_pct / 100);
+    vLtvSub.textContent = formatKRW(Math.max(0, ceilingKrwLocal - drawnKrw)) + ' available';
+  }
+  var vPos = document.getElementById('v-positions');
+  if (vPos) vPos.textContent = nPositions === 0 ? '0 active' : nPositions + ' active';
+  var vPosSub = document.getElementById('v-positions-sub');
+  if (vPosSub) vPosSub.innerHTML = nPositions === 0
     ? '<span data-lang="en">deploying</span><span data-lang="ko">운용 준비 중</span>'
     : '';
 
@@ -1046,7 +1159,7 @@ function renderVault(d) {
     ledeKo.innerHTML = '보관 중. 운용 중. 작동 중.';
   }
 
-  // Bar grid
+  // Bar grid (unchanged)
   var barGridWrap = document.getElementById('bar-grid-wrap');
   if (nBars > 0) {
     var grid = '<div class="bar-grid">';
@@ -1069,8 +1182,9 @@ function renderVault(d) {
     barGridWrap.innerHTML = grid;
   }
 
-  // LTV visual
-  var fillPct = goldValue > 0 ? Math.min(100, (drawnKrw / goldValue) * 100) : 0;
+  // LTV visual (unchanged math, uses live numbers)
+  var ceilingKrw = goldNow * (ltv.ceiling_pct / 100);
+  var fillPct = goldNow > 0 ? Math.min(100, (drawnKrw / goldNow) * 100) : 0;
   document.getElementById('ltv-fill').style.width = fillPct + '%';
   document.getElementById('ltv-ceiling-marker').style.left = ltv.ceiling_pct + '%';
   document.getElementById('ltv-ceiling-marker').querySelector('.label').innerHTML = ltv.ceiling_pct + '%<span class="descr"> · MAX</span>';
