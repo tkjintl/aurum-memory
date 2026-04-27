@@ -80,21 +80,25 @@ html, body {
   display: flex; align-items: center; gap: 14px;
 }
 .cover-mark .au {
-  width: 38px; height: 38px;
+  width: 42px; height: 42px;
   border: 1px solid var(--gold);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--serif); font-style: italic; font-weight: 500;
-  color: var(--gold); font-size: 20px; letter-spacing: -0.04em;
+  color: var(--gold); font-size: 20px;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
 }
 .cover-mark .wm {
   font-family: var(--sans); font-weight: 600;
-  font-size: 22px; color: var(--text); letter-spacing: 0.34em;
+  font-size: 18px; color: var(--text); letter-spacing: 0.34em;
   line-height: 1;
+  display: flex; flex-direction: column;
 }
 .cover-mark .wm .sub {
-  display: block; margin-top: 5px;
-  font-family: var(--mono); font-size: 7.5px;
-  color: var(--goldD); letter-spacing: 0.30em;
+  display: block; margin-top: 6px;
+  font-family: var(--mono); font-weight: 400;
+  font-size: 11px;
+  color: var(--goldD); letter-spacing: 0.36em;
 }
 
 .cover-divide {
@@ -414,7 +418,10 @@ ol.numlist li::before {
   <!-- ── Top logo lockup ──────────────────────────────────────────────── -->
   <div class="cover-mark">
     <div class="au"><em>Au</em></div>
-    <div class="wm">AURUM<span class="sub">CENTURY CLUB · www.theaurumcc.com</span></div>
+    <div class="wm">
+      AURUM
+      <span class="sub">CENTURY CLUB</span>
+    </div>
   </div>
 
   <!-- ── Document header: utilitarian ─────────────────────────────────── -->
@@ -470,8 +477,8 @@ ol.numlist li::before {
   <h2 class="sub">1.1 Scope of consolidation</h2>
   <p>What is consolidated at the fund level: the per-deal FETA capital transaction filings, the per-remittance KoFIU AML reviews, and the FSCMA pool-level constraints that would arise on direct positions.</p>
 
-  <h2 class="sub">1.2 Member obligations preserved</h2>
-  <p>What is not consolidated, and remains the Member's obligation as a Korean resident: annual NTS overseas account reporting under LCITA (KRW 5억 threshold), Korean capital gains tax on fund distributions, and the designated Korean foreign exchange bank relationship.</p>
+  <h2 class="sub">1.2 Member-level resident obligations</h2>
+  <p>What is not consolidated, and remains the Member's obligation as a Korean resident: annual NTS overseas account reporting under LCITA (KRW 500 million threshold), Korean capital gains tax on fund distributions, and the designated Korean foreign exchange bank relationship.</p>
   <p>The fund structure also involves a <em>contingent additional capital commitment</em> beyond initial subscription, exercisable by the fund under defined conditions of the LP agreement (see §6.2). The capital-call cap, notice period, and frequency are specified in the LP agreement and should be reviewed with counsel.</p>
 
   <h1 class="sec" style="margin-top:30px;"><span class="num">2.</span>Structure</h1>
@@ -483,13 +490,13 @@ ol.numlist li::before {
     <tr><td class="k">Regulatory framework</td><td class="v">Singapore VCC framework (intended), accredited-investor route under standard Singapore fund regulation</td></tr>
     <tr><td class="k">Fund administrator</td><td class="v">Independent Singapore administrator, engaged at first close</td></tr>
     <tr><td class="k">Auditor</td><td class="v">Independent Singapore auditor, engaged at first close</td></tr>
-    <tr><td class="k">Gold custodian</td><td class="v">Tier-1 Singapore Freeport custodian</td></tr>
-    <tr><td class="k">Insurance</td><td class="v">London-market insured</td></tr>
+    <tr><td class="k">Gold custodian</td><td class="v">Singapore Freeport bullion custodian</td></tr>
+    <tr><td class="k">Insurance</td><td class="v">insured under the custodian's standard insurance programme</td></tr>
     <tr><td class="k">Credit facility</td><td class="v">Singapore institutional bank, SORA-linked floating</td></tr>
   </table>
 
   <h2 class="sub">2.2 Member commitment</h2>
-  <p>Single-tier subscription. Minimum 1 kg of LBMA-grade physical gold at first close. Loan-to-value up to 75% at the manager's discretion, sized to member commitment level. The bank's margin call line sits at 80% LTV.</p>
+  <p>Single-tier subscription. Minimum 1 kg of LBMA-grade physical gold at first close. Loan-to-value up to 75% per LP agreement parameters and sized to Member commitment level. The bank's margin call line sits at 80% LTV.</p>
 
   <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>02</span></div>
 </section>
@@ -511,7 +518,7 @@ ol.numlist li::before {
     <tr><td class="k">FSCMA · 49-investor pool cap</td><td class="v">Not applicable at the fund level. The Fund is a Singapore-domiciled vehicle. The member's exposure is a single LP subscription in a Singapore structure, not a Korean private fund interest.</td></tr>
     <tr><td class="k">FSCMA · 10% single-deal cap</td><td class="v">Not applicable at member level. Position-level concentration is held at the fund level. The member holds a pro-rata interest in the fund, not direct deal exposure.</td></tr>
     <tr><td class="k">KoFIU · AML / STR review</td><td class="v">Initial remittance triggers standard CTR/STR review at the member's Korean bank. Aurum supplies source-of-funds documentation support during onboarding to assist the bank and the member's counsel with the review.</td></tr>
-    <tr><td class="k">NTS · Overseas account annual reporting<span class="small">LCITA · KRW 5억 threshold</span></td><td class="v">Member's annual reporting obligation <em>remains.</em> Aurum supplies standardised annual documentation — K-1 equivalent and position summary — to support the member's Korean tax counsel in preparing the filing. Filings continue to be made by the member's Korean counsel.</td></tr>
+    <tr><td class="k">NTS · Overseas account annual reporting<span class="small">LCITA · KRW 500 million threshold</span></td><td class="v">Member's annual reporting obligation <em>remains.</em> Aurum supplies standardised annual documentation — K-1 equivalent and position summary — to support the member's Korean tax counsel in preparing the filing. Filings continue to be made by the member's Korean counsel.</td></tr>
     <tr><td class="k">NTS · Capital gains on distributions</td><td class="v">Member's Korean capital gains tax obligation on fund distributions <em>remains.</em> Aurum supplies annual documentation supporting cost basis and distribution reporting.</td></tr>
   </table>
 
@@ -539,8 +546,8 @@ ol.numlist li::before {
 
   <h2 class="sub">4.3 Subscription procurement and pricing</h2>
   <p>The member's subscription is funded by wire denominated in USD. Upon clearance of the wire by the fund administrator, the fund executes the gold procurement at the prevailing <em>LBMA-grade spot price at the time of trade execution</em> with the fund's bullion counterparties. The member's allocated bar amount, expressed in kilograms, is determined at the trade execution price.</p>
-  <p>The fund targets execution within <em>two business days of wire clearance,</em> subject to market conditions, dealer availability, and bar inventory at the relevant LBMA refiners. Gold spot movement between Indication of Interest submission and trade execution is borne by the member, with the corresponding effect on allocated kilogram amount; the fund does not commit to a fixed kilogram allocation at the IOI stage.</p>
-  <p>Vault confirmation, comprising bar serial allocation into segregated allocated custody at the Singapore Freeport custodian and London-market insurance attachment, follows trade execution and is typically completed within one further business day. <em>The member's LP interest in the fund is established upon vault confirmation;</em> until that point the member's funds are held in the fund's settlement account at the fund administrator and are not yet subscribed to the fund vehicle. Members are advised to coordinate wire timing with the member's designated Korean foreign exchange bank, which may require advance notice for outbound capital transactions.</p>
+  <p>The Fund targets execution <em>promptly following wire clearance,</em> subject to market conditions, dealer availability, and bar inventory at the relevant LBMA refiners. Gold spot movement between Indication of Interest submission and trade execution is borne by the member, with the corresponding effect on allocated kilogram amount; the fund does not commit to a fixed kilogram allocation at the IOI stage.</p>
+  <p>Vault confirmation, comprising bar serial allocation into segregated allocated custody at the Singapore Freeport custodian and insurance attachment under the custodian's standard programme, follows trade execution and is typically completed within one further business day. <em>The member's LP interest in the fund is established upon vault confirmation;</em> until that point the member's funds are held in the fund's settlement account at the fund administrator and are not yet subscribed to the fund vehicle. Members are advised to coordinate wire timing with the member's designated Korean foreign exchange bank, which may require advance notice for outbound capital transactions.</p>
 
   <h2 class="sub">4.4 Distributions</h2>
   <p>Distributions are made in accordance with the LP agreement and the fund's distribution policy. Distributions paid to the member give rise to Korean tax obligations at the member level; cost-basis and distribution detail is supplied by the fund to support the member's counsel in preparing the corresponding Korean filings.</p>
@@ -561,7 +568,7 @@ ol.numlist li::before {
   <table class="tbl">
     <tr><th style="width:24%">Risk</th><th style="width:36%">Mechanism</th><th>Mitigant</th></tr>
     <tr><td class="k">Gold price decline reducing LTV headroom</td><td class="v">Gold pledged as collateral. Bank margin line at 80% LTV. <em>Severe drawdowns may trigger capital calls to existing members for reserve replenishment.</em></td><td class="v">20% fund-level cash reserve. LTV monitoring with member alerts at 70%, 10 percentage points before the bank's margin threshold. Pro-rata capital-call mechanism per §6.2 of this memorandum and the LP agreement.</td></tr>
-    <tr><td class="k">Private credit default</td><td class="v">Credit sleeve allocated to US mid-market private credit, 10–14% gross target.</td><td class="v">Diversification across multiple positions; concentration limits set in fund operating policy; independent fund administrator; default reserves at fund level.</td></tr>
+    <tr><td class="k">Private credit default</td><td class="v">Credit sleeve allocated to US mid-market private credit, gross target sized to deal selection and rate environment.</td><td class="v">Diversification across multiple positions; concentration limits set in fund operating policy; independent fund administrator; default reserves at fund level.</td></tr>
     <tr><td class="k">Pre-IPO equity delay</td><td class="v">Illiquid equity positions with 18–36 month liquidity horizon.</td><td class="v">Secondary market exit considered where available. Fund term extensions require LP consent. No unilateral extension.</td></tr>
     <tr><td class="k">SORA rate increase compressing net spread</td><td class="v">Credit facility is SORA-linked floating rate.</td><td class="v">Deal selection considers prevailing rate environment. Spread sensitivity reviewed quarterly. Reinvestment policy adjusts deployment mix as rate conditions evolve.</td></tr>
     <tr><td class="k">Operational risk</td><td class="v">Single-manager risk in early fund life.</td><td class="v">Gold custody is independent of the manager. Administrator and auditor are independent third parties. Key-man provisions in PPM. Material management changes trigger LP notification and may carry redemption rights, subject to PPM terms.</td></tr>
@@ -586,7 +593,7 @@ ol.numlist li::before {
   </div>
 
   <h1 class="sec"><span class="num">6.</span>Drawdown protection mechanism</h1>
-  <p>The fund operates a fund-level cash reserve sized at 20% of member capital. The reserve is dedicated to managing gold-market drawdowns that would otherwise approach the bank margin threshold.</p>
+  <p>The fund operates a fund-level cash reserve sized at 20% of member capital. The reserve is dedicated to managing gold-market drawdowns that approach the bank margin threshold.</p>
 
   <h2 class="sub">6.1 Reserve deployment</h2>
   <p>Under normal conditions, the reserve sits in cash and short-duration instruments. When gold price declines reduce LTV headroom, the reserve is applied first to loan-principal paydown, restoring effective LTV. Where gold price declines exceed 25% from subscription baselines, up to 80% of the fund-level reserve may be deployed to acquire additional gold for fund account at distressed prices.</p>
@@ -598,7 +605,7 @@ ol.numlist li::before {
   <p>Subscription to the fund therefore involves a contingent additional capital commitment beyond the initial subscription, exercisable by the fund under the conditions of the LP agreement. Members should review the capital-call provisions of the LP agreement carefully and size their initial commitment with sufficient capital reserved to meet potential pro-rata calls during material gold-market drawdowns. The maximum exposure cap, notice period, and frequency limits are specified in the LP agreement and should be confirmed with counsel prior to subscription.</p>
 
   <h1 class="sec" style="margin-top:26px;"><span class="num">7.</span>Member-level Korean obligations</h1>
-  <p>Resident-level Korean obligations of the member are unaffected by the fund structure. The member's Korean counsel is responsible for the annual NTS overseas account filing under LCITA (KRW 5억 threshold) in respect of the LP interest, Korean income tax reporting on fund distributions, and the ongoing designated FX bank relationship under FETA. KoFIU AML / STR review applies to the initial remittance under standard CTR/STR procedure at the member's Korean bank.</p>
+  <p>Resident-level Korean obligations of the member are unaffected by the fund structure. The member's Korean counsel is responsible for the annual NTS overseas account filing under LCITA (KRW 500 million threshold) in respect of the LP interest, Korean income tax reporting on fund distributions, and the ongoing designated FX bank relationship under FETA. KoFIU AML / STR review applies to the initial remittance under standard CTR/STR procedure at the member's Korean bank.</p>
 
   <h2 class="sub">7.1 Documentation supplied by the fund</h2>
   <p>To support the member's Korean counsel in preparing the resident-level filings, the fund administrator supplies, on the schedule set out in the LP agreement: an annual K-1-equivalent statement for the LP interest; an annual position summary with cost-basis support for distribution and capital-gains reporting; bar certificates and custody confirmations; LP letters and PPM updates as issued; and audited fund financials following first close. Source-of-funds documentation is supplied at onboarding to assist the member's bank and Korean counsel with the KoFIU review.</p>
