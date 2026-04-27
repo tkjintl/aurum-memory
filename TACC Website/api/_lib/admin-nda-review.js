@@ -7,7 +7,7 @@
 import { ok, bad, unauthorized, notFound, methodNotAllowed, readBody, getCookie } from './http.js';
 import { verifyToken, generateIoiCode } from './auth.js';
 import { getLead, saveLead, bindIoiCode } from './storage.js';
-import { sendRaw, buildMaterialsOpenEmail, buildNdaRejectedEmail } from './email.js';
+import { sendRaw, buildMaterialsOpenEmail, buildNdaRejectedEmail, partnerBcc} from './email.js';
 
 const VALID = new Set(['approve', 'reject']);
 
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
           html: tpl.html,
           text: tpl.text,
           replyTo: process.env.REPLY_TO || undefined,
-          bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          bcc: partnerBcc(),
         });
         if (mailResult.sent) {
           lead.materials_email_sent_at = Date.now();
@@ -113,7 +113,7 @@ export default async function handler(req, res) {
           to: lead.email,
           subject: tpl.subject, html: tpl.html, text: tpl.text,
           replyTo: process.env.REPLY_TO || undefined,
-          bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          bcc: partnerBcc(),
         });
         if (r.sent) {
           lead.audit.push({ at: Date.now(), actor, action: 'nda_rejected_email_sent', to: lead.email });

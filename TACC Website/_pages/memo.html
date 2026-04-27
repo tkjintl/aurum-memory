@@ -316,11 +316,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9;back
   var sessionCode = document.getElementById('sessionCode');
 
   function hideGate(){ gate.classList.add('hide'); }
-  function redirectToCode(){ window.location.replace('/code'); }
+  function redirectToCode(){ window.location.replace('/'); }
   function redirectToNda(){ window.location.replace('/nda'); }
 
+  // Detect admin-viewing-member via ?lead= query param
+  var qLead = '';
+  try { qLead = new URL(location.href).searchParams.get('lead') || ''; } catch (_) {}
+  var leadParam = qLead ? ('&lead=' + encodeURIComponent(qLead)) : '';
+
   // Attempt to verify by HEAD'ing the memo doc. If it 200s we're in.
-  fetch('/api/doc?id=memo', { method:'HEAD', credentials:'same-origin', cache:'no-store' })
+  fetch('/api/doc?id=memo' + leadParam, { method:'HEAD', credentials:'same-origin', cache:'no-store' })
     .then(function(r){
       if(r.status === 200){
         var c = r.headers.get('X-Member-Code');
@@ -375,7 +380,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9;back
           if(r.status === 403 && r.headers.get('X-Aurum-Gate') === 'nda'){
             setTimeout(function(){ window.location.replace('/nda'); }, 200);
           } else if(r.status === 401 || r.status === 403){
-            setTimeout(function(){ window.location.replace('/code'); }, 200);
+            setTimeout(function(){ window.location.replace('/'); }, 200);
           }
         }).catch(function(){});
     });

@@ -7,7 +7,7 @@
 import { ok, bad, unauthorized, notFound, methodNotAllowed, readBody, getCookie } from '../_lib/http.js';
 import { verifyToken, generateCode } from '../_lib/auth.js';
 import { getLead, saveLead, bindCode } from '../_lib/storage.js';
-import { sendRaw, buildInvitationEmail } from '../_lib/email.js';
+import { sendRaw, buildInvitationEmail, partnerBcc} from '../_lib/email.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return methodNotAllowed(res, ['POST']);
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
         html: tpl.html,
         text: tpl.text,
         replyTo: process.env.REPLY_TO || undefined,
-        bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+        bcc: partnerBcc(),
       });
       if (mailResult.sent) {
         lead.status = 'sent';

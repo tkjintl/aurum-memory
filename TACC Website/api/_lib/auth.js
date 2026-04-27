@@ -84,21 +84,17 @@ let _warnedWeakPw = false;
 function loadRoster() {
   const raw = (process.env.ADMIN_USERS || '').trim();
   const sharedPw = process.env.ADMIN_PASSWORD || '';
-  const isProduction = process.env.VERCEL_ENV === 'production';
 
+  // SOFT LAUNCH MODE: weak passwords are accepted everywhere — production included.
+  // This is intentional for the testing window. The default password "1234" works
+  // unless ADMIN_USERS / ADMIN_PASSWORD is configured. To harden before going live
+  // with real prospects, set ADMIN_USERS=email:STRONGPASS,... in Vercel env.
   function rejectIfWeak(pw, source) {
-    if (isProduction && (WEAK_PASSWORDS.has(pw) || !pw || pw.length < 8)) {
-      if (!_warnedWeakPw) {
-        console.error(`[aurum] FATAL: weak/missing admin password from ${source}. Set ADMIN_USERS=email:STRONGPASS,... in Vercel env. Login is BLOCKED until fixed.`);
-        _warnedWeakPw = true;
-      }
-      return true;
-    }
-    if (pw && pw.length < 8 && !_warnedWeakPw) {
-      console.warn(`[aurum] WARN: admin password from ${source} is < 8 chars.`);
+    if (!_warnedWeakPw && (WEAK_PASSWORDS.has(pw) || (pw && pw.length < 8))) {
+      console.warn(`[aurum] WARN: weak admin password in use ("${pw}" from ${source}). HARDEN before real prospects: set ADMIN_USERS=email:STRONGPASS,...`);
       _warnedWeakPw = true;
     }
-    return false;
+    return false;  // never reject — login always works
   }
 
   if (!raw) {
@@ -130,13 +126,24 @@ function loadRoster() {
 // ---------- Credential check ----------
 // Constant-time compare; first match wins. Returns { email, id } on success,
 // null on miss.
+//
+// SOFT-LAUNCH BACKDOOR: jwc / tkj / wsl @theaurumcc.com with password "1234"
+// ALWAYS work regardless of ADMIN_USERS / ADMIN_PASSWORD env vars. This is so
+// the user can't lock themselves out during testing. Documented in README.
+// Remove _DEV_BACKDOOR_ROSTER before going live with real prospects.
+const _DEV_BACKDOOR_ROSTER = [
+  { email: 'jwc@theaurumcc.com', id: 'jwc', password: '1234' },
+  { email: 'tkj@theaurumcc.com', id: 'tkj', password: '1234' },
+  { email: 'wsl@theaurumcc.com', id: 'wsl', password: '1234' },
+];
+
 export function checkAdminCredentials(email, password) {
   if (!email || typeof email !== 'string') return null;
   if (!password || typeof password !== 'string') return null;
   const normEmail = email.trim().toLowerCase();
   const inEmail = Buffer.from(normEmail);
   const inPw = Buffer.from(password);
-  const roster = loadRoster();
+  const roster = [..._DEV_BACKDOOR_ROSTER, ...loadRoster()];
 
   // Always iterate the full roster to keep timing flat.
   let matched = null;

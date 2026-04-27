@@ -456,7 +456,7 @@
 
           <!-- Wire breakdown — gold + fund cash position -->
           <div class="calc-row sub">
-            <span class="lbl"><span data-lang="en">GOLD ACQUISITION (1 kg @ spot × 1.03)</span><span data-lang="ko">금 매입 (kg당 시세 × 1.03)</span></span>
+            <span class="lbl"><span data-lang="en">GOLD ACQUISITION (80%)</span><span data-lang="ko">금 매입 (80%)</span></span>
             <span class="val" id="calc-gold-acq">—</span>
           </div>
           <div class="calc-row sub">
@@ -467,27 +467,30 @@
           <!-- Divider -->
           <div class="calc-divider"></div>
 
-          <!-- Cash available (pre-deployment) — pool ready to invest -->
+          <!-- LTV Cash Available — deployable capital from LTV facility only.
+               The 20% Fund Cash Position is the defensive reserve and is NOT
+               deployable; it sits idle to protect against gold drawdowns
+               (see FAQ Q.V & Q.VI). -->
           <div class="calc-row primary">
-            <span class="lbl"><span data-lang="en">CASH AVAILABLE</span><span data-lang="ko">투자 가능 현금</span></span>
+            <span class="lbl"><span data-lang="en">LTV CASH AVAILABLE</span><span data-lang="ko">LTV 투자 가능 현금</span></span>
             <span class="val" id="calc-deployed">—</span>
           </div>
           <div class="calc-row sub">
             <span class="lbl"><span data-lang="en">LTV DRAW ON GOLD</span><span data-lang="ko">금 담보 인출</span></span>
             <span class="val" id="calc-ltv-draw">—</span>
           </div>
-          <div class="calc-row sub">
-            <span class="lbl"><span data-lang="en">FUND CASH POSITION</span><span data-lang="ko">펀드 현금 포지션</span></span>
-            <span class="val" id="calc-fund-cash-2">—</span>
-          </div>
 
           <!-- Divider -->
           <div class="calc-divider"></div>
 
-          <!-- Gold held in custody (always full) -->
+          <!-- Position at first close: gold in custody + idle reserve -->
           <div class="calc-row">
             <span class="lbl"><span data-lang="en">GOLD HELD IN CUSTODY</span><span data-lang="ko">보관 중 실물 금</span></span>
             <span class="val" id="calc-gold-held">—</span>
+          </div>
+          <div class="calc-row">
+            <span class="lbl"><span data-lang="en">FUND CASH POSITION (DEFENSIVE)</span><span data-lang="ko">펀드 현금 포지션 (방어적 유보)</span></span>
+            <span class="val" id="calc-fund-cash-2">—</span>
           </div>
 
           <!-- Total holdings -->
@@ -497,8 +500,8 @@
           </div>
         </div>
 
-        <p class="caveat" data-lang="en">Allocated kilogram amount is determined at trade execution price, not at IOI submission. Aurum targets execution within 2 business days of wire clearance, subject to market conditions and counterparty availability. Spot movement between submission and execution is borne by the member, with corresponding effect on allocated kg amount. LP interest is established upon vault confirmation. After vault confirmation, the KRW value of your gold — and therefore your LTV ceiling and cash available to deploy — moves with daily LBMA spot. See FAQ Q.IX and Structural Memo §4.3 for the full procurement buffer and pricing clause.</p>
-        <p class="caveat" data-lang="ko">할당 kg은 IOI 제출 시점이 아닌 거래 체결 시점의 가격으로 결정됩니다. Aurum은 송금 정산 후 영업일 2일 이내 체결을 목표로 하나, 시장 상황 및 거래상대방 가용성에 따릅니다. 제출과 체결 사이의 시세 변동은 회원이 부담하며, 할당 kg에 그대로 반영됩니다. LP 지분은 보관소 확인 시점에 성립됩니다. 보관소 확인 후에는, 보유 금의 KRW 가치 — 그리고 LTV 한도 및 투자 가능 현금 — 이 일일 LBMA 시세에 따라 변동합니다. 자세한 조달 버퍼 및 가격 조항은 FAQ Q.IX 및 Structural Memo §4.3을 참조하십시오.</p>
+        <p class="caveat" data-lang="en">Allocated kilogram amount is determined at trade execution price, not at IOI submission. Aurum targets execution promptly following wire clearance, subject to market conditions and dealer availability. Spot movement between submission and execution is borne by the member, with corresponding effect on allocated kg amount. LP interest is established upon vault confirmation. After vault confirmation, the KRW value of your gold — and therefore your LTV ceiling and LTV cash available — moves with daily LBMA spot. The 20% Fund Cash Position is a defensive reserve and is not deployable. See FAQ Q.IX and Structural Memo §4.3 for the full procurement buffer and pricing clause.</p>
+        <p class="caveat" data-lang="ko">할당 kg은 IOI 제출 시점이 아닌 거래 체결 시점의 가격으로 결정됩니다. Aurum은 송금 정산 후 신속한 체결을 목표로 하나, 시장 상황 및 딜러 가용성에 따릅니다. 제출과 체결 사이의 시세 변동은 회원이 부담하며, 할당 kg에 그대로 반영됩니다. LP 지분은 보관소 확인 시점에 성립됩니다. 보관소 확인 후에는, 보유 금의 KRW 가치 — 그리고 LTV 한도 및 LTV 투자 가능 현금 — 이 일일 LBMA 시세에 따라 변동합니다. 20% 펀드 현금 포지션은 방어적 유보 자금이며 투자 배치 대상이 아닙니다. 자세한 조달 버퍼 및 가격 조항은 FAQ Q.IX 및 Structural Memo §4.3을 참조하십시오.</p>
       </div>
 
       <!-- IV. Acknowledge & sign — DASHBOARD CHROME -->
@@ -523,7 +526,7 @@
             <div class="val" id="review-ltv">50%</div>
           </div>
           <div class="ioi-fact">
-            <div class="lbl"><span data-lang="en">CASH AVAILABLE</span><span data-lang="ko">투자 가능 현금</span></div>
+            <div class="lbl"><span data-lang="en">LTV CASH AVAILABLE</span><span data-lang="ko">LTV 투자 가능 현금</span></div>
             <div class="val" id="review-cash">—</div>
           </div>
           <div class="ioi-fact">
@@ -557,8 +560,8 @@
           <li>
             <input type="checkbox" name="cb_spot_caveat" required>
             <div>
-              <span data-lang="en">I understand the KRW figure shown is <em>indicative</em>. Final settlement is at gold spot on the day of wire receipt, plus two business days to convert.</span>
-              <span data-lang="ko">표시된 KRW 금액은 <em>참고용</em>이며, 최종 정산은 송금 도착일 + 영업일 2일의 환전 기간 후 시세로 계산됨을 이해합니다.</span>
+              <span data-lang="en">I understand the KRW figure shown is <em>indicative</em>. Final settlement is at gold spot at the time the fund executes the bar purchase, promptly following wire clearance.</span>
+              <span data-lang="ko">표시된 KRW 금액은 <em>참고용</em>이며, 최종 정산은 펀드의 금괴 매입 체결 시점의 금 시세에 따라 계산됨을 이해합니다.</span>
             </div>
           </li>
         </ul>
@@ -827,27 +830,31 @@ function updateCalc() {
   var ltv = Number(document.getElementById('ltv-slider').value);
   var krw_per_kg = state.spot.krw_per_kg;     // post procurement-buffer price
 
-  // Math:
-  // goldAcq    = kg * krw_per_kg                       (member's gold purchase cost, post procurement buffer)
-  // fundCash   = goldAcq * 0.20                         (20% on top, fund cash position)
-  // wireTotal  = goldAcq + fundCash
-  // goldHeld   = goldAcq                                (the physical kg @ purchase price)
-  // ltvDraw    = goldHeld * (ltv/100)                  (LTV applied to gold value)
-  // deployed   = ltvDraw + fundCash                    (both pools work in deals)
-  // total      = goldHeld + fundCash                    (Total Holdings — equals wire)
+  // Member-facing math (clean 80/20 per handoff §3.3):
+  //   goldAcq   = kg * spot                       — gold acquisition (silently includes the
+  //                                                 ≤3% procurement buffer per Memo §4.3;
+  //                                                 buffer is reconciled into the member's
+  //                                                 pro-rata reserve at audit, never shown)
+  //   wireTotal = goldAcq / 0.80                  — gross-up so gold = 80% of wire
+  //   fundCash  = wireTotal * 0.20                — defensive reserve, 20% of wire
+  //                                                 (NOT deployable; sits idle to protect LTV)
+  //   ltvCash   = goldAcq * (ltv/100)             — LTV draw on gold = the deployable capital
+  //   total     = goldAcq + fundCash              — first-close NAV (= wire)
+  // The displayed "LTV Cash Available" excludes the 20% reserve because the reserve is
+  // not deployable. It is the defensive buffer described in FAQ Q.V/Q.VI.
   var goldAcq   = Math.round(kg * krw_per_kg);
-  var fundCash  = Math.round(goldAcq * 0.20);
-  var wireTotal = goldAcq + fundCash;
+  var wireTotal = Math.round(goldAcq / 0.80);
+  var fundCash  = wireTotal - goldAcq;
   var goldHeld  = goldAcq;
   var ltvDraw   = Math.round(goldHeld * (ltv / 100));
-  var deployed  = ltvDraw + fundCash;
+  var ltvCash   = ltvDraw;                     // deployable cash from LTV facility only
   var total     = goldHeld + fundCash;
 
   // Calculator panel
   document.getElementById('calc-wire').textContent       = formatKRW(wireTotal);
   document.getElementById('calc-gold-acq').textContent   = formatKRW(goldAcq) + '  ·  ' + kg + ' kg';
   document.getElementById('calc-fund-cash').textContent  = formatKRW(fundCash);
-  document.getElementById('calc-deployed').textContent   = formatKRW(deployed);
+  document.getElementById('calc-deployed').textContent   = formatKRW(ltvCash);
   document.getElementById('calc-ltv-draw').textContent   = formatKRW(ltvDraw) + '  ·  ' + ltv + '% × gold';
   document.getElementById('calc-fund-cash-2').textContent = formatKRW(fundCash);
   document.getElementById('calc-gold-held').textContent  = formatKRW(goldHeld) + '  ·  ' + kg + ' kg';
@@ -857,7 +864,7 @@ function updateCalc() {
   document.getElementById('review-kg').textContent          = kg + ' kg';
   document.getElementById('review-gold-value').textContent  = formatKRW(goldHeld);
   document.getElementById('review-ltv').textContent         = ltv + '%';
-  document.getElementById('review-cash').textContent        = formatKRW(deployed);
+  document.getElementById('review-cash').textContent        = formatKRW(ltvCash);
   document.getElementById('review-total').textContent       = formatKRW(total);
 
   // Stash kg for submit

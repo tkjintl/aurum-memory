@@ -23,20 +23,120 @@ export default async function handler(req, res) {
 
   const id = String(getQuery(req).id || '').toLowerCase();
 
-  // Auth: require a valid member cookie (issued via /api/verify-code)
-  const session = verifyToken(getCookie(req, 'aurum_access'));
-  if (!session || session.sub !== 'member') return unauthorized(res, 'no access — verify your code');
+  // ════════════════════════════════════════════════════════════════════════
+  //  SERVER-SIDE PAGE GATE — for /main /memo /portfolio /nda /ioi
+  //  These URLs are rewritten by vercel.json to /api/doc?id=*-page.
+  //  HTML is served ONLY after auth validates. Anonymous → 302 to /.
+  //  This is the real gate; the client-side overlay in each page is
+  //  defense-in-depth for stale cookies between requests.
+  // ════════════════════════════════════════════════════════════════════════
+  const PAGE_IDS = {
+    // page-id          file in _pages/    auth requirement
+    'program-page':    { file: 'main.html',      require: 'cookie' },
+    'nda-page':        { file: 'nda.html',       require: 'cookie' },
+    'memo-page':       { file: 'memo.html',      require: 'nda-approved' },
+    'ioi-page':        { file: 'ioi.html',       require: 'nda-approved' },
+    'portfolio-page':  { file: 'portfolio.html', require: 'nda-approved' },
+  };
 
-  // Re-check the lead is still valid (in case the partners revoked the code)
+  if (PAGE_IDS[id]) {
+    const cfg = PAGE_IDS[id];
+    // Try admin auth first — partners can preview any gated page
+    const adminTok = getCookie(req, 'aurum_admin');
+    const adminSession = verifyToken(adminTok);
+    const isAdmin = !!(adminSession && adminSession.sub === 'admin');
+    let pageLead = null;
+    if (!isAdmin) {
+      // Member auth path
+      const memberSession = verifyToken(getCookie(req, 'aurum_access'));
+      if (!memberSession || memberSession.sub !== 'member') {
+        return redirectToInquiry(res);
+      }
+      try { pageLead = await getLead(memberSession.leadId); } catch {}
+      if (!pageLead || pageLead.code_revoked || pageLead.code !== memberSession.code) {
+        return redirectToInquiry(res);
+      }
+      // State checks per page
+      if (cfg.require === 'nda-approved' && pageLead.nda_state !== 'approved') {
+        return redirectToInquiry(res);
+      }
+    }
+    // Auth passed — serve the HTML from _pages/
+    let html;
+    try {
+      const fpath = join(process.cwd(), '_pages', cfg.file);
+      html = await readFile(fpath, 'utf-8');
+    } catch (e) {
+      console.error('page read failed:', cfg.file, e);
+      return notFound(res, 'page not found');
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'private, no-store');
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    return res.end(html);
+  }
+
+  function redirectToInquiry(r) {
+    r.statusCode = 302;
+    r.setHeader('Location', '/');
+    r.setHeader('Cache-Control', 'private, no-store');
+    return r.end();
+  }
+
+  // ── Special case: id=access (used by /main only). Admin cookie alone is
+  //    sufficient — partners need to preview the program without a member
+  //    context. No ?lead= required. Falls through to standard auth otherwise.
+  if (id === 'access') {
+    const adminTok0 = getCookie(req, 'aurum_admin');
+    const adminSess0 = verifyToken(adminTok0);
+    if (adminSess0 && adminSess0.sub === 'admin') {
+      res.statusCode = 200;
+      res.setHeader('Cache-Control', 'private, no-store');
+      res.setHeader('X-Viewer-Kind', 'admin');
+      res.setHeader('X-Member-Email', (adminSess0.email || adminSess0.id || 'admin') + ' (admin preview)');
+      res.setHeader('Content-Type', 'application/json');
+      return res.end('{"ok":true,"viewer":"admin"}');
+    }
+    // No admin cookie — fall through to member auth below
+  }
+
+  // Two auth paths:
+  //   1. Admin (aurum_admin cookie) + ?lead=L_xxx → view any member's doc / portfolio session ping
+  //   2. Member (aurum_access cookie) → own doc only
   let lead = null;
-  try { lead = await getLead(session.leadId); } catch {}
-  if (!lead) return unauthorized(res, 'access not found');
-  if (lead.code_revoked || lead.code !== session.code) return unauthorized(res, 'code revoked');
+  let viewerKind = 'member';
+  let viewerEmail = null;
+  const adminTok = getCookie(req, 'aurum_admin');
+  const adminSession = verifyToken(adminTok);
+  if (adminSession && adminSession.sub === 'admin') {
+    const leadIdParam = String(getQuery(req).lead || '').trim();
+    if (!leadIdParam) {
+      // Admin without ?lead= — fall through to member auth (in case the request is from an admin
+      // who's also a member testing their own flow). If neither works, will 401 below.
+    } else {
+      try { lead = await getLead(leadIdParam); } catch {}
+      if (lead) {
+        viewerKind = 'admin';
+        viewerEmail = adminSession.email || adminSession.id || 'admin';
+      }
+    }
+  }
+  if (!lead) {
+    // Member auth path
+    const session = verifyToken(getCookie(req, 'aurum_access'));
+    if (!session || session.sub !== 'member') return unauthorized(res, 'no access — verify your code');
+    try { lead = await getLead(session.leadId); } catch {}
+    if (!lead) return unauthorized(res, 'access not found');
+    if (lead.code_revoked || lead.code !== session.code) return unauthorized(res, 'code revoked');
+    viewerEmail = lead.email || lead.code || '';
+  }
 
   // ── Auth ping — used by /memo and /portfolio to verify session + get
   //    identity headers for the on-screen watermark. Doesn't serve a doc.
   if (id === 'memo' || id === 'session') {
-    if (lead.nda_state !== 'approved') {
+    // Members must have NDA approved. Admins can ping any time (it's their tool).
+    if (viewerKind === 'member' && lead.nda_state !== 'approved') {
       res.statusCode = 403;
       res.setHeader('X-Aurum-Gate', 'nda');
       res.setHeader('Content-Type', 'application/json');
@@ -45,7 +145,23 @@ export default async function handler(req, res) {
     res.statusCode = 200;
     res.setHeader('Cache-Control', 'private, no-store');
     if (lead.code) res.setHeader('X-Member-Code', lead.code);
+    // Watermark identity: admin sees own email (so leak traces to partner who pulled the view)
+    if (viewerKind === 'admin') res.setHeader('X-Member-Email', viewerEmail + ' (admin viewing ' + (lead.email || lead.code) + ')');
+    else if (lead.email) res.setHeader('X-Member-Email', lead.email);
+    res.setHeader('X-Viewer-Kind', viewerKind);
+    res.setHeader('Content-Type', 'application/json');
+    return res.end('{"ok":true}');
+  }
+
+  // ── Access ping — used by /main (marketing) to verify code-cookie only.
+  //    No NDA gate. Returns 200 if user has valid invitation code session,
+  //    401 otherwise. /main calls this on load and redirects to /code if 401.
+  if (id === 'access') {
+    res.statusCode = 200;
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (lead.code) res.setHeader('X-Member-Code', lead.code);
     if (lead.email) res.setHeader('X-Member-Email', lead.email);
+    if (lead.nda_state) res.setHeader('X-Nda-State', lead.nda_state);
     res.setHeader('Content-Type', 'application/json');
     return res.end('{"ok":true}');
   }

@@ -11,7 +11,7 @@
 import { ok, bad, unauthorized, notFound, methodNotAllowed, readBody, getCookie } from '../_lib/http.js';
 import { verifyToken, signToken } from '../_lib/auth.js';
 import { getLead, saveLead, unbindCode } from '../_lib/storage.js';
-import { sendRaw, buildWireInstructionsEmail, buildAdmissionEmail, buildQuarterlyStatementEmail, buildWireReminderEmail, buildCapitalCallEmail } from '../_lib/email.js';
+import { sendRaw, buildWireInstructionsEmail, buildAdmissionEmail, buildQuarterlyStatementEmail, buildWireReminderEmail, buildCapitalCallEmail, partnerBcc} from '../_lib/email.js';
 import { getKrwPerKg } from '../_lib/krw.js';
 import { putPrivate, isConfigured as blobConfigured } from '../_lib/blob.js';
 
@@ -39,6 +39,8 @@ const VALID_ACTIONS = new Set([
   // Notification triggers
   'send_quarterly_email',
   'send_wire_reminder',
+  // Resend any prior email (NDA invite / IOI reminder / wire instructions / admission)
+  'resend_email',
 ]);
 
 // Wire reference: AURUM-W-{LEAD_ID_SUFFIX}-{YYYYMMDD}
@@ -144,7 +146,7 @@ export default async function handler(req, res) {
             html: tpl.html,
             text: tpl.text,
             replyTo: process.env.REPLY_TO || undefined,
-            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+            bcc: partnerBcc(),
           });
           if (mailResult.sent) {
             lead.audit.push({ at: Date.now(), actor, action: 'wire_instructions_sent', to: lead.email });
@@ -208,12 +210,13 @@ export default async function handler(req, res) {
       // Send admission email
       let mailResult = { sent: false, reason: 'skipped' };
       if (lead.email) {
-        // A7: Mint a 7-day magic-link token so OPEN PORTFOLIO is one-click sign-in
+        // Mint a 7-day pw-setup token. Email F links to /setup-password?ml=<token>.
+        // Member sets password → cookie set → /portfolio. Code is revoked at setup.
         const mlToken = signToken({
-          sub: 'magic',
+          sub: 'pw-setup',
           leadId: lead.id,
           email: lead.email,
-          jti: 'adm_' + lead.id + '_' + Date.now(),
+          n: Math.random().toString(36).slice(2),
         }, 60 * 60 * 24 * 7);
         const tpl = buildAdmissionEmail({ lead, magicLinkToken: mlToken });
         try {
@@ -223,7 +226,7 @@ export default async function handler(req, res) {
             html: tpl.html,
             text: tpl.text,
             replyTo: process.env.REPLY_TO || undefined,
-            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+            bcc: partnerBcc(),
           });
           if (mailResult.sent) {
             lead.audit.push({ at: Date.now(), actor, action: 'admission_email_sent' });
@@ -384,7 +387,7 @@ export default async function handler(req, res) {
             to: lead.email,
             subject: tpl.subject, html: tpl.html, text: tpl.text,
             replyTo: process.env.REPLY_TO || undefined,
-            bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+            bcc: partnerBcc(),
           });
           lead.audit.push({ at: now, actor, action: 'capital_call_email_sent', number });
         } catch (e) { console.error('[capital_call email]', e); }
@@ -424,7 +427,7 @@ export default async function handler(req, res) {
         const r = await sendRaw({
           to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
           replyTo: process.env.REPLY_TO || undefined,
-          bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          bcc: partnerBcc(),
         });
         lead.audit.push({ at: now, actor, action: 'quarterly_email_sent', period, sent: !!r.sent });
       } catch (e) { console.error('[quarterly email]', e); return bad(res, 'send failed'); }
@@ -440,7 +443,7 @@ export default async function handler(req, res) {
         const r = await sendRaw({
           to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
           replyTo: process.env.REPLY_TO || undefined,
-          bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+          bcc: partnerBcc(),
         });
         lead.audit.push({ at: now, actor, action: 'wire_reminder_sent', sent: !!r.sent });
       } catch (e) { console.error('[wire reminder]', e); return bad(res, 'send failed'); }
@@ -490,6 +493,77 @@ export default async function handler(req, res) {
       if (!pos_id) return bad(res, 'missing pos_id');
       lead.positions = (lead.positions || []).filter((p) => p.id !== pos_id);
       lead.audit.push({ at: now, actor, action: 'position_removed', pos_id });
+    }
+
+    // ── resend_email — universal resend for any prior email ─────────────
+    // body.kind: 'nda_invite' | 'ioi_reminder' | 'wire_instructions' | 'admission'
+    if (body.action === 'resend_email') {
+      if (!lead.email) return bad(res, 'no email on lead');
+      const kind = String(body.kind || '').trim();
+      let mailResult = { sent: false, reason: 'unknown_kind' };
+      try {
+        if (kind === 'wire_instructions') {
+          if (!lead.wire || !lead.wire.instructions_sent_at) return bad(res, 'wire instructions never issued');
+          const tpl = buildWireInstructionsEmail({ lead, ioi: lead.ioi, wire: lead.wire });
+          mailResult = await sendRaw({
+            to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: partnerBcc(),
+          });
+        } else if (kind === 'admission') {
+          if (!lead.wire || !lead.wire.cleared_at) return bad(res, 'member not yet admitted');
+          // Mint fresh pw-setup token so the link points to /setup-password
+          const mlToken = signToken({
+            sub: 'pw-setup', leadId: lead.id, email: lead.email,
+            n: Math.random().toString(36).slice(2),
+          }, 60 * 60 * 24 * 7);
+          const tpl = buildAdmissionEmail({ lead, magicLinkToken: mlToken });
+          mailResult = await sendRaw({
+            to: lead.email, subject: tpl.subject, html: tpl.html, text: tpl.text,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: partnerBcc(),
+          });
+        } else if (kind === 'nda_invite') {
+          // Re-use the invitation email build path — just re-send the same code
+          if (!lead.code) return bad(res, 'no invitation code on lead');
+          // We don't have a separate buildInvitationEmail here, so use a simple resend via the approve.js path.
+          // Instead, send a custom-body reminder.
+          const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
+          const codeUrl = `${siteUrl}/code?c=${encodeURIComponent(lead.code)}`;
+          mailResult = await sendRaw({
+            to: lead.email,
+            subject: 'Reminder · Your Aurum invitation · 초대장 안내',
+            text: `Reminder: your AURUM invitation code is ${lead.code}.\n\nOpen: ${codeUrl}\n\nThe code unlocks the NDA which precedes the materials.\n\n— Aurum Partners`,
+            html: `<p>Reminder: your AURUM invitation code is <strong style="font-family:monospace;letter-spacing:0.16em">${lead.code}</strong>.</p><p><a href="${codeUrl}">Open invitation</a></p><p style="color:#888">The code unlocks the NDA which precedes the materials.</p><p>— Aurum Partners</p>`,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: partnerBcc(),
+          });
+        } else if (kind === 'ioi_reminder') {
+          if (lead.nda_state !== 'approved') return bad(res, 'NDA not yet approved');
+          const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
+          const ioiUrl = lead.ioi_code ? `${siteUrl}/ioi?c=${encodeURIComponent(lead.ioi_code)}` : `${siteUrl}/ioi`;
+          mailResult = await sendRaw({
+            to: lead.email,
+            subject: 'Reminder · Your IOI form awaits · 의향서 작성 안내',
+            text: `When ready, indicate your interest at ${ioiUrl}\n\nThe form is non-binding — you may revise after submission.\n\n— Aurum Partners`,
+            html: `<p>When ready, indicate your interest:</p><p><a href="${ioiUrl}" style="display:inline-block;padding:10px 18px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:monospace;letter-spacing:0.18em">SUBMIT IOI →</a></p><p style="color:#888">The form is non-binding — you may revise after submission.</p><p>— Aurum Partners</p>`,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: partnerBcc(),
+          });
+        } else {
+          return bad(res, 'unknown email kind');
+        }
+      } catch (e) {
+        console.error('resend_email error', e);
+        mailResult = { sent: false, reason: 'exception' };
+      }
+      lead.audit.push({
+        at: now, actor, action: 'email_resent', kind,
+        sent: !!(mailResult && mailResult.sent),
+        reason: mailResult && mailResult.reason,
+      });
+      await saveLead(lead);
+      return ok(res, { ok: true, lead, mail: mailResult });
     }
   }
 

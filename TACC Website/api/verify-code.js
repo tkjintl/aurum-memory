@@ -44,8 +44,8 @@ export default async function handler(req, res) {
   // Route to the right surface based on lead state:
   //   wire cleared → /portfolio (admitted member, post-launch view)
   //   NDA approved → /memo (materials hub for review pre-IOI)
-  //   else → /nda (upload signed NDA gate)
-  let nextPath = '/nda';
+  //   else → /main (read marketing pitch, then continue to NDA)
+  let nextPath = '/main';
   if (lead.wire && lead.wire.cleared_at) nextPath = '/portfolio';
   else if (lead.nda_state === 'approved') nextPath = '/memo';
 
@@ -80,8 +80,16 @@ async function handleMagicLink(req, res) {
   await logOpen(req, lead, 'magic_link_opened', lead.code);
   setAccessCookie(res, lead.id, lead.code);
 
+  // State-aware redirect: same logic as code-entry path.
+  //   wire cleared → /portfolio
+  //   NDA approved → /memo
+  //   else → /main (read marketing, then continue to NDA)
+  let target = '/main';
+  if (lead.wire && lead.wire.cleared_at) target = '/portfolio';
+  else if (lead.nda_state === 'approved') target = '/memo';
+
   res.statusCode = 302;
-  res.setHeader('Location', '/portfolio');
+  res.setHeader('Location', target);
   res.end();
 }
 

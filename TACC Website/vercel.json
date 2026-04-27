@@ -5,12 +5,18 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/doc.js": { "includeFiles": "_docs/**" },
+    "api/doc.js": { "includeFiles": "_docs/**,_pages/**" },
     "api/nda.js": { "includeFiles": "_docs/**" }
   },
   "rewrites": [
     { "source": "/_docs/(.*)",   "destination": "/404" },
+    { "source": "/_pages/(.*)",  "destination": "/404" },
     { "source": "/api/_lib/(.*)", "destination": "/404" },
+    { "source": "/main",       "destination": "/api/doc?id=program-page" },
+    { "source": "/memo",       "destination": "/api/doc?id=memo-page" },
+    { "source": "/portfolio",  "destination": "/api/doc?id=portfolio-page" },
+    { "source": "/nda",        "destination": "/api/doc?id=nda-page" },
+    { "source": "/ioi",        "destination": "/api/doc?id=ioi-page" },
     { "source": "/api/nda-template", "destination": "/api/nda?op=template" },
     { "source": "/api/nda-upload",   "destination": "/api/nda?op=upload" },
     { "source": "/api/nda-status",   "destination": "/api/nda?op=status" },
@@ -26,6 +32,13 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    },
+    {
+      "source": "/main",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     },
     {
@@ -71,7 +84,21 @@
       ]
     },
     {
-      "source": "/portfolio",
+      "source": "/setup-password",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/forgot-password",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/reset-password",
       "headers": [
         { "key": "Cache-Control", "value": "no-store" },
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }

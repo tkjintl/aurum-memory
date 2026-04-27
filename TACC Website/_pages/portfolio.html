@@ -159,7 +159,7 @@
     .bar-custodian{font-family:var(--serifKr);font-size:12px;color:var(--muted);font-style:italic}
 
     /* ─────────── State B: LTV slider visual ─────────── */
-    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 65%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
+    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 75%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
     .ltv-fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .4s ease}
     .ltv-marker{position:absolute;top:-8px;bottom:-8px;width:1px;background:var(--text)}
     .ltv-marker.ceiling{background:var(--gold)}
@@ -929,29 +929,45 @@ function show(id) {
 
 // ─── Load portfolio data ─────────────────────────────────
 (function load() {
+  // Detect admin-viewing-member mode via ?lead= query param
+  // Admins click "PORTFOLIO" from /admin → arrives with ?lead=L_xxx
+  // Members arrive without query → uses their own aurum_access cookie
+  var qLead = '';
+  try { qLead = new URL(location.href).searchParams.get('lead') || ''; } catch (_) {}
+  var adminQs = qLead ? ('?lead=' + encodeURIComponent(qLead)) : '';
+
   // Fetch identity headers for watermark in parallel
-  fetch('/api/doc?id=session', { method:'HEAD', credentials:'same-origin', cache:'no-store' })
+  fetch('/api/doc?id=session' + (qLead ? ('&lead=' + encodeURIComponent(qLead)) : ''), { method:'HEAD', credentials:'same-origin', cache:'no-store' })
     .then(function(r){
       if (r.status === 200) {
         var em = r.headers.get('X-Member-Email');
         var c  = r.headers.get('X-Member-Code');
+        var vk = r.headers.get('X-Viewer-Kind');
         applyWatermark(em || c);
+        // Visual cue: admin viewing member's portfolio (banner)
+        if (vk === 'admin') showAdminViewBanner(em || c);
       }
     }).catch(function(){});
 
-  fetch('/api/ioi?op=portfolio', { credentials: 'same-origin', cache: 'no-store' })
+  fetch('/api/ioi?op=portfolio' + adminQs, { credentials: 'same-origin', cache: 'no-store' })
     .then(function(r) { return r.json(); })
     .then(function(j) {
       if (!j.ok) {
         if (j.reason === 'no-ioi') { show('s-no-ioi'); return; }
+        if (j.reason === 'admin-no-lead') {
+          // Admin without ?lead= → bounce back to admin
+          window.location.replace('/admin');
+          return;
+        }
         // No cookie / expired session → redirect to /login (Path B passwordless flow)
         if (j.reason === 'no-session' || j.reason === 'no-lead') {
-          window.location.replace('/login');
+          window.location.replace('/');
           return;
         }
         if (j.reason === 'nda-not-approved') { show('s-error'); return; }
         show('s-error'); return;
       }
+      if (j.viewer === 'admin') showAdminViewBanner(j.viewer_id + ' viewing ' + (j.member && (j.member.email || j.member.name)));
       // State decision: cleared_at? bars? positions? → vault vs limbo
       var hasCleared = j.wire && j.wire.cleared_at;
       if (hasCleared) renderVault(j);
@@ -959,6 +975,17 @@ function show(id) {
     })
     .catch(function() { show('s-error'); });
 })();
+
+// Admin-view banner — shown across the top when a partner is viewing a member's portfolio
+function showAdminViewBanner(label) {
+  if (document.getElementById('admin-view-banner')) return;
+  var b = document.createElement('div');
+  b.id = 'admin-view-banner';
+  b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:8000;background:rgba(197,165,114,0.10);border-bottom:1px solid rgba(197,165,114,0.40);color:#E3C187;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.22em;text-align:center;padding:8px 14px;text-transform:uppercase;backdrop-filter:blur(8px)';
+  b.innerHTML = '◉ ADMIN VIEW · ' + (label ? String(label).replace(/[<>&]/g, '') : 'PARTNER VIEWING MEMBER PORTFOLIO') + ' &nbsp; <a href="/admin" style="color:#C5A572;margin-left:14px;text-decoration:none;border-bottom:1px solid currentColor">← BACK TO ADMIN</a>';
+  document.body.appendChild(b);
+  document.body.style.paddingTop = '38px';
+}
 
 // ─── STATE A · Limbo render ──────────────────────────────
 function renderLimbo(d) {
@@ -1006,8 +1033,8 @@ function renderLimbo(d) {
     }
   } else {
     wirePillEl.innerHTML = '<span data-lang="en">AWAITING CLEARANCE</span><span data-lang="ko">정산 대기</span>';
-    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank — typically 2 business days.</span>' +
-                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중 — 일반적으로 2 영업일 소요됩니다.</span>';
+    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank.</span>' +
+                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중.</span>';
     statusTextEl.innerHTML = '<span data-lang="en">Your wire has been received and is clearing. Bar assignment follows.</span>' +
                              '<span data-lang="ko">송금이 수령되어 정산 진행 중입니다. 곧 금괴 배정이 진행됩니다.</span>';
     if (d.wire.ref) {
@@ -1074,11 +1101,15 @@ function renderVault(d) {
   var investedMarked = positions.reduce(function(s, p) { return s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0); }, 0);
   var investedGrowthPct = investedCost > 0 ? ((investedMarked - investedCost) / investedCost) * 100 : null;
 
-  // CASH AVAILABLE — drawn LTV + fund cash (member's 20% contribution) − invested
-  var ltv = d.ltv || { drawn_krw: 0, ceiling_pct: 60, margin_pct: 80 };
+  // LTV CASH AVAILABLE — drawn LTV only (deployable). The 20% Fund Cash Position is
+  // the defensive reserve and is NOT deployable — it sits idle to protect against
+  // gold drawdowns (per FAQ Q.V & Q.VI).
+  var ltv = d.ltv || { drawn_krw: 0, ceiling_pct: 75, margin_pct: 80 };
   var drawnKrw = ltv.drawn_krw || 0;
-  var fundCashContribution = Math.round(goldCost * 0.20);
-  var cashAvailable = Math.max(0, drawnKrw + fundCashContribution - investedMarked);
+  // fundCashContribution = 20% of total wire = wire - gold. NOT goldCost × 0.20.
+  // wire = goldCost / 0.80, so reserve = wire - goldCost.
+  var fundCashContribution = goldCost > 0 ? Math.round(goldCost / 0.80) - goldCost : 0;
+  var cashAvailable = Math.max(0, drawnKrw - investedMarked);
 
   // EQUITY VALUE — gold + fund_cash + investment growth (drawn cancels out)
   var equityNow = goldNow + fundCashContribution + (investedMarked - investedCost);
@@ -1118,7 +1149,7 @@ function renderVault(d) {
     var det = document.getElementById('mp-ltv-details');
     if (det) {
       det.style.display = 'block';
-      document.getElementById('mp-ltv-pct').textContent = (ltv.ceiling_pct || ltv.approved_pct || 60) + '%';
+      document.getElementById('mp-ltv-pct').textContent = (ltv.ceiling_pct || ltv.approved_pct || 75) + '%';
       document.getElementById('mp-ltv-drawn').textContent = formatKRW(drawnKrw);
     }
   }

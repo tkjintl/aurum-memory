@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en" class="lang-en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 <meta name="theme-color" content="#0a0a0a">
 <title>The Aurum Century Club</title>
-<meta name="description" content="The Aurum Century Club. A Singapore private fund vehicle. By introduction.">
+<meta name="description" content="The Aurum Century Club. A Singapore private fund vehicle for Korean qualified investors. By introduction.">
 
 <meta property="og:title" content="The Aurum Century Club">
-<meta property="og:description" content="A Singapore private fund vehicle. By introduction.">
+<meta property="og:description" content="One kilogram. The Founding 100. By introduction.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.theaurumcc.com">
 <meta name="robots" content="noindex, nofollow">
@@ -129,20 +129,17 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   box-shadow: 0 0 18px var(--goldGlow);
   border-color: var(--goldB);
 }
-.lockup-text { display: flex; flex-direction: column; line-height: 1; min-width:0; }
+.lockup-text { display: flex; flex-direction: column; line-height: 1; }
 .lockup-text .word {
   font-family: var(--sans); font-weight: 600;
   font-size: 14px; letter-spacing: 0.34em;
   color: var(--text);
-  white-space: nowrap;
 }
 .lockup-text .program {
   font-family: var(--mono); font-weight: 400;
   font-size: 8.5px; letter-spacing: 0.36em;
   color: var(--goldD);
   margin-top: 5px;
-  white-space: nowrap;
-  overflow: visible;
 }
 .nav-cta {
   font-family: var(--mono); font-weight: 500;
@@ -167,54 +164,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   transition: transform 0.2s;
 }
 .nav-cta:hover .arrow { transform: translateX(3px); }
-
-/* MEMBERS — subtle nav link between lang toggle and primary CTA */
-.nav-members {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--mono); font-weight: 500;
-  font-size: 9.5px; letter-spacing: 0.30em;
-  color: var(--goldDeep);
-  padding: 5px 10px;
-  margin-right: 12px;
-  white-space: nowrap;
-  transition: color 0.25s;
-}
-.nav-members:hover { color: var(--goldB); }
-.nav-members .dot {
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--goldDeep);
-  transition: background 0.25s, box-shadow 0.3s;
-}
-.nav-members:hover .dot {
-  background: var(--gold);
-  box-shadow: 0 0 8px var(--goldGlow);
-}
-/* Both .label-desktop and .label-mobile have data-lang="en", so the
-   lang switcher reveals both when in English mode. We override one or
-   the other depending on viewport. The Korean span (data-lang="ko")
-   needs no special handling — shows as 멤버 on all viewports. */
-
-/* Mobile (≤640px): hide the desktop label (show LOG IN) */
-@media (max-width: 640px) {
-  html.lang-en .nav-members .label-desktop { display: none !important; }
-  .nav-members {
-    /* Tighter sizing on mobile — keep alongside lang toggle and CTA */
-    font-size: 8px;
-    letter-spacing: 0.20em;
-    padding: 5px 6px;
-    margin-right: 4px;
-    gap: 5px;
-  }
-  .nav-members .dot { width: 3px; height: 3px; }
-  /* Tighten the nav itself + lockup gap so MEMBERS + lang + INDICATE all fit */
-  .nav { padding: 12px 14px; }
-  .nav .lockup { gap: 10px; }
-}
-
-/* Desktop+tablet (≥641px): hide the mobile label (show MEMBERS) */
-@media (min-width: 641px) {
-  html.lang-en .nav-members .label-mobile { display: none !important; }
-}
 
 /* SIDE RAIL */
 .rail {
@@ -299,41 +248,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   letter-spacing: 0.18em;
   color: var(--goldD); font-size: 13px;
 }
-
-/* "Presents" eyebrow — matches PDF cover page typography
-   Two lines of letter-spaced caps + italic verb, all left-aligned */
-.hero-presents {
-  margin-bottom: 36px;
-  text-align: left;
-}
-.hero-presents .presents-line {
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: clamp(11px, 1.4vw, 14px);
-  letter-spacing: 0.34em;
-  color: var(--goldD);
-  line-height: 1.7;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.hero-presents .presents-l1 {
-  color: var(--gold);
-}
-.hero-presents .presents-verb {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(15px, 1.6vw, 19px);
-  color: var(--goldB);
-  margin-top: 6px;
-  letter-spacing: 0;
-}
-@media (max-width: 480px) {
-  .hero-presents { margin-bottom: 28px; }
-  .hero-presents .presents-line { font-size: 10px; letter-spacing: 0.30em; }
-  .hero-presents .presents-verb { font-size: 14px; }
-}
-
 .hero-h {
   font-family: var(--serifKr); font-weight: 500;
   font-size: clamp(62px, 11vw, 168px);
@@ -341,7 +255,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   color: var(--text);
   margin: 0 0 32px;
   max-width: 14ch;
-  text-align: left;
 }
 .hero-h em {
   font-family: var(--serif); font-style: italic;
@@ -417,7 +330,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   text-align: center;
   background: var(--bg-2);
   overflow: hidden;
-  scroll-margin-top: calc(24px - clamp(56px, 8vh, 80px));
   display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 .f100::before {
@@ -528,10 +440,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   max-width: var(--content-max);
   margin: 0 auto;
   position: relative;
-  /* Anchor scroll fix: when reached via rail click, scroll past the top
-     padding so the section's visible content (eyebrow) lands just below
-     the nav, not 168px below it. The 24px is a small breathing gap. */
-  scroll-margin-top: calc(24px - var(--gap-section));
 }
 .sec-eyebrow {
   font-family: var(--mono); font-size: 11px;
@@ -1359,7 +1267,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   text-align: center;
   position: relative;
   overflow: hidden;
-  scroll-margin-top: calc(24px - var(--gap-section));
 }
 .ctas::before {
   content: ''; position: absolute; inset: 0;
@@ -1509,39 +1416,6 @@ hr.rule { border: 0; height: 1px; background: var(--goldBorder); margin: 0 var(-
   font-family: var(--mono); font-size: 9px;
   color: var(--muted); letter-spacing: 0.30em;
   text-align: right;
-}
-
-/* Discreet member log-in entry point — only visible to those who know to look */
-.foot-members {
-  padding: 0 var(--pad-x) 28px;
-  display: flex; justify-content: flex-end;
-  background: var(--bg);
-}
-.foot-members-link {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--mono); font-size: 9px;
-  letter-spacing: 0.36em; color: var(--muted);
-  padding: 6px 0;
-  transition: color 0.3s;
-}
-.foot-members-link:hover { color: var(--goldD); }
-.foot-members-link .dot {
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--muted);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.foot-members-link:hover .dot {
-  background: var(--gold);
-  box-shadow: 0 0 8px var(--goldGlow);
-}
-.foot-members-link .arr {
-  font-family: var(--serif); font-style: italic;
-  font-size: 11px; letter-spacing: 0;
-  transition: transform 0.3s;
-}
-.foot-members-link:hover .arr { transform: translateX(2px); }
-@media (max-width: 720px) {
-  .foot-members { justify-content: center; padding-bottom: 32px; }
 }
 
 /* SCROLL REVEAL */
@@ -2061,12 +1935,7 @@ html.lang-en [data-lang="ko"] { display: none; }
   letter-spacing: 0.20em;
   color: var(--text);
   text-transform: uppercase;
-  line-height: 1.15;
-  text-align: center;
-}
-.landing-wordmark .word-en .line {
-  display: block;
-  white-space: nowrap;
+  line-height: 1.1;
 }
 .landing-wordmark .word-ko {
   font-family: var(--serifKr);
@@ -2116,36 +1985,6 @@ html.lang-en [data-lang="ko"] { display: none; }
   text-shadow: 0 0 16px rgba(197,165,114,0.50);
 }
 
-/* Inquire CTA — replaces the down-arrow on the public gate */
-.landing-cta {
-  display: inline-flex; align-items: center; gap: 12px;
-  margin-top: 18px;
-  padding: 13px 22px;
-  border: 1px solid var(--goldBorderS, rgba(197,165,114,0.45));
-  background: var(--goldWash, rgba(197,165,114,0.06));
-  font-family: var(--mono); font-weight: 500;
-  font-size: 10.5px; letter-spacing: 0.30em;
-  color: var(--text);
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
-}
-.landing-cta:hover {
-  background: var(--goldWashS, rgba(197,165,114,0.12));
-  border-color: var(--gold);
-  box-shadow: 0 0 24px rgba(197,165,114,0.18);
-  transform: translateY(-1px);
-}
-.landing-cta .arrow {
-  font-family: var(--serif); font-style: italic;
-  font-size: 14px; color: var(--gold);
-  letter-spacing: 0;
-  transition: transform 0.3s var(--ease-out);
-}
-.landing-cta:hover .arrow {
-  transform: translateX(3px);
-}
-
 .landing-meta {
   position: absolute;
   bottom: 36px;
@@ -2179,7 +2018,6 @@ html.lang-en [data-lang="ko"] { display: none; }
 .landing-door .landing-wordmark { animation-delay: 0.55s; }
 .landing-door .landing-rule     { animation-delay: 0.85s; }
 .landing-door .landing-tag      { animation-delay: 1.10s; }
-.landing-door .landing-cta      { animation-delay: 1.40s; }
 .landing-meta {
   opacity: 0;
   animation: landingFadeIn 1s var(--ease-out) forwards;
@@ -2271,31 +2109,19 @@ html.lang-en [data-lang="ko"] { display: none; }
 
 /* ═══ v9 MOBILE NAV FIX ═══ */
 @media (max-width: 480px) {
-  .nav { padding: 12px 12px; gap: 6px; }
+  .nav { padding: 12px 14px; gap: 6px; }
   .lockup-text .word { font-size: 11px; letter-spacing: 0.10em; }
   .lockup-text .program { font-size: 6.5px; letter-spacing: 0.20em; }
   .lockup .seal { width: 28px; height: 28px; }
   .lockup .seal em { font-size: 14px; }
   .nav .lang-toggle {
     padding: 3px 5px;
-    margin-right: 4px;
+    margin-right: 6px;
     margin-left: auto;
   }
   .nav .lang-toggle button { font-size: 8.5px; padding: 2px 4px; letter-spacing: 0.10em; }
-  .nav-cta { font-size: 8px; padding: 6px 8px; letter-spacing: 0.18em; }
+  .nav-cta { font-size: 8px; padding: 6px 9px; letter-spacing: 0.20em; }
   .nav-cta .arrow { font-size: 9px; margin-left: 3px; }
-  .nav-members { font-size: 7.5px; padding: 4px 5px; gap: 4px; }
-}
-/* On the very narrowest phones, shrink everything so LOG IN still fits */
-@media (max-width: 380px) {
-  .nav { gap: 4px; padding: 10px 10px; }
-  .nav-cta { font-size: 7.5px; padding: 5px 7px; letter-spacing: 0.14em; }
-  .nav-members { font-size: 7px; padding: 3px 4px; gap: 3px; letter-spacing: 0.16em; }
-  .lockup { gap: 8px; }
-}
-/* Truly tiny screens (<320px) — drop LOG IN as last resort */
-@media (max-width: 320px) {
-  .nav-members { display: none !important; }
 }
 
 
@@ -2308,6 +2134,7 @@ html.lang-en [data-lang="ko"] { display: none; }
 .ko,
 .word-ko,
 .divider-eyebrow .ko,
+.lockup-text .program,
 .landing-tag,
 .landing-meta {
   word-break: keep-all;
@@ -2419,31 +2246,15 @@ html.lang-en [data-lang="ko"] { display: none; }
 /* Reduce vertical bloat without hiding content */
 
 @media (max-width: 768px) {
-  /* ═══ MOBILE FULL-PANE AUDIT FIX ═══
-     User wants every pane to fill the viewport on mobile so that scrolling
-     feels like discrete pane-to-pane transitions rather than continuous
-     content bleed. Previously these sections had `min-height: auto` to
-     "release from full viewport" — we reverse that. Use 100svh (small
-     viewport height) so iOS Safari URL bar doesn't push content above
-     the fold; fall back to 100vh on browsers without svh support. */
-
   /* Section padding tightened across the board */
   .sec {
     padding-top: clamp(40px, 5vh, 60px);
     padding-bottom: clamp(28px, 3.5vh, 40px);
-    /* Force full-pane on mobile — most .sec content is naturally taller
-       than 100vh so this only affects short ones, ensuring they fill */
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 
-  /* Hero — full pane on mobile (was: min-height: auto) */
+  /* Hero — compact on mobile */
   .hero {
-    min-height: 100vh;
-    min-height: 100svh;
+    min-height: auto;
     padding: clamp(72px, 12vh, 100px) var(--pad-x) clamp(40px, 6vh, 60px);
   }
   .hero-h {
@@ -2455,10 +2266,9 @@ html.lang-en [data-lang="ko"] { display: none; }
     line-height: 1.55;
   }
 
-  /* Founding 100 — full pane on mobile (was: min-height: auto !important) */
+  /* Founding 100 — release from full viewport on mobile */
   #founding-100 {
-    min-height: 100vh !important;
-    min-height: 100svh !important;
+    min-height: auto !important;
     padding-top: clamp(48px, 6vh, 72px);
     padding-bottom: clamp(36px, 5vh, 48px);
   }
@@ -2469,24 +2279,6 @@ html.lang-en [data-lang="ko"] { display: none; }
     transform: scale(0.85);
     transform-origin: center top;
     margin: 12px auto -32px;
-  }
-
-  /* Numbers panel (qstats) — full pane, centered vertically on mobile */
-  .numbers {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  /* CTAs (interest section) — full pane, centered vertically on mobile */
-  .ctas {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 
   /* Section dividers — tighter on mobile */
@@ -2758,69 +2550,1259 @@ html.lang-en [data-lang="ko"] { display: none; }
   display: inline-block;
   white-space: nowrap;
 }
+  /* ═══ ACCESS GATE — verifying overlay before content reveals ═══ */
+  .access-gate {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.4s var(--ease-out);
+  }
+  .access-gate.hide { opacity: 0; pointer-events: none; }
+  .access-gate .seal {
+    width: 64px; height: 64px;
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+    color: var(--gold); font-size: 28px; letter-spacing: -0.04em;
+    margin-bottom: 22px;
+    animation: gateBreathe 2.4s ease-in-out infinite;
+  }
+  @keyframes gateBreathe {
+    0%, 100% { box-shadow: 0 0 0 rgba(197,165,114,0); }
+    50% { box-shadow: 0 0 32px rgba(197,165,114,0.30); }
+  }
+  .access-gate .label {
+    font-family: var(--mono); font-size: 9.5px;
+    color: var(--goldD); letter-spacing: 0.32em;
+  }
+  /* Body content hidden while gate is up */
+  body.gate-active > *:not(.access-gate) { visibility: hidden; }
 
 </style>
 </head>
-<body>
+<body class="gate-active">
+
+<!-- ACCESS GATE — checks aurum_access cookie before revealing content -->
+<div class="access-gate" id="access-gate" aria-hidden="true">
+  <div class="seal"><em>Au</em></div>
+  <div class="label">VERIFYING ACCESS</div>
+</div>
 
 <div class="spotlight" id="spotlight"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="#" class="lockup">
+  <a href="#top" class="lockup">
     <span class="seal"><em>Au</em></span>
     <div class="lockup-text">
       <span class="word">AURUM</span>
       <span class="program">CENTURY CLUB</span>
     </div>
   </a>
-  <a href="/members" class="nav-members" aria-label="Member log-in">
-    <span class="dot"></span>
-    <span class="label-desktop">MEMBERS</span>
-    <span class="label-mobile">LOG IN</span>
-  </a>
+  <div class="lang-toggle" role="group" aria-label="Language"><button type="button" data-lang-btn="ko" class="active">한</button><span class="sep">/</span><button type="button" data-lang-btn="en">EN</button></div><a href="/nda" class="nav-cta"><span data-lang="en">CONTINUE TO NDA</span><span data-lang="ko">NDA로 진행</span><span class="arrow">→</span></a>
+</nav>
+
+<!-- SIDE RAIL -->
+<nav class="rail" id="rail" aria-label="Section navigation">
+  <a href="#top"             class="rail-item" data-section="top"             data-label="THE KILO">○</a>
+  <a href="#founding-100"    class="rail-item" data-section="founding-100"    data-label="THE 100">100</a>
+  <a href="#origin"          class="rail-item" data-section="origin"          data-label="ORIGIN">I</a>
+  <a href="#forces"          class="rail-item" data-section="forces"          data-label="THE FORM">II</a>
+  <a href="#qualifier"       class="rail-item" data-section="qualifier"       data-label="QUALIFIER">III</a>
+  <a href="#mechanism"       class="rail-item" data-section="mechanism"       data-label="MECHANISM">IV</a>
+  <a href="#subscription"    class="rail-item" data-section="subscription"    data-label="SIMPLIFICATION">V</a>
+  <a href="#book"            class="rail-item" data-section="book"            data-label="THE BOOK">VI</a>
+  <a href="#closing"         class="rail-item" data-section="closing"         data-label="CONTINUE TO NDA">→</a>
 </nav>
 
 
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow reveal">
+    <span><span data-lang="en">THE CENTURY CLUB</span></span>
+    <span class="ko" data-lang="ko">센추리 클럽</span>
+  </div>
+  <h1 class="hero-h reveal delay-1" data-lang="en">The <em>Kilo.</em></h1><h1 class="hero-h reveal delay-1" data-lang="ko">한 <em>킬로그램.</em></h1>
+  <p class="hero-lede reveal delay-2" data-lang="en">
+    Physical gold as the foundation. Private capital as the return.
+    A Singapore program for a founding group of <em>Korean&nbsp;investors.</em>
+  </p><p class="hero-lede reveal delay-2" data-lang="ko">
+    실물 금이 기반이며, 사모(私募) 자본이 수익을 만듭니다.
+    소수의 <em>한국 자산가</em>를 위한 싱가포르 프로그램입니다.
+  </p>
+  <div class="hero-meta reveal delay-3">
+    <span><span data-lang="en">SINGAPORE</span><span data-lang="ko">싱가포르</span></span>
+    <span><span data-lang="en">QUALIFIED INVESTORS ONLY</span><span data-lang="ko">적격 투자자 전용</span></span>
+  </div>
+  <div class="hero-cue"><span data-lang="en">SCROLL</span><span data-lang="ko">스크롤</span></div>
+</section>
 
+<!-- FOUNDING 100 · cohort scoreboard — special, no Roman numeral -->
+<section class="f100" id="founding-100">
+  <div class="f100-eyebrow reveal"><span data-lang="en">THE FOUNDING 100</span><span data-lang="ko">창립 100인</span></div>
+  <div class="f100-hero reveal delay-1">
+    <span class="live" id="live-count">8</span><span class="slash">/</span><span class="cap">100</span>
+  </div>
+  <div class="f100-meta reveal delay-2">
+    <span class="ko" data-lang="en">백 · one hundred</span><span class="ko" data-lang="ko">백 · 100인</span>
+    <span class="dot">·</span>
+    <span class="label"><span data-lang="en">SUBSCRIBED</span><span data-lang="ko">등록 완료</span></span>
+    <span class="dot">·</span>
+    <span class="date"><span data-lang="en">AS OF MAY 2026</span><span data-lang="ko">2026년 5월 기준</span></span>
+  </div>
+  <div class="f100-grid reveal delay-3" id="grid"></div>
+  <div class="f100-closer reveal" data-lang="en">Once full, <em>the book closes.</em></div><div class="f100-closer reveal" data-lang="ko">정원이 차면, <em>모집이 마감됩니다.</em></div>
+  <div class="f100-cap-mark reveal delay-1" data-lang="en">·  AT 100  ·  CLOSED  ·</div><div class="f100-cap-mark reveal delay-1" data-lang="ko">·  100인 도달  ·  마감  ·</div>
+</section>
 
-<!-- LANDING · the door — public surface, English-only -->
-<section class="landing" id="landing">
-  <div class="landing-door" aria-label="The Aurum Century Club">
-    <div class="landing-seal">
-      <div class="seal-frame"><em>Au</em></div>
+<!-- I · ORIGIN -->
+<section class="sec" id="origin">
+  <div class="section-divider reveal">
+    <span class="divider-num">I.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">ORIGIN</span>
+      <span class="ko">서장</span>
     </div>
-    <div class="landing-wordmark">
-      <div class="word-en"><span class="line">The Aurum</span><span class="line">Century Club</span></div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">
+    The deals were there.<br>
+    <em>We built the mechanism.</em>
+  </h2><h2 class="sec-h reveal delay-1" data-lang="ko">
+    거래는 이미 있었습니다.<br>
+    <em>저희는 그것을 담을 구조를 만들었습니다.</em>
+  </h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    The partners behind Aurum sourced US private positions across two decades
+    and placed them, one transaction at a time, with a small group of Korean
+    investors. <em>The capital was ready. The deals were available.</em>
+    What was missing was the mechanism to hold them.
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    Aurum의 파트너들은 지난 20년에 걸쳐 미국 사모 시장의 포지션을 발굴해, 
+    한국 자산가들에게 한 건씩 직접 연결해 왔습니다. <em>자본은 준비돼 있었고, 거래도 존재했습니다.</em>
+    부족했던 것은 그것들을 담아낼 구조였습니다.
+  </p>
+
+  <div class="gap-diagram reveal">
+    <div class="gap-diagram-h"><span data-lang="en">THE GAP <span style="color:var(--goldD); margin: 0 12px;">·</span> DIRECT ROUTE</span><span data-lang="ko">격차 <span style="color:var(--goldD); margin: 0 12px;">·</span> 직접 경로</span></div>
+    <div class="gap-row">
+      <div class="gap-side">
+        <div class="glyph">韓</div>
+        <div class="label"><span data-lang="en">KOREAN HNW</span><span data-lang="ko">한국 자산가</span></div>
+        <div class="desc" data-lang="en">Capital ready. Direct-deal appetite, no path.</div><div class="desc" data-lang="ko">자본은 준비. 직접 투자 의향. 그러나 길은 없음.</div>
+      </div>
+      <div class="gap-walls">
+        <div class="gap-wall"><div class="x">×</div><div class="label"><span data-lang="en">FILINGS</span><span data-lang="ko">신고</span></div><div class="desc" data-lang="en">incremental per-deal compliance work</div><div class="desc" data-lang="ko">거래마다 누적되는 규제 업무</div></div>
+        <div class="gap-wall"><div class="x">×</div><div class="label"><span data-lang="en">CAPS</span><span data-lang="ko">한도</span></div><div class="desc" data-lang="en">pool and concentration limits</div><div class="desc" data-lang="ko">풀·집중도 제한</div></div>
+        <div class="gap-wall"><div class="x">×</div><div class="label"><span data-lang="en">REVIEWS</span><span data-lang="ko">심사</span></div><div class="desc" data-lang="en">compliance review on each wire</div><div class="desc" data-lang="ko">송금마다 컴플라이언스 검토</div></div>
+        <div class="gap-wall"><div class="x">×</div><div class="label"><span data-lang="en">ACCESS</span><span data-lang="ko">접근</span></div><div class="desc" data-lang="en">closed to single tickets</div><div class="desc" data-lang="ko">단독 티켓에는 닫혀 있음</div></div>
+      </div>
+      <div class="gap-side">
+        <div class="glyph us">美</div>
+        <div class="label"><span data-lang="en">US INSTITUTIONAL</span><span data-lang="ko">미국 기관 시장</span></div>
+        <div class="desc" data-lang="en">Closed primaries. Curated books. Relationship-gated.</div><div class="desc" data-lang="ko">비공개 1차 시장. 선별된 도서. 관계 기반 진입.</div>
+      </div>
     </div>
-    <div class="landing-rule"></div>
-    <div class="landing-tag">A Singapore <em>private fund vehicle</em>. By introduction.</div>
-    <a href="/interest" class="landing-cta">
-      <span>INQUIRE</span>
-      <span class="arrow">→</span>
-    </a>
+    <div class="gap-bridge" data-lang="en">
+      <span class="seal-inline"><em>Au</em></span>
+      Aurum is <em>the fund built to hold them.</em>
+    </div><div class="gap-bridge" data-lang="ko">
+      <span class="seal-inline"><em>Au</em></span>
+      Aurum은 <em>그것들을 담기 위해 만들어진 펀드입니다.</em>
+    </div>
   </div>
 </section>
 
+<!-- II · THE FORM (Three Forces) -->
+<section class="sec" id="forces">
+  <div class="section-divider reveal">
+    <span class="divider-num">II.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">THE FORM</span>
+      <span class="ko">형태</span>
+    </div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">Three forces. <em>One fund.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">세 가지 힘. <em>하나의 펀드.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    The decision was not what to build. The decision was where. Three answers
+    came into alignment at one place — Singapore. <em>The combination is what is new.</em>
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    질문은 '무엇을 만들 것인가'가 아니었다. '어디서 만들 것인가'였다. 세 가지 답이 한 곳에서 맞물렸다 — 싱가포르.
+    <em>그 조합이 새로운 것이다.</em>
+  </p>
+
+  <div class="forces-tele reveal">
+    <div class="tele-pills" role="tablist" aria-label="Three forces">
+      <button type="button" class="tele-pill active" data-pillar="1" role="tab" aria-selected="true">
+        <span class="pill-num">I.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">ACCESS</span><span data-lang="ko">접근</span>
+          <span class="ko" data-lang="en">접근</span>
+        </span>
+      </button>
+      <button type="button" class="tele-pill" data-pillar="2" role="tab" aria-selected="false">
+        <span class="pill-num">II.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">SINGAPORE</span><span data-lang="ko">싱가포르</span>
+          <span class="ko" data-lang="en">싱가포르</span>
+        </span>
+      </button>
+      <button type="button" class="tele-pill" data-pillar="3" role="tab" aria-selected="false">
+        <span class="pill-num">III.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">GOLD</span><span data-lang="ko">금</span>
+          <span class="ko" data-lang="en">금</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="tele-panel">
+      <div class="tele-pane active" data-pillar="1" role="tabpanel">
+        <div class="force-pane-grid">
+          <div class="force-pane-icon">
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="8" y="14" width="40" height="32"/>
+              <line x1="8" y1="22" x2="48" y2="22"/>
+              <circle cx="42" cy="32" r="3" fill="currentColor"/>
+              <line x1="20" y1="32" x2="36" y2="32" stroke-dasharray="2,3"/>
+            </svg>
+          </div>
+          <div class="force-pane-body">
+            <h3 class="force-h"><span data-lang="en">Access</span><span data-lang="ko">접근</span><span class="ko" data-lang="en">접근</span></h3>
+            <p class="force-tag" data-lang="en">The deals that do not advertise.</p><p class="force-tag" data-lang="ko">광고하지 않는 거래.</p>
+            <p class="force-body" data-lang="en">
+              Pre-IPO secondaries and disciplined US private credit clear through
+              <em>relationships, not brokered channels.</em> The partners behind Aurum
+              have built those relationships across two decades. Members inherit the
+              relationship — not the brokerage.
+            </p><p class="force-body" data-lang="ko">
+              프리-IPO 세컨더리와 절제된 미국 사모 크레딧은 
+              <em>관계를 통해서만 닿을 수 있습니다 — 중개 채널이 아닙니다.</em> 
+              Aurum의 파트너들은 그 관계를 20년에 걸쳐 구축해 왔습니다. 
+              회원이 물려받는 것은 관계 자체이지, 중개가 아닙니다.
+            </p>
+            <div class="force-chips" data-lang="en">SOURCED  ·  DIRECT  ·  CURATED</div><div class="force-chips" data-lang="ko">발굴  ·  직접  ·  선별</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tele-pane" data-pillar="2" role="tabpanel">
+        <div class="force-pane-grid">
+          <div class="force-pane-icon">
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="10" y="36" width="36" height="14"/>
+              <rect x="14" y="26" width="28" height="10"/>
+              <rect x="18" y="16" width="20" height="10"/>
+              <line x1="14" y1="40" x2="42" y2="40"/>
+              <line x1="18" y1="30" x2="38" y2="30"/>
+              <circle cx="28" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="force-pane-body">
+            <h3 class="force-h"><span data-lang="en">Singapore</span><span data-lang="ko">싱가포르</span><span class="ko" data-lang="en">싱가포르</span></h3>
+            <p class="force-tag" data-lang="en">Capital grows where it sits.</p><p class="force-tag" data-lang="ko">자본은 머무는 곳에서 자란다.</p>
+            <p class="force-body" data-lang="en">
+              A Singapore fund structure holds offshore investments outside the
+              per-deal repatriation cycle. Income and gains accumulate at the fund
+              level — <em>the growth stays where it is, compounding, not recurring.</em>
+              World-class regulatory framework.
+            </p><p class="force-body" data-lang="ko">
+              싱가포르 펀드 구조는 해외 투자 자산을 거래마다 본국으로 송환하는 
+              과정 밖에서 보유합니다. 수익과 이익은 펀드 레벨에서 누적됩니다 — 
+              <em>자본은 그 자리에 머물며 복리로 쌓이고, 매번 다시 시작하지 않습니다.</em>
+              세계적 수준의 규제 체계.
+            </p>
+            <div class="force-chips" data-lang="en">SINGAPORE  ·  REGULATED  ·  ESTABLISHED</div><div class="force-chips" data-lang="ko">싱가포르  ·  규제  ·  안정</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tele-pane" data-pillar="3" role="tabpanel">
+        <div class="force-pane-grid">
+          <div class="force-pane-icon">
+            <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="8" y="22" width="40" height="14" rx="1"/>
+              <line x1="14" y1="28" x2="42" y2="28"/>
+              <text x="28" y="33" font-family="Georgia,serif" font-size="9" font-style="italic" fill="currentColor" text-anchor="middle" stroke="none">Au</text>
+              <line x1="14" y1="36" x2="42" y2="36"/>
+            </svg>
+          </div>
+          <div class="force-pane-body">
+            <h3 class="force-h"><span data-lang="en">Gold</span><span data-lang="ko">금</span><span class="ko" data-lang="en">금</span></h3>
+            <p class="force-tag" data-lang="en">Not the gift. The asset.</p><p class="force-tag" data-lang="ko">선물이 아니다. 자산이다.</p>
+            <p class="force-body" data-lang="en">
+              In Korea, gold is the wedding token, the quiet inheritance — bought
+              domestically <em>at a premium few realize.</em> Across a generation, the
+              asset has appreciated against every G10 currency. Singapore is the
+              world's deepest bullion market.
+            </p><p class="force-body" data-lang="ko">
+              한국에서 금은 혼수, 조용한 상속. 국내에서 
+              <em>적지 않은 프리미엄을 얹어</em> 매입됩니다. 
+              한 세대에 걸쳐 G10 통화 모두에 대해 가치가 상승했습니다. 
+              싱가포르는 세계에서 가장 깊은 금괴 시장입니다.
+            </p>
+            <div class="force-chips" data-lang="en">INSTITUTIONAL  ·  ALLOCATED  ·  SG HUB</div><div class="force-chips" data-lang="ko">기관급  ·  할당  ·  싱가포르 허브</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="forces-closer reveal" data-lang="en">
+    Access opens. Singapore holds. <em>Gold protects.</em>
+  </div><div class="forces-closer reveal" data-lang="ko">
+    접근이 열린다. 싱가포르가 보유한다. <em>금이 지킨다.</em>
+  </div>
+</section>
+
+<!-- III · QUALIFIER -->
+<section class="sec" id="qualifier">
+  <div class="section-divider reveal">
+    <span class="divider-num">III.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">THE QUALIFIER</span>
+      <span class="ko">자격</span>
+    </div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">One kilogram. <em>The Founding 100.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">한 킬로. <em>창립 100인.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    Physical gold is the qualifier. Private capital access is the product.
+    What follows is what each <em>Century Club member</em> will receive at launch.
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    자격의 기준은 실물 금. 제공되는 것은 사모 자본 접근. 
+    아래는 모든 <em>센추리 클럽 회원</em>이 출범 시 받게 되는 것입니다.
+  </p>
+
+  <div class="qual-tele reveal">
+    <div class="tele-pills" role="tablist" aria-label="The kilogram's journey">
+      <button type="button" class="tele-pill active" data-pillar="1" role="tab" aria-selected="true">
+        <span class="pill-num">I.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">YOU HOLD</span><span data-lang="ko">보유</span>
+          <span class="ko" data-lang="en">보유</span>
+        </span>
+      </button>
+      <button type="button" class="tele-pill" data-pillar="2" role="tab" aria-selected="false">
+        <span class="pill-num">II.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">AURUM DEPLOYS</span><span data-lang="ko">운용</span>
+          <span class="ko" data-lang="en">운용</span>
+        </span>
+      </button>
+      <button type="button" class="tele-pill" data-pillar="3" role="tab" aria-selected="false">
+        <span class="pill-num">III.</span>
+        <span class="pill-lbl">
+          <span data-lang="en">YOU RECEIVE</span><span data-lang="ko">수령</span>
+          <span class="ko" data-lang="en">수령</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="tele-panel">
+      <div class="tele-pane active" data-pillar="1" role="tabpanel">
+        <div class="qual-pane-body">
+          <div class="h"><span data-lang="en">WHAT YOU HOLD</span><span data-lang="ko">회원이 보유하는 것</span></div>
+          <h3 data-lang="en">What <em>you hold.</em></h3><h3 data-lang="ko">회원이 <em>보유하는 것.</em></h3>
+          <p data-lang="en">
+            Institutional-grade physical gold, allocated to the member's name,
+            held in segregated custody at a Singapore freeport — <em>fully insured,</em>
+            serial-identified.
+          </p><p data-lang="ko">
+            회원 명의로 할당된 기관급 실물 금. 싱가포르 프리포트의 분리 보관소에서 보관됩니다 — 
+            <em>완전 보험 가입,</em> 일련번호 기록.
+          </p>
+          <p data-lang="en">
+            The bar collateralizes a credit line at a Singapore institutional bank.
+            The metal never moves; the credit it unlocks deploys.
+          </p><p data-lang="ko">
+            금괴는 싱가포르 기관 은행의 신용 한도를 담보합니다. 
+            금속은 움직이지 않고, 그것이 풀어내는 신용만 운용됩니다.
+          </p>
+        </div>
+      </div>
+      <div class="tele-pane" data-pillar="2" role="tabpanel">
+        <div class="qual-pane-body">
+          <div class="h"><span data-lang="en">WHAT AURUM DOES WITH IT</span><span data-lang="ko">Aurum이 운용하는 방식</span></div>
+          <h3 data-lang="en">What <em>Aurum does with it.</em></h3><h3 data-lang="ko">Aurum이 <em>하는 일.</em></h3>
+          <p data-lang="en">
+            Credit deploys into <em>two sleeves:</em> pre-IPO growth equity and US
+            mid-market private credit, with selective access to <em>institutional
+            real estate</em> deals. A standing <em>20% reserve</em> is held in cash
+            and short-dated US Treasuries.
+          </p><p data-lang="en">
+            <em>Reinvestment is the default path</em> — fund-level returns compound
+            across vintages.
+          </p><p data-lang="ko">
+            신용은 <em>두 갈래로 운용됩니다:</em> 프리-IPO 성장 주식과 미국 중형 사모 
+            크레딧, 그리고 선별적 <em>기관급 부동산</em> 거래 접근. 
+            <em>20% 상시 유보분</em>은 현금 및 단기 미국 국채로 보유합니다.
+          </p><p data-lang="ko">
+            <em>재투자가 기본 경로</em> — 펀드 레벨 수익이 빈티지를 가로질러 복리로 쌓입니다.
+          </p>
+        </div>
+      </div>
+      <div class="tele-pane" data-pillar="3" role="tabpanel">
+        <div class="qual-pane-body">
+          <div class="h"><span data-lang="en">WHAT YOU RECEIVE</span><span data-lang="ko">회원이 받는 것</span></div>
+          <h3 data-lang="en">What <em>you receive.</em></h3><h3 data-lang="ko">회원이 <em>받는 것.</em></h3>
+          <p data-lang="en">
+            Direct allocation in Aurum Fund deal flow. A kilogram of gold in your
+            name, working as collateral while it appreciates. <em>One Singapore
+            subscription</em> in place of the compounding paperwork that comes with
+            every direct deal.
+          </p><p data-lang="ko">
+            Aurum 펀드의 거래 흐름에 직접 할당. 회원 명의의 금 1킬로그램이 
+            가치 상승과 동시에 담보로 일합니다. <em>거래마다 누적되는 서류 작업을 
+            단 한 번의 싱가포르 구독</em>으로 대체.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IV · MECHANISM -->
+<section class="sec" id="mechanism">
+  <div class="section-divider reveal">
+    <span class="divider-num">IV.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">MECHANISM</span>
+      <span class="ko">메커니즘</span>
+    </div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">One kilogram. <em>Two jobs.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">한 킬로. <em>두 가지 역할.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    A single kilogram does <em>two jobs at once</em> — it protects the member, and
+    it funds the deal pipeline through a Singapore credit line. <em>No bank, no
+    family office, no product in Asia combines the two.</em>
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    한 킬로의 금이 <em>동시에 두 역할을 합니다</em> — 회원을 보호하고, 
+    싱가포르 신용 한도를 통해 거래 파이프라인에 자금을 공급합니다. 
+    <em>아시아의 어떤 은행도, 패밀리 오피스도, 상품도 이 둘을 결합하지 않습니다.</em>
+  </p>
+
+  <div class="jobs-pair">
+    <div class="job-card reveal">
+      <div class="job-eyebrow"><span data-lang="en">JOB ONE</span> <span class="ko">보호</span></div>
+      <h3 class="job-h" data-lang="en">The bar <em>protects.</em></h3><h3 class="job-h" data-lang="ko">금괴는 <em>지킨다.</em></h3>
+      <div class="job-tag" data-lang="en">Protection · unmoved · unseized</div><div class="job-tag" data-lang="ko">보호 · 부동 · 불변</div>
+      <p class="job-body" data-lang="en">
+        Allocated and segregated at a Singapore freeport.
+        <em>Serial-identified.</em> Fully insured. The member's name on the
+        certificate. Conservative LTV monitoring with member alerts well before
+        any margin threshold. <em>The metal is still, and it is safe.</em>
+      </p><p class="job-body" data-lang="ko">
+        싱가포르 프리포트에 할당·분리 보관. <em>일련번호 기록.</em> 
+        완전 보험. 회원 명의의 보관 증서. 보수적인 LTV 모니터링과 
+        마진 임계 도달 한참 전 회원 알림. <em>금속은 정지해 있고, 안전합니다.</em>
+      </p>
+    </div>
+    <div class="job-card reveal delay-1">
+      <div class="job-eyebrow"><span data-lang="en">JOB TWO</span> <span class="ko">생산</span></div>
+      <h3 class="job-h" data-lang="en">The credit <em>earns.</em></h3><h3 class="job-h" data-lang="ko">신용은 <em>일한다.</em></h3>
+      <div class="job-tag" data-lang="en">Production · deployed · productive</div><div class="job-tag" data-lang="ko">생산 · 운용 · 가동</div>
+      <p class="job-body" data-lang="en">
+        A credit line collateralized by the bar at <em>institutional pricing.</em>
+        Proceeds deploy into pre-IPO equity and US private credit at
+        <em>~15% base IRR target,</em> net of fees.
+      </p><p class="job-body" data-lang="ko">
+        금괴를 담보로 한 <em>기관급 가격의</em> 신용 한도. 
+        자금은 프리-IPO 주식과 미국 사모 크레딧에 운용됩니다 — 
+        수수료 차감 후 <em>약 15% 기본 IRR 목표.</em>
+      </p>
+    </div>
+  </div>
+
+  <div class="flow reveal">
+    <div class="step">
+      <div class="roman">I.</div>
+      <div class="action"><span data-lang="en">DEPOSIT</span><span data-lang="ko">예치</span></div>
+      <h4 data-lang="en">Member <em>gold bar</em></h4><h4 data-lang="ko">회원 <em>금괴</em></h4>
+      <p data-lang="en">Institutional-grade · serial-identified</p><p data-lang="ko">기관급 · 일련번호</p>
+      <div class="value">1 kg<span class="sub"><span data-lang="en">ALLOCATED</span><span data-lang="ko">할당</span></span></div>
+    </div>
+    <div class="step">
+      <div class="roman">II.</div>
+      <div class="action"><span data-lang="en">CUSTODY</span><span data-lang="ko">보관</span></div>
+      <h4 data-lang="en">Singapore <em>custody</em></h4><h4 data-lang="ko">싱가포르 <em>보관</em></h4>
+      <p data-lang="en">Freeport · segregated · insured</p><p data-lang="ko">프리포트 · 분리 · 보험</p>
+      <div class="value"><span data-lang="en">Allocated</span><span data-lang="ko">할당</span><span class="sub"><span data-lang="en">SEGREGATED</span><span data-lang="ko">분리</span></span></div>
+    </div>
+    <div class="step">
+      <div class="roman">III.</div>
+      <div class="action"><span data-lang="en">PLEDGE → CREDIT</span><span data-lang="ko">담보 → 신용</span></div>
+      <h4 data-lang="en">Credit <em>line</em></h4><h4 data-lang="ko">신용 <em>한도</em></h4>
+      <p data-lang="en">Singapore institutional · institutional pricing</p><p data-lang="ko">싱가포르 기관 · 기관급 가격</p>
+      <div class="value"><span data-lang="en">Working</span><span data-lang="ko">가동</span><span class="sub"><span data-lang="en">CAPITAL</span><span data-lang="ko">자본</span></span></div>
+    </div>
+    <div class="step">
+      <div class="roman">IV.</div>
+      <div class="action"><span data-lang="en">DEPLOY</span><span data-lang="ko">운용</span></div>
+      <h4 data-lang="en">Two <em>sleeves</em></h4><h4 data-lang="ko">두 <em>갈래</em></h4>
+      <p data-lang="en">Pre-IPO equity · US private credit</p><p data-lang="ko">프리-IPO 주식 · 미국 사모 크레딧</p>
+      <div class="value">~15%<span class="sub"><span data-lang="en">BASE IRR · NET</span><span data-lang="ko">기본 IRR · 순</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO ENGINES (still under §IV — Mechanism) -->
+<section class="sec">
+  <div class="sec-eyebrow reveal">
+    <span data-lang="en">COMPOUNDING</span>
+    <span class="ko">복리</span>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">Two engines. <em>One NAV.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">두 개의 엔진. <em>하나의 NAV.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    The kilogram becomes <em>two compounding instruments at once.</em> The metal
+    appreciates on its own arc. The credit it generates compounds on the
+    pipeline's. The member's NAV is the sum.
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    한 킬로는 동시에 <em>두 개의 복리 자산</em>이 됩니다. 금속은 자신의 궤적으로 
+    가치가 오릅니다. 그것이 생성한 신용은 파이프라인의 궤적으로 복리됩니다. 
+    회원의 NAV는 그 합입니다.
+  </p>
+
+  <div class="engines-pair">
+    <div class="engine-card reveal">
+      <div class="h"><span data-lang="en">ENGINE I  ·  GOLD FLOOR</span><span data-lang="ko">엔진 I  ·  금 바닥</span></div>
+      <h3 data-lang="en">Compounds at the rate of <em>money supply.</em></h3><h3 data-lang="ko"><em>통화 공급</em>의 속도로 복리.</h3>
+      <p data-lang="en">
+        The kilogram appreciates passively against won, dollar, yen — the
+        asymmetry that makes Korean families hold it in the first place.
+        Aurum doesn't accelerate it. It simply <em>stops the metal from sitting idle.</em>
+      </p><p data-lang="ko">
+        한 킬로는 원, 달러, 엔 모두에 대해 수동적으로 가치가 오릅니다 — 
+        애초에 한국 가정이 금을 보유하는 이유인 비대칭. Aurum은 그 속도를 
+        가속하지 않습니다. 그저 <em>금속이 가만히 놓여 있는 상태를 끝낼 뿐입니다.</em>
+      </p>
+    </div>
+    <div class="engine-card reveal delay-1">
+      <div class="h"><span data-lang="en">ENGINE II  ·  THE PIPELINE</span><span data-lang="ko">엔진 II  ·  파이프라인</span></div>
+      <h3 data-lang="en">Compounds at the rate of <em>the deal book.</em></h3><h3 data-lang="ko"><em>거래 북</em>의 속도로 복리.</h3>
+      <p data-lang="en">
+        The credit drawn against the bar deploys into pre-IPO equity at 18–25%
+        and private credit at 10–14% gross. <em>The bar grows the floor; the
+        deals grow the ceiling.</em>
+      </p><p data-lang="ko">
+        금괴를 담보로 인출한 신용은 18–25%의 프리-IPO 주식과 
+        10–14% 그로스의 사모 크레딧에 운용됩니다. 
+        <em>금괴는 바닥을 올리고, 거래는 천장을 올립니다.</em>
+      </p>
+    </div>
+  </div>
+
+  <div class="engines-chart reveal">
+    <div class="engines-chart-h">
+      <span><span data-lang="en">FIVE-YEAR PATH  ·  ENGINE II  ·  RETURN BANDS</span><span data-lang="ko">5년 경로  ·  엔진 II  ·  수익 밴드</span></span>
+      <span class="meta"><span data-lang="en">gross IRR ranges · by deal type · illustrative</span><span data-lang="ko">그로스 IRR 범위 · 거래 유형별 · 예시</span></span>
+    </div>
+    <svg viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet">
+      <!-- Plot grid -->
+      <line x1="60" y1="40" x2="660" y2="40" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="60" y1="120" x2="660" y2="120" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="60" y1="200" x2="660" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="60" y1="280" x2="660" y2="280" stroke="rgba(197,165,114,0.30)" stroke-width="1"/>
+      <!-- Y-axis labels -->
+      <text x="48" y="44" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="end">30%</text>
+      <text x="48" y="124" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="end">20%</text>
+      <text x="48" y="204" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="end">10%</text>
+      <text x="48" y="284" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="end">0%</text>
+      <!-- X-axis labels -->
+      <text x="60" y="305" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="middle">YR 0</text>
+      <text x="360" y="305" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="middle">YR 2.5</text>
+      <text x="660" y="305" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a7d6b" text-anchor="middle">YR 5</text>
+      <!-- Pre-IPO line (red, top performer) -->
+      <line x1="60" y1="280" x2="660" y2="40" stroke="#c77061" stroke-width="2"/>
+      <circle cx="660" cy="40" r="5" fill="#c77061"/>
+      <!-- Growth Equity line (gold) -->
+      <line x1="60" y1="280" x2="660" y2="80" stroke="#C5A572" stroke-width="2"/>
+      <circle cx="660" cy="80" r="5" fill="#C5A572"/>
+      <!-- Blended NAV path (bright gold dashed, primary) -->
+      <line x1="60" y1="280" x2="660" y2="155" stroke="#E3C187" stroke-width="2.5" stroke-dasharray="3,3"/>
+      <circle cx="660" cy="155" r="5" fill="#E3C187"/>
+      <!-- Private Credit line (dim gold dashed) -->
+      <line x1="60" y1="280" x2="660" y2="200" stroke="#8a7d6b" stroke-width="1.8" stroke-dasharray="4,4"/>
+      <circle cx="660" cy="200" r="5" fill="#8a7d6b"/>
+      <!-- LEGEND PANEL — right side, well-spaced -->
+      <line x1="685" y1="36" x2="700" y2="36" stroke="#c77061" stroke-width="2"/>
+      <text x="710" y="40" font-family="JetBrains Mono,monospace" font-size="11" fill="#c77061" letter-spacing="1.5">PRE-IPO SECONDARY</text>
+      <text x="710" y="56" font-family="Cormorant Garamond,serif" font-size="12" font-style="italic" fill="#c77061">18–30% gross</text>
+      <line x1="685" y1="92" x2="700" y2="92" stroke="#C5A572" stroke-width="2"/>
+      <text x="710" y="96" font-family="JetBrains Mono,monospace" font-size="11" fill="#C5A572" letter-spacing="1.5">GROWTH EQUITY</text>
+      <text x="710" y="112" font-family="Cormorant Garamond,serif" font-size="12" font-style="italic" fill="#C5A572">15–25% gross</text>
+      <line x1="685" y1="148" x2="700" y2="148" stroke="#E3C187" stroke-width="2.5" stroke-dasharray="3,3"/>
+      <text x="710" y="152" font-family="JetBrains Mono,monospace" font-size="11" fill="#E3C187" letter-spacing="1.5">BLENDED NAV</text>
+      <text x="710" y="168" font-family="Cormorant Garamond,serif" font-size="12" font-style="italic" fill="#E3C187">~15% net IRR · base</text>
+      <line x1="685" y1="204" x2="700" y2="204" stroke="#8a7d6b" stroke-width="1.8" stroke-dasharray="4,4"/>
+      <text x="710" y="208" font-family="JetBrains Mono,monospace" font-size="11" fill="#8a7d6b" letter-spacing="1.5">PRIVATE CREDIT</text>
+      <text x="710" y="224" font-family="Cormorant Garamond,serif" font-size="12" font-style="italic" fill="#8a7d6b">10–14% gross</text>
+      <!-- Footnote -->
+      <text x="660" y="325" font-family="Cormorant Garamond,serif" font-size="10.5" font-style="italic" fill="#6b655e" text-anchor="end">Stylized illustration. Not a forecast.</text>
+    </svg>
+  </div>
+
+  <div class="engines-sum reveal" data-lang="en">
+    The metal sits still. The capital works. <em class="bright">The NAV is the sum.</em>
+  </div><div class="engines-sum reveal" data-lang="ko">
+    금속은 정지. 자본은 가동. <em class="bright">NAV는 그 합.</em>
+  </div>
+</section>
+
+<!-- V · SIMPLIFICATION -->
+<section class="sec" id="subscription">
+  <div class="section-divider reveal">
+    <span class="divider-num">V.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">SIMPLIFICATION</span>
+      <span class="ko">단순화</span>
+    </div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">Four walls. <em>One subscription.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">네 개의 벽. <em>하나의 구독.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    Capital deployed deal-by-deal hits four practical walls. Each wall generates
+    paperwork that compounds with every transaction.
+    <em>One Singapore subscription replaces all of it.</em>
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    거래마다 직접 운용되는 자본은 네 개의 실질적 벽을 만납니다. 
+    각 벽은 거래마다 누적되는 서류 작업을 만듭니다. 
+    <em>단 한 번의 싱가포르 구독이 그 모두를 대체합니다.</em>
+  </p>
+
+  <div class="walls-vis-wrap"><div class="walls-vis reveal">
+    <div class="walls-vis-h">
+      <span class="l"></span>
+      <span><span data-lang="en">DIRECT ROUTE  ·  BLOCKED</span><span data-lang="ko">직접 경로  ·  차단</span></span>
+      <span class="r"></span>
+    </div>
+    <div class="walls-grid">
+      <div class="wall">
+        <div class="x">×</div>
+        <div class="label"><span data-lang="en">FILINGS</span><span data-lang="ko">신고</span></div>
+        <div class="desc" data-lang="en">per-deal regulatory filings</div><div class="desc" data-lang="ko">거래마다 규제 신고</div>
+      </div>
+      <div class="wall">
+        <div class="x">×</div>
+        <div class="label"><span data-lang="en">CAPS</span><span data-lang="ko">한도</span></div>
+        <div class="desc" data-lang="en">pool & concentration limits</div><div class="desc" data-lang="ko">풀·집중도 제한</div>
+      </div>
+      <div class="wall">
+        <div class="x">×</div>
+        <div class="label"><span data-lang="en">REVIEWS</span><span data-lang="ko">심사</span></div>
+        <div class="desc" data-lang="en">compliance review per wire</div><div class="desc" data-lang="ko">송금마다 컴플라이언스 검토</div>
+      </div>
+      <div class="wall">
+        <div class="x">×</div>
+        <div class="label"><span data-lang="en">ACCESS</span><span data-lang="ko">접근</span></div>
+        <div class="desc" data-lang="en">closed to single tickets</div><div class="desc" data-lang="ko">단독 티켓에는 닫혀 있음</div>
+      </div>
+    </div>
+    <div class="walls-result" data-lang="en">— each direct deal, another wall. each wall, another year of paperwork.</div><div class="walls-result" data-lang="ko">— 직접 거래마다 또 하나의 벽. 벽마다 또 한 해의 서류 작업.</div>
+  </div>
+  <div class="walls-arrow"><span class="glyph">↓</span></div>
+  </div>
+
+  <div class="simp-replace reveal">
+    <div class="simp-replace-h"><span data-lang="en">SINGLE-FILING ROUTE  ·  AURUM FUNDS</span><span data-lang="ko">단일 신고 경로  ·  Aurum 펀드</span></div>
+    <div class="simp-grid">
+      <div class="cell"><div class="k"><span data-lang="en">SUBSCRIPTION</span><span data-lang="ko">구독</span></div><div class="v" data-lang="en">One filing <em>at entry</em></div><div class="v" data-lang="ko"><em>진입 시</em> 한 번의 신고</div></div>
+      <div class="cell"><div class="k"><span data-lang="en">BANK CYCLE</span><span data-lang="ko">은행 사이클</span></div><div class="v" data-lang="en">One <em>designated</em> channel</div><div class="v" data-lang="ko"><em>지정된</em> 한 채널</div></div>
+      <div class="cell"><div class="k"><span data-lang="en">REPORTING</span><span data-lang="ko">보고</span></div><div class="v" data-lang="en">One <em>annual</em> report</div><div class="v" data-lang="ko"><em>연 1회</em> 보고서</div></div>
+      <div class="cell"><div class="k"><span data-lang="en">REDEMPTION</span><span data-lang="ko">환매</span></div><div class="v" data-lang="en">One <em>at exit</em></div><div class="v" data-lang="ko"><em>회수 시</em> 한 번</div></div>
+    </div>
+    <div class="simp-closer"><span data-lang="en">ONE SUBSCRIPTION  ·  MEMBER OBLIGATIONS REMAIN UNCHANGED</span><span data-lang="ko">한 번의 구독  ·  회원 의무는 변동 없음</span></div>
+  </div>
+</section>
+
+<!-- VI · OPENING BOOK -->
+<section class="sec" id="book">
+  <div class="section-divider reveal">
+    <span class="divider-num">VI.</span>
+    <div class="divider-eyebrow">
+      <span data-lang="en">OPENING BOOK</span>
+      <span class="ko">개시 도서</span>
+    </div>
+  </div>
+  <h2 class="sec-h reveal delay-1" data-lang="en">Two positions. <em>One opening book.</em></h2><h2 class="sec-h reveal delay-1" data-lang="ko">두 개의 포지션. <em>하나의 개시 도서.</em></h2>
+  <p class="sec-lede reveal delay-2" data-lang="en">
+    Aurum has sourced two positions of the kind that rarely clear an open
+    market. The fund forms around them. Participating members receive
+    <em>pro-rata allocation in both</em> at first close.
+  </p><p class="sec-lede reveal delay-2" data-lang="ko">
+    Aurum은 공개 시장에서 좀처럼 정리되지 않는 두 개의 포지션을 발굴했습니다. 
+    펀드는 그 둘을 중심으로 형성됩니다. 참여 회원은 첫 마감에 
+    <em>두 포지션에 대해 비례 할당</em>을 받습니다.
+  </p>
+
+  <div class="deals-grid">
+    <div class="deal reveal">
+      <div class="deal-band">
+        <span class="l"><span data-lang="en">POSITION № 01</span><span data-lang="ko">포지션 № 01</span></span>
+        <span class="r" data-lang="en">late-stage secondary</span><span class="r" data-lang="ko">후기 단계 세컨더리</span>
+      </div>
+      <div class="deal-body">
+        <div class="deal-name-cap"><span data-lang="en">FOUNDATION MODELS · ENTERPRISE AI</span><span data-lang="ko">파운데이션 모델 · 엔터프라이즈 AI</span></div>
+        <h3 class="deal-name" data-lang="en"><em>The AI assistant</em><br>businesses run on.</h3><h3 class="deal-name" data-lang="ko"><em>기업이 운영에 사용하는</em><br>AI 어시스턴트.</h3>
+        <div class="deal-tag" data-lang="en">Used inside Fortune 500 firms. Revenue growing at a rare pace.</div><div class="deal-tag" data-lang="ko">포춘 500대 기업이 사용. 보기 드문 속도로 매출 성장.</div>
+        <p data-lang="en">
+          A genuinely scarce secondary opportunity at current valuation. Aurum
+          routes through a <em>direct co-investor relationship.</em>
+        </p><p data-lang="ko">
+          현 밸류에이션 기준으로 진정으로 희소한 세컨더리 기회. Aurum은 
+          <em>직접 공동투자 관계</em>를 통해 접근합니다.
+        </p>
+        <p data-lang="en">
+          Primary market is closed; secondary allocations are tightly curated.
+          <em>Names disclosed under NDA.</em>
+        </p><p data-lang="ko">
+          프라이머리 시장은 마감, 세컨더리 할당은 엄격하게 큐레이션됩니다. 
+          <em>회사명은 NDA 하 공개.</em>
+        </p>
+      </div>
+      <div class="deal-foot">
+        <div>
+          <div class="l-k"><span data-lang="en">AURUM ALLOCATION</span><span data-lang="ko">Aurum 할당</span></div>
+          <div class="l-v">$10 M</div>
+        </div>
+        <div>
+          <div class="r-k"><span data-lang="en">TARGET</span><span data-lang="ko">목표</span></div>
+          <div class="r-v"><span data-lang="en">at close</span><span data-lang="ko">마감 시</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deal reveal delay-1">
+      <div class="deal-band">
+        <span class="l"><span data-lang="en">POSITION № 02</span><span data-lang="ko">포지션 № 02</span></span>
+        <span class="r" data-lang="en">pre-IPO crossover</span><span class="r" data-lang="ko">프리-IPO 크로스오버</span>
+      </div>
+      <div class="deal-body">
+        <div class="deal-name-cap"><span data-lang="en">DEFENSE · AI</span><span data-lang="ko">방위 · AI</span></div>
+        <h3 class="deal-name" data-lang="en"><em>Autonomous defense systems</em><br>used by allied governments.</h3><h3 class="deal-name" data-lang="ko"><em>동맹국 정부가 운용하는</em><br>자율 방위 시스템.</h3>
+        <div class="deal-tag" data-lang="en">Active US and allied contracts. Pre-IPO crossover round.</div><div class="deal-tag" data-lang="ko">미국 및 동맹국 계약 진행. 프리-IPO 크로스오버 라운드.</div>
+        <p data-lang="en">
+          Dual-use sector with structural tailwinds and a clear path to liquidity.
+          <em>Closes quickly.</em>
+        </p><p data-lang="ko">
+          구조적 순풍을 받는 듀얼유즈 섹터, 명확한 유동화 경로. 
+          <em>빠르게 마감됩니다.</em>
+        </p>
+        <p data-lang="en">
+          Aurum routes through a late-stage crossover round; strategic ticket
+          available because of an LP's partial reallocation.
+          <em>Names disclosed under NDA.</em>
+        </p><p data-lang="ko">
+          Aurum은 후기 단계 크로스오버 라운드를 통해 접근, 
+          한 LP의 부분 재할당으로 전략적 티켓 확보. 
+          <em>회사명은 NDA 하 공개.</em>
+        </p>
+      </div>
+      <div class="deal-foot">
+        <div>
+          <div class="l-k"><span data-lang="en">AURUM ALLOCATION</span><span data-lang="ko">AURUM 할당</span></div>
+          <div class="l-v">$10 M</div>
+        </div>
+        <div>
+          <div class="r-k"><span data-lang="en">TARGET</span><span data-lang="ko">목표</span></div>
+          <div class="r-v"><span data-lang="en">at close</span><span data-lang="ko">마감 시</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deals-summary reveal">
+    <div class="cell">
+      <div class="k"><span data-lang="en">OPENING BOOK</span><span data-lang="ko">개시 도서</span></div>
+      <div class="v"><em>$20</em> M</div>
+      <div class="s" data-lang="en">two positions · closed together</div><div class="s" data-lang="ko">두 포지션 · 동시 마감</div>
+    </div>
+    <div class="cell">
+      <div class="k"><span data-lang="en">PER POSITION</span><span data-lang="ko">포지션당</span></div>
+      <div class="v"><em>$10</em> M</div>
+      <div class="s" data-lang="en">Aurum Funds allocation</div><div class="s" data-lang="ko">Aurum 펀드 할당</div>
+    </div>
+    <div class="cell">
+      <div class="k"><span data-lang="en">CLOSE TIMING</span><span data-lang="ko">마감 시기</span></div>
+      <div class="v">Q3 <em>'26</em></div>
+      <div class="s" data-lang="en">subject to deal timing</div><div class="s" data-lang="ko">거래 일정에 따름</div>
+    </div>
+  </div>
+
+  <div class="post-close reveal">
+    <div class="post-close-band">
+      <span data-lang="en">BEYOND OPENING</span>
+      <span data-lang="ko">첫 마감 이후</span>
+    </div>
+    <div class="post-close-grid">
+      <div class="pc-card">
+        <div class="pc-name" data-lang="en"><em>The pipeline.</em></div>
+        <div class="pc-name" data-lang="ko"><em>파이프라인.</em></div>
+        <p data-lang="en">Sourced positions rotate through a <em>private channel</em> — not a marketplace.</p>
+        <p data-lang="ko">발굴된 포지션이 <em>비공개 채널</em>을 통해 회원에게 전달됩니다 — 시장이 아닙니다.</p>
+      </div>
+      <div class="pc-card">
+        <div class="pc-name" data-lang="en"><em>The portal.</em></div>
+        <div class="pc-name" data-lang="ko"><em>포털.</em></div>
+        <p data-lang="en">Members see <em>position, NAV, LTV</em> through the platform — <em>the inside view.</em></p>
+        <p data-lang="ko">회원은 플랫폼을 통해 <em>포지션, NAV, LTV</em>를 확인합니다 — <em>내부 시야.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="deals-disclaimer reveal" data-lang="en">
+    Sourced positions as of MMXXVI Q1 — subject to availability and final terms at close. Specifics under NDA.
+  </div><div class="deals-disclaimer reveal" data-lang="ko">
+    MMXXVI Q1 기준 발굴 포지션 — 가용성 및 최종 조건은 마감 시 결정. 세부사항은 NDA 하 공개.
+  </div>
+</section>
+
+<!-- NUMBERS · 4 cells, no fees -->
+<section class="numbers reveal">
+  <div class="qstats">
+    <div class="cell"><div class="k"><span data-lang="en">BASE IRR</span><span data-lang="ko">기본 IRR</span></div><div class="v">~<em>15</em>%</div></div>
+    <div class="cell"><div class="k"><span data-lang="en">UPSIDE IRR</span><span data-lang="ko">상방 IRR</span></div><div class="v"><em>18–25</em>%</div></div>
+    <div class="cell"><div class="k"><span data-lang="en">MIN.</span><span data-lang="ko">최소</span></div><div class="v"><em>1</em>&nbsp;kg<em>+</em></div></div>
+    <div class="cell"><div class="k"><span data-lang="en">TERM</span><span data-lang="ko">기간</span></div><div class="v"><em>5–7</em>&nbsp;yr</div></div>
+  </div>
+</section>
+
+<!-- CTAS -->
+<section class="ctas" id="interest">
+  <div class="sec-eyebrow reveal" style="justify-content:center;margin-bottom:32px;">
+    <span data-lang="en">THE PATH</span>
+    <span class="ko">절차</span>
+  </div>
+  <h2 class="ctas-h reveal" data-lang="en">
+    Four steps. <em>One conversation.</em>
+  </h2><h2 class="ctas-h reveal" data-lang="ko">
+    네 단계. <em>하나의 대화.</em>
+  </h2>
+  <p class="ctas-sub reveal delay-1" data-lang="en">
+    Admission is by <em>private process.</em> Each step is completed before the
+    next is offered. The full memo is shared only after invitation.
+  </p><p class="ctas-sub reveal delay-1" data-lang="ko">
+    진입은 <em>비공개 절차</em>로 진행됩니다. 각 단계가 완료된 후에야 다음 단계가 제공됩니다. 
+    투자 메모 전체는 초청 후에만 공유됩니다.
+  </p>
+
+  <div class="path-wrap reveal delay-2">
+    <div class="path-grid">
+      <div class="path-step">
+        <div class="num">I.</div>
+        <div class="stage"><span data-lang="en">INDICATE</span><span data-lang="ko">표명</span></div>
+        <h4 data-lang="en">Submit a <em>brief inquiry.</em></h4><h4 data-lang="ko">간단한 <em>문의 제출.</em></h4>
+        <p data-lang="en">A short form to the partners. On verification, you receive an <em>invitation code.</em></p><p data-lang="ko">파트너들에게 보내는 짧은 양식. 검증 후 <em>초대 코드</em>가 발송됩니다.</p>
+      </div>
+      <div class="path-step">
+        <div class="num">II.</div>
+        <div class="stage">NDA</div>
+        <h4 data-lang="en">Sign the <em>NDA.</em></h4><h4 data-lang="ko"><em>NDA</em> 서명.</h4>
+        <p data-lang="en">The code unlocks the full deck and detailed access to the two opening positions.</p><p data-lang="ko">코드로 전체 자료와 두 개시 포지션에 대한 상세 접근이 열립니다.</p>
+      </div>
+      <div class="path-step">
+        <div class="num">III.</div>
+        <div class="stage">IOI</div>
+        <h4 data-lang="en">Indicate your <em>commitment.</em></h4><h4 data-lang="ko"><em>참여 의사</em> 표명.</h4>
+        <p data-lang="en">A short Indication of Interest confirms readiness to deploy at first close.</p><p data-lang="ko">짧은 IOI로 첫 마감 시 운용 준비가 확인됩니다.</p>
+      </div>
+      <div class="path-step">
+        <div class="num">IV.</div>
+        <div class="stage"><span data-lang="en">ADMITTED</span><span data-lang="ko">승인</span></div>
+        <h4 data-lang="en">Partner <em>approval.</em></h4><h4 data-lang="ko">파트너 <em>승인.</em></h4>
+        <p data-lang="en">On approval, your seat in the Founding 100 is reserved and onboarding begins.</p><p data-lang="ko">승인 시 창립 100인의 자리가 예약되고 온보딩이 시작됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- CLOSING · the exit door — mirrors the opening landing -->
+<section class="closing" id="closing">
+  <div class="closing-content reveal">
+    <div class="closing-seal">
+      <div class="seal-frame"><em>Au</em></div>
+    </div>
+    <h2 class="closing-h" data-lang="en">The book opens <em>now.</em><br>It closes <em>at 100.</em></h2>
+    <h2 class="closing-h" data-lang="ko">도서는 <em>지금</em> 열립니다.<br><em>100인</em>에서 마감됩니다.</h2>
+    <div class="closing-rule"></div>
+    <p class="closing-tag" data-lang="en">Each conversation begins at the same place.</p>
+    <p class="closing-tag" data-lang="ko">모든 대화는 같은 곳에서 시작됩니다.</p>
+    <a href="/nda" class="closing-cta">
+      <span data-lang="en">CONTINUE TO NDA</span><span data-lang="ko">NDA로 진행</span>
+      <span class="closing-arrow">→</span>
+    </a>
+    <div class="closing-foot" data-lang="en">QUALIFIED&nbsp;&nbsp;·&nbsp;&nbsp;BY&nbsp;INVITATION&nbsp;&nbsp;·&nbsp;&nbsp;CONFIDENTIAL</div>
+    <div class="closing-foot" data-lang="ko">적격&nbsp;&nbsp;·&nbsp;&nbsp;초청제&nbsp;&nbsp;·&nbsp;&nbsp;기밀</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer class="foot">
   <div class="foot-l">
     <span class="seal-sm"><em>Au</em></span>
     <div class="meta">
       <span class="word">TACC PTE LTD</span>
-      <span class="pr">MMXXVI</span>
+      <span class="pr">CENTURY CLUB  ·  MMXXVI</span>
     </div>
   </div>
   <div class="foot-c">
     <a href="https://www.theaurumcc.com">theaurumcc.com</a>
     <span class="sep">·</span>
-    <span>Singapore</span>
+    <span data-lang="en">Singapore</span><span data-lang="ko">싱가포르</span> <span class="sep">·</span> <span data-lang="en">Seoul</span><span data-lang="ko">서울</span>
   </div>
-  <div class="foot-r">CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY  ·  NOT AN OFFER OR SOLICITATION</div>
+  <div class="foot-r" data-lang="en">CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</div><div class="foot-r" data-lang="ko">기밀  ·  적격 투자자 전용</div>
 </footer>
 
 <script>
-// Public gate — no scroll content, no language toggle, no reveals.
-// Brand fonts and entrance animation are CSS-driven.
+// 100-grid
+(function buildGrid() {
+  const grid = document.getElementById('grid');
+  if (!grid) return;
+  const SUBSCRIBED = 8;
+  const TOTAL = 100;
+  for (let i = 0; i < TOTAL; i++) {
+    const seat = document.createElement('div');
+    seat.className = 'seat' + (i < SUBSCRIBED ? ' filled' : '');
+    grid.appendChild(seat);
+  }
+})();
+
+// Scroll-reveal
+(function reveal() {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal,.force').forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.10, rootMargin: '0px 0px -8% 0px' }
+  );
+  document.querySelectorAll('.reveal,.force').forEach(el => io.observe(el));
+})();
+
+// Nav scroll-state
+(function navScroll() {
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if (window.scrollY > 24) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// Side-rail tracking
+(function railTracker() {
+  const rail = document.getElementById('rail');
+  if (!rail) return;
+  const items = rail.querySelectorAll('.rail-item');
+  const sectionMap = {};
+  items.forEach(item => {
+    const id = item.dataset.section;
+    const target = document.getElementById(id);
+    if (target) sectionMap[id] = { item, target };
+  });
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          items.forEach(it => it.classList.remove('active'));
+          if (sectionMap[id]) sectionMap[id].item.classList.add('active');
+        }
+      });
+    },
+    { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+  );
+  Object.values(sectionMap).forEach(s => io.observe(s.target));
+})();
+
+// Cursor spotlight
+(function spotlight() {
+  if (window.matchMedia('(hover: none)').matches) return;
+  const sp = document.getElementById('spotlight');
+  const hero = document.querySelector('.hero');
+  if (!sp || !hero) return;
+  const onMove = (e) => {
+    sp.style.left = e.clientX + 'px';
+    sp.style.top = e.clientY + 'px';
+  };
+  hero.addEventListener('mousemove', onMove);
+  hero.addEventListener('mouseenter', () => document.body.classList.add('spot-on'));
+  hero.addEventListener('mouseleave', () => document.body.classList.remove('spot-on'));
+})();
+
+// Count-up on 8/100
+(function countUp() {
+  const el = document.getElementById('live-count');
+  if (!el) return;
+  const target = parseInt(el.textContent, 10);
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          el.textContent = '0';
+          let i = 0;
+          const tick = () => {
+            i++;
+            el.textContent = i;
+            if (i < target) setTimeout(tick, 180);
+          };
+          setTimeout(tick, 300);
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+  io.observe(el);
+})();
+
+// ═══ I18N · LANGUAGE TOGGLE ═══
+(function () {
+  const STORAGE_KEY = 'aurum-lang';
+
+  function applyLang(lang) {
+    const html = document.documentElement;
+    html.classList.toggle('lang-ko', lang === 'ko');
+    html.classList.toggle('lang-en', lang === 'en');
+    html.lang = lang;
+    // swap placeholders
+    document.querySelectorAll('[data-ph-en]').forEach(el => {
+      el.placeholder = lang === 'en' ? el.dataset.phEn : el.dataset.phKo;
+    });
+    // swap aria-labels & titles
+    document.querySelectorAll('[data-aria-en]').forEach(el => {
+      el.setAttribute('aria-label', lang === 'en' ? el.dataset.ariaEn : el.dataset.ariaKo);
+    });
+    // toggle button state
+    document.querySelectorAll('.lang-toggle button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.langBtn === lang);
+    });
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+  }
+
+  // Wire up clicks
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.lang-toggle button');
+    if (!btn) return;
+    applyLang(btn.dataset.langBtn);
+  });
+
+  // Initialize from storage (default = en)
+  let initial = 'ko';
+  try { initial = localStorage.getItem(STORAGE_KEY) || 'en'; } catch (e) {}
+  applyLang(initial);
+})();
+
+</script>
+
+<script>
+
+// ═══ INTERACTIVE · TELESCOPE (Forces + Qualifier) ═══
+(function () {
+  function setupTelescope(rootSelector, opts) {
+    opts = opts || {};
+    var root = document.querySelector(rootSelector);
+    if (!root) return;
+    var pills = root.querySelectorAll('.tele-pill');
+    var panes = root.querySelectorAll('.tele-pane');
+    var userInteracted = false;
+    var autoTimer = null;
+
+    function show(idx) {
+      pills.forEach(function (p) {
+        var on = +p.dataset.pillar === idx;
+        p.classList.toggle('active', on);
+        p.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panes.forEach(function (p) {
+        p.classList.toggle('active', +p.dataset.pillar === idx);
+      });
+    }
+
+    function rotate() {
+      var cur = root.querySelector('.tele-pill.active');
+      if (!cur) return;
+      var total = pills.length;
+      var next = (+cur.dataset.pillar % total) + 1;
+      show(next);
+    }
+
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        show(+pill.dataset.pillar);
+        if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+        userInteracted = true;
+      });
+    });
+
+    // Keyboard: arrow-key navigation across pills
+    root.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var cur = root.querySelector('.tele-pill.active');
+      if (!cur) return;
+      var total = pills.length;
+      var idx = +cur.dataset.pillar;
+      var next = e.key === 'ArrowRight'
+        ? (idx % total) + 1
+        : ((idx - 2 + total) % total) + 1;
+      show(next);
+      var btn = root.querySelector('.tele-pill[data-pillar="' + next + '"]');
+      if (btn) btn.focus();
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+      userInteracted = true;
+    });
+
+    // Auto-rotate (only if requested and reduced-motion not preferred)
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (opts.autoRotate && !reducedMotion && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !userInteracted && !autoTimer) {
+            autoTimer = setInterval(rotate, opts.interval || 5500);
+          } else if (!e.isIntersecting && autoTimer) {
+            clearInterval(autoTimer);
+            autoTimer = null;
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(root);
+    }
+  }
+
+  setupTelescope('.forces-tele', { autoRotate: true, interval: 5500 });
+  setupTelescope('.qual-tele',   { autoRotate: false });
+})();
+
+// ═══ INTERACTIVE · MECHANISM FLOW (sequential light + hover freeze) ═══
+(function () {
+  var flow = document.querySelector('.flow');
+  if (!flow) return;
+  var steps = flow.querySelectorAll('.step');
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if ('IntersectionObserver' in window && !reducedMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          flow.classList.add('lit');
+          steps.forEach(function (s, i) {
+            setTimeout(function () { s.classList.add('lit'); }, 280 * (i + 1));
+          });
+          io.unobserve(flow);
+        }
+      });
+    }, { threshold: 0.35 });
+    io.observe(flow);
+  } else {
+    flow.classList.add('lit');
+    steps.forEach(function (s) { s.classList.add('lit'); });
+  }
+
+  // Hover or focus freeze
+  function focusStep(targetStep) {
+    flow.classList.add('hovered');
+    steps.forEach(function (s) { s.classList.toggle('focus', s === targetStep); });
+  }
+  function clearFocus() {
+    flow.classList.remove('hovered');
+    steps.forEach(function (s) { s.classList.remove('focus'); });
+  }
+  steps.forEach(function (step) {
+    step.addEventListener('mouseenter', function () { focusStep(step); });
+    step.addEventListener('mouseleave', clearFocus);
+    step.addEventListener('focusin',   function () { focusStep(step); });
+    step.addEventListener('focusout',  clearFocus);
+    // Make focusable for keyboard
+    if (!step.hasAttribute('tabindex')) step.setAttribute('tabindex', '0');
+  });
+})();
+
+// ═══ INTERACTIVE · SUBSCRIPTION REVEAL (walls dim, replacement glow) ═══
+(function () {
+  var walls = document.querySelector('.walls-vis');
+  var replace = document.querySelector('.simp-replace');
+  var arrow = document.querySelector('.walls-arrow');
+  if (!walls || !replace) return;
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) {
+    if (arrow) arrow.classList.add('show');
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          walls.classList.add('dimmed');
+          replace.classList.add('glowing');
+          if (arrow) arrow.classList.add('show');
+          io.unobserve(replace);
+        }
+      });
+    }, { threshold: 0.35 });
+    io.observe(replace);
+  } else {
+    if (arrow) arrow.classList.add('show');
+  }
+})();
+
+</script>
+
+<!-- ACCESS GATE CHECK — verifies aurum_access cookie before revealing content.
+     Calls /api/doc?id=access (no NDA gate) on load. On 200 reveals page;
+     on 401/403 redirects to /code; on network error reveals (degrade open
+     so legitimate members aren't trapped if API is hiccupping). -->
+<script>
+(function(){
+  var gate = document.getElementById('access-gate');
+  function reveal(){
+    document.body.classList.remove('gate-active');
+    if (gate) gate.classList.add('hide');
+    setTimeout(function(){ if (gate && gate.parentNode) gate.parentNode.removeChild(gate); }, 500);
+  }
+  function showAdminBanner(label){
+    if (document.getElementById('admin-preview-banner')) return;
+    var b = document.createElement('div');
+    b.id = 'admin-preview-banner';
+    b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:8000;background:rgba(197,165,114,0.10);border-bottom:1px solid rgba(197,165,114,0.40);color:#E3C187;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.22em;text-align:center;padding:8px 14px;text-transform:uppercase;backdrop-filter:blur(8px)';
+    b.innerHTML = '◉ ADMIN PREVIEW · ' + (label ? String(label).replace(/[<>&]/g, '') : 'PARTNER PREVIEWING THE PROGRAM') + ' &nbsp; <a href="/admin" style="color:#C5A572;margin-left:14px;text-decoration:none;border-bottom:1px solid currentColor">← BACK TO ADMIN</a>';
+    document.body.appendChild(b);
+    document.body.style.paddingTop = '38px';
+  }
+  function redirectToCode(){ window.location.replace('/'); }
+  fetch('/api/doc?id=access', {
+    method: 'HEAD',
+    credentials: 'same-origin',
+    cache: 'no-store'
+  }).then(function(r){
+    if (r.status === 200) {
+      var vk = r.headers.get('X-Viewer-Kind');
+      var em = r.headers.get('X-Member-Email');
+      reveal();
+      if (vk === 'admin') showAdminBanner(em);
+    } else if (r.status === 401 || r.status === 403) {
+      redirectToCode();
+    } else {
+      // Unexpected status — degrade open
+      reveal();
+    }
+  }).catch(function(){
+    // Network error — degrade open so members aren't trapped
+    reveal();
+  });
+})();
 </script>
 </body>
 </html>

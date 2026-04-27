@@ -169,8 +169,8 @@ document.getElementById('form').addEventListener('submit', async (e) => {
     const j = await r.json().catch(()=>({}));
     if (r.ok && j.ok) {
       // Route based on lead state, returned by /api/verify-code.
-      // wire cleared → /portfolio  ·  NDA approved → /memo  ·  else → /nda
-      location.href = j.next_path || '/nda';
+      // wire cleared → /portfolio  ·  NDA approved → /memo  ·  else → /main
+      location.href = j.next_path || '/main';
       return;
     }
     const isKo = document.documentElement.classList.contains('lang-ko');

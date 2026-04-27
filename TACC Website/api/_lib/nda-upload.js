@@ -9,7 +9,7 @@ import { ok, bad, unauthorized, methodNotAllowed, readBody, getCookie, json } fr
 import { verifyToken } from './auth.js';
 import { getLead, saveLead } from './storage.js';
 import { putPrivate, isConfigured as blobConfigured } from './blob.js';
-import { sendRaw, buildNdaUploadedAlert } from './email.js';
+import { sendRaw, buildNdaUploadedAlert, partnerEmailsOff } from './email.js';
 
 const ALLOWED_TYPES = new Set([
   'application/pdf',
@@ -134,6 +134,13 @@ export default async function handler(req, res) {
   await saveLead(lead);
 
   // Notify partners — best effort. Never fail the upload because of email.
+  // Suppressed when PARTNER_EMAILS_OFF=1 (testing mode).
+  if (partnerEmailsOff()) {
+    try {
+      lead.audit.push({ at: Date.now(), actor: 'system', action: 'partner_notify_suppressed', kind: 'nda_uploaded', reason: 'PARTNER_EMAILS_OFF' });
+      await saveLead(lead);
+    } catch {}
+  } else {
   const notifyTo = (process.env.NOTIFY_EMAILS || '').split(',').map((s) => s.trim()).filter(Boolean);
   if (notifyTo.length) {
     try {
@@ -150,6 +157,7 @@ export default async function handler(req, res) {
     } catch (e) {
       console.warn('[aurum] nda upload alert error:', e && e.stack || e);
     }
+  }
   }
 
   return ok(res, {

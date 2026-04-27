@@ -10,6 +10,24 @@ function brand() {
   return process.env.SITE_URL || 'https://www.theaurumcc.com';
 }
 
+// Partner-email kill switch.
+// When PARTNER_EMAILS_OFF=1 (testing mode), all partner-facing notifications
+// are suppressed: no NOTIFY_EMAILS sends, no BCC_PARTNERS attachments on
+// customer emails. Customer-facing emails still send normally so end-to-end
+// flow can be tested without burning email quota on partner copies.
+// Audit logs at each call site still record the suppression so we know which
+// leads didn't trigger a partner notification.
+export function partnerEmailsOff() {
+  const v = String(process.env.PARTNER_EMAILS_OFF || '').toLowerCase().trim();
+  return v === '1' || v === 'true' || v === 'yes';
+}
+// Returns the BCC string for partner copies on customer emails — '' when off.
+export function partnerBcc() {
+  if (partnerEmailsOff()) return undefined;
+  const list = (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',');
+  return list || undefined;
+}
+
 export async function sendRaw({ to, subject, html, text, replyTo, bcc }) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { sent: false, reason: 'no-resend' };
@@ -148,32 +166,108 @@ export function buildMagicLinkEmail({ lead, linkUrl }) {
   return { subject, text, html };
 }
 
-// 0) Confirmation back to the applicant — tells them their inquiry was received.
-//    Deliberately quiet. No code, no link, no promise of timing — just acknowledgement.
-//    A partner will follow up separately with the formal invitation if approved.
-export function buildInquiryReceivedEmail({ lead }) {
-  const subject = `We received your inquiry  ·  문의가 접수되었습니다`;
-  const firstName = (lead.name_ko || lead.name || '').split(' ')[0] || '';
-
+// 0a) Password reset — sent when a member hits "forgot password" on /login.
+//     Includes a 6-digit code that the member types into /reset-password.
+//     Code expires in 15 minutes; one-time use.
+export function buildPasswordResetEmail({ lead, resetCode }) {
+  const subject = `Reset your AURUM password  ·  비밀번호 재설정`;
   const text = [
-    `Thank you for your interest in The Aurum Century Club.`,
+    `Reset your AURUM password.`,
     ``,
-    `We have received your inquiry. The partners review each note personally`,
-    `and will respond directly if we believe there is a fit.`,
+    `Enter this 6-digit code on the reset page. It expires in 15 minutes.`,
     ``,
-    `No further action is required from you at this time.`,
+    `Reset code:  ${resetCode}`,
+    ``,
+    `If you didn't request this, ignore this email — your password is unchanged.`,
     ``,
     `— The Partners`,
     `Aurum · TACC Pte Ltd · Singapore`,
     ``,
     `─────────────────────────────────────────`,
     ``,
-    `The Aurum Century Club에 관심을 가져주셔서 감사합니다.`,
+    `AURUM 비밀번호를 재설정하십시오.`,
     ``,
-    `문의가 접수되었습니다. 파트너가 직접 검토하며,`,
-    `적합하다고 판단될 경우 별도로 연락드립니다.`,
+    `재설정 페이지에 아래 6자리 코드를 입력하십시오. 15분 후 만료됩니다.`,
     ``,
-    `현 시점에서 별도의 조치는 필요하지 않습니다.`,
+    `재설정 코드:  ${resetCode}`,
+    ``,
+    `요청하지 않으셨다면 본 메일을 무시하셔도 됩니다 — 비밀번호는 변경되지 않습니다.`,
+    ``,
+    `— 파트너 일동`,
+    `Aurum · TACC Pte Ltd · 싱가포르`,
+  ].join('\n');
+
+  const inner = `
+    ${lockupRow}
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:36px 32px 8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.34em;color:#C5A572">PASSWORD RESET  ·  비밀번호 재설정</td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px;font-family:Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;letter-spacing:-0.01em;color:#e8e3d8">
+      Reset <span style="font-style:italic;color:#C5A572">code.</span>
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px;font-family:Georgia,serif;font-size:16px;line-height:1.78;color:#aaa39a">
+      Enter this 6-digit code on the reset page. It expires in 15 minutes.
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 30px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"><tr>
+        <td bgcolor="#0a0a0a" align="center" style="background:#0a0a0a;border:1px solid rgba(197,165,114,0.50);padding:22px 24px">
+          <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.30em;color:#8a7d6b;margin-bottom:10px">RESET CODE  ·  재설정 코드</div>
+          <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:28px;letter-spacing:.32em;color:#E3C187;font-weight:500">${resetCode}</div>
+        </td>
+      </tr></table>
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 30px;font-family:Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#6b655e">
+      If you didn't request this, ignore this email — your password is unchanged.
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" bgcolor="#1a1815" style="background:#1a1815;line-height:1px;font-size:1px">&nbsp;</td></tr></table></td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 14px;font-family:'Noto Serif KR',Georgia,serif;font-size:14.5px;line-height:1.85;color:#aaa39a">
+      재설정 페이지에 위 6자리 코드를 입력하십시오. 15분 후 만료됩니다.
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 32px;font-family:'Noto Serif KR',Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#6b655e">
+      요청하지 않으셨다면 본 메일을 무시하셔도 됩니다 — 비밀번호는 변경되지 않습니다.
+    </td></tr>
+    ${signOffRow}
+  `;
+  const html = shellHtml({ inner, hidden_preheader: 'Reset your AURUM password.' });
+  return { subject, text, html };
+}
+
+// 0) Confirmation back to the applicant — tells them their inquiry was received.
+//    Deliberately quiet. No code, no link, no promise of timing — just acknowledgement.
+//    A partner will follow up separately with the formal invitation if approved.
+export function buildInquiryReceivedEmail({ lead }) {
+  const subject = `Your inquiry has been received  ·  문의가 접수되었습니다`;
+  const firstName = (lead.name_ko || lead.name || '').split(' ')[0] || '';
+  const submittedIso = new Date(lead.submitted_at_ms || Date.now()).toISOString();
+
+  const text = [
+    `Your inquiry has been received.`,
+    ``,
+    `A timestamp record of your submission is on file. A member of the team will`,
+    `review and respond from a private address. On verification, next steps will`,
+    `be communicated, including review of the confidentiality agreement.`,
+    ``,
+    `This email confirms the receipt of your inquiry, made of your own accord.`,
+    `The Aurum Century Club does not solicit publicly. All members initiate`,
+    `contact in writing prior to receipt of substantive offering materials.`,
+    ``,
+    `Reference: ${lead.id}`,
+    `Submitted: ${submittedIso}`,
+    ``,
+    `— The Partners`,
+    `Aurum · TACC Pte Ltd · Singapore`,
+    ``,
+    `─────────────────────────────────────────`,
+    ``,
+    `문의가 접수되었습니다.`,
+    ``,
+    `제출하신 문의의 시각 기록이 보관되어 있습니다. 팀의 일원이 검토 후 비공개 주소에서`,
+    `회신드립니다. 확인이 완료되면 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.`,
+    ``,
+    `본 이메일은 귀하께서 자발적으로 제기하신 문의의 접수를 확인하는 것입니다.`,
+    `The Aurum Century Club은 공개적인 권유를 하지 않습니다. 모든 회원은 실질적`,
+    `자료 수령에 앞서 서면으로 직접 연락을 개시하셔야 합니다.`,
+    ``,
+    `참조 번호: ${lead.id}`,
+    `제출 시각: ${submittedIso}`,
     ``,
     `— 파트너 일동`,
     `Aurum · TACC Pte Ltd · 싱가포르`,
@@ -189,11 +283,16 @@ export function buildInquiryReceivedEmail({ lead }) {
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 18px;font-family:Georgia,serif;font-size:16px;line-height:1.78;color:#aaa39a">
-      We have received your inquiry. The partners review each note personally and will respond directly if we believe there is a fit.
+      Your inquiry has been received. A timestamp record of your submission is on file. A member of the team will review and respond from a private address. On verification, next steps will be communicated, including review of the confidentiality agreement.
     </td></tr>
 
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 30px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.7;color:#6b655e">
-      No further action is required from you at this time.
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.7;color:#8a7d6b">
+      This email confirms the receipt of your inquiry, made of your own accord. The Aurum Century Club does not solicit publicly. All members initiate contact in writing prior to receipt of substantive offering materials.
+    </td></tr>
+
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 24px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:#6b655e;line-height:1.8">
+      Reference: <span style="color:#C5A572">${escape(lead.id)}</span><br>
+      Submitted: <span style="color:#C5A572">${escape(submittedIso)}</span>
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 24px">
@@ -201,10 +300,14 @@ export function buildInquiryReceivedEmail({ lead }) {
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 14px;font-family:'Noto Serif KR',Georgia,serif;font-size:14.5px;line-height:1.85;color:#aaa39a">
-      The Aurum Century Club에 관심을 가져주셔서 감사합니다. 파트너가 직접 검토하며, 적합하다고 판단될 경우 별도로 연락드립니다.
+      문의가 접수되었습니다. 제출하신 문의의 시각 기록이 보관되어 있습니다. 팀의 일원이 검토 후 비공개 주소에서 회신드립니다. 확인이 완료되면 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.
     </td></tr>
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 36px;font-family:'Noto Serif KR',Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#6b655e">
-      현 시점에서 별도의 조치는 필요하지 않습니다.
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 16px;font-family:'Noto Serif KR',Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#8a7d6b">
+      본 이메일은 귀하께서 자발적으로 제기하신 문의의 접수를 확인하는 것입니다. The Aurum Century Club은 공개적인 권유를 하지 않습니다. 모든 회원은 실질적 자료 수령에 앞서 서면으로 직접 연락을 개시하셔야 합니다.
+    </td></tr>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 36px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:#6b655e;line-height:1.8">
+      참조 번호: <span style="color:#C5A572">${escape(lead.id)}</span><br>
+      제출 시각: <span style="color:#C5A572">${escape(submittedIso)}</span>
     </td></tr>
 
     ${signOffRow}
@@ -386,25 +489,39 @@ export function buildIoiReceivedEmail({ lead, ioi }) {
 
 // 1) Notify the partners that a new inquiry came in.
 export function buildPartnerNotice(lead) {
-  const subject = `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${tierLabel(lead.wealth)}`;
+  // Subject: handles missing wealth tier (new schema doesn't capture it)
+  const subject = lead.wealth
+    ? `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${tierLabel(lead.wealth)}`
+    : `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${countryLabel(lead.country)}`;
+
+  // Text body — conditional. Only show rows when data is populated.
   const lines = [
     `Name:        ${lead.name || ''}${lead.name_ko ? '  (' + lead.name_ko + ')' : ''}`,
-    `Email:       ${lead.email || ''}`,
-    `Phone:       ${(lead.phone_cc || '') + ' ' + (lead.phone || '')}`,
-    `Country:     ${lead.country || ''}`,
-    `Wealth:      ${tierLabel(lead.wealth)}`,
-    `Occupation:  ${lead.occupation || '—'}`,
-    `Source:      ${sourceOfWealthLabel(lead.source_of_wealth)}`,
-    `Interests:   ${interestsLabel(lead)}`,
-    `Referral:    ${lead.referral || '—'}`,
-    `Note:        ${lead.note || '—'}`,
-    ``,
-    `Submitted:   ${new Date(lead.submitted_at_ms || Date.now()).toISOString()}`,
-    `Lead ID:     ${lead.id}`,
-    ``,
-    `Open the dashboard:  ${brand()}/admin?lead=${encodeURIComponent(lead.id)}`,
   ];
+  if (lead.email) lines.push(`Email:       ${lead.email}`);
+  if (lead.country) lines.push(`Country:     ${countryLabel(lead.country)}`);
+  if (lead.hear_about) lines.push(`Heard via:   ${hearAboutLabel(lead.hear_about)}`);
+  // Legacy fields — only if populated (old leads pre-schema-change)
+  const phone = ((lead.phone_cc || '') + ' ' + (lead.phone || '')).trim();
+  if (phone) lines.push(`Phone:       ${phone}`);
+  if (lead.wealth) lines.push(`Wealth:      ${tierLabel(lead.wealth)}`);
+  if (lead.occupation) lines.push(`Occupation:  ${lead.occupation}`);
+  if (lead.source_of_wealth) lines.push(`Source:      ${sourceOfWealthLabel(lead.source_of_wealth)}`);
+  const interests = interestsLabel(lead);
+  if (interests && interests !== '—') lines.push(`Interests:   ${interests}`);
+  if (lead.referral) lines.push(`Referral:    ${lead.referral}`);
+
+  if (lead.note) lines.push(`Note:        ${lead.note}`);
+  lines.push(``);
+  lines.push(`Submitted:   ${new Date(lead.submitted_at_ms || Date.now()).toISOString()}`);
+  lines.push(`Lead ID:     ${lead.id}`);
+  lines.push(``);
+  lines.push(`Open the dashboard:  ${brand()}/admin?lead=${encodeURIComponent(lead.id)}`);
+
   const text = lines.join('\n');
+
+  // HTML body — same conditional approach via the row() helper which now
+  // returns empty string when value is falsy (see helper change below).
   const html = `
 <!doctype html><html><body style="margin:0;padding:0;background:#0a0a0a;color:#e8e3d8;font-family:Georgia,serif">
   <div style="max-width:560px;margin:0 auto;padding:32px 28px">
@@ -421,13 +538,14 @@ export function buildPartnerNotice(lead) {
     <h1 style="font-family:Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;color:#e8e3d8;margin:0 0 24px">${escape(lead.name || 'Unnamed')}${lead.name_ko ? ' <span style="color:#8a7d6b">· ' + escape(lead.name_ko) + '</span>' : ''}</h1>
     <table cellpadding="0" cellspacing="0" style="width:100%;font-family:Georgia,serif;font-size:14px;color:#aaa39a;line-height:1.7">
       ${row('Email', lead.email)}
-      ${row('Phone', (lead.phone_cc || '') + ' ' + (lead.phone || ''))}
-      ${row('Country', lead.country)}
-      ${row('Wealth', tierLabel(lead.wealth))}
-      ${row('Occupation', lead.occupation || '—')}
-      ${row('Source', sourceOfWealthLabel(lead.source_of_wealth))}
-      ${row('Interests', interestsLabel(lead))}
-      ${row('Referral', lead.referral || '—')}
+      ${row('Country', lead.country ? countryLabel(lead.country) : null)}
+      ${row('Heard via', lead.hear_about ? hearAboutLabel(lead.hear_about) : null)}
+      ${row('Phone', phone || null)}
+      ${row('Wealth', lead.wealth ? tierLabel(lead.wealth) : null)}
+      ${row('Occupation', lead.occupation)}
+      ${row('Source', lead.source_of_wealth ? sourceOfWealthLabel(lead.source_of_wealth) : null)}
+      ${row('Interests', interests && interests !== '—' ? interests : null)}
+      ${row('Referral', lead.referral)}
     </table>
     ${lead.note ? `<div style="margin-top:18px;padding:14px;border-left:1px solid #C5A572;color:#e8e3d8;font-style:italic;font-size:14px;line-height:1.6">${escape(lead.note)}</div>` : ''}
     <div style="margin-top:32px">
@@ -437,6 +555,23 @@ export function buildPartnerNotice(lead) {
   </div>
 </body></html>`;
   return { subject, text, html };
+}
+
+function countryLabel(code) {
+  return ({
+    KR: 'South Korea', SG: 'Singapore', HK: 'Hong Kong SAR', JP: 'Japan',
+    US: 'United States', GB: 'United Kingdom', AU: 'Australia', CA: 'Canada',
+    CH: 'Switzerland', AE: 'United Arab Emirates', OTHER: 'Other',
+  })[String(code || '').toUpperCase()] || code || '—';
+}
+function hearAboutLabel(code) {
+  return ({
+    member:    'Existing member',
+    advisor:   'Advisor / family office',
+    partner:   'Aurum partner',
+    personal:  'Personal connection',
+    community: 'HNW community',
+  })[code] || code || '—';
 }
 
 function sourceOfWealthLabel(s) {
@@ -458,10 +593,10 @@ export function buildInvitationEmail({ lead, code, accessUrl }) {
   const text = [
     `Welcome to The Aurum Century Club.`,
     ``,
-    `The code below opens your NDA.`,
+    `The code below opens the program. Read about the Century Club at your pace, then continue to the confidentiality agreement when ready.`,
     ``,
     `Access code:  ${code}`,
-    `Open NDA:     ${accessUrl}`,
+    `Open the program:  ${accessUrl}`,
     ``,
     `— The Partners`,
     `Aurum · TACC Pte Ltd · Singapore`,
@@ -470,10 +605,10 @@ export function buildInvitationEmail({ lead, code, accessUrl }) {
     ``,
     `The Aurum Century Club에 오신 것을 환영합니다.`,
     ``,
-    `아래 코드로 NDA를 여십시오.`,
+    `아래 코드로 프로그램 안내를 열람하실 수 있습니다. 편한 속도로 검토하신 후, 준비가 되시면 비밀유지 계약 단계로 진행해 주십시오.`,
     ``,
-    `접근 코드:  ${code}`,
-    `NDA 열기:   ${accessUrl}`,
+    `접근 코드:    ${code}`,
+    `프로그램 열기:  ${accessUrl}`,
     ``,
     `— 파트너 일동`,
     `Aurum · TACC Pte Ltd · 싱가포르`,
@@ -492,7 +627,7 @@ export function buildInvitationEmail({ lead, code, accessUrl }) {
 
     <!-- One body line -->
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 26px;font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#aaa39a">
-      The code below opens your NDA.
+      The code below opens the program. Read about the Century Club at your pace, then continue to the confidentiality agreement when ready.
     </td></tr>
 
     <!-- Code box -->
@@ -507,7 +642,7 @@ export function buildInvitationEmail({ lead, code, accessUrl }) {
 
     <!-- CTA — single line, nowrap, tight padding for mobile -->
     <tr><td bgcolor="#0a0a0a" align="left" style="background:#0a0a0a;padding:0 32px 30px">
-      <a href="${accessUrl}" style="display:inline-block;padding:13px 22px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.22em;font-weight:600;white-space:nowrap">OPEN NDA &nbsp;→</a>
+      <a href="${accessUrl}" style="display:inline-block;padding:13px 22px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.22em;font-weight:600;white-space:nowrap">OPEN THE PROGRAM &nbsp;→</a>
     </td></tr>
 
     <!-- Divider -->
@@ -520,12 +655,12 @@ export function buildInvitationEmail({ lead, code, accessUrl }) {
       The Aurum Century Club에 오신 것을 환영합니다.
     </td></tr>
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 36px;font-family:'Noto Serif KR',Georgia,serif;font-size:14.5px;line-height:1.85;color:#aaa39a">
-      아래 코드로 NDA를 여십시오.
+      아래 코드로 프로그램 안내를 열람하실 수 있습니다. 편한 속도로 검토하신 후, 준비가 되시면 비밀유지 계약 단계로 진행해 주십시오.
     </td></tr>
 
     ${signOffRow}
   `;
-  const html = shellHtml({ inner, hidden_preheader: 'The code below opens your NDA.' });
+  const html = shellHtml({ inner, hidden_preheader: 'The code below opens the program.' });
   return { subject, text, html };
 }
 
@@ -727,47 +862,45 @@ export function buildWireInstructionsEmail({ lead, ioi, wire }) {
 //    fall back to plain /portfolio if that fails (their existing 30-day cookie
 //    should be live, or /portfolio will bounce to /login if needed).
 export function buildAdmissionEmail({ lead, magicLinkToken }) {
-  const subject = `Welcome to the 100  ·  창립 100인에 오신 것을 환영합니다`;
+  const subject = `Welcome to the 100  ·  Set up your password  ·  비밀번호 설정`;
   const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
-  // Direct portfolio URL.  If a magic-link token was minted at call time, use it
-  // for one-click sign-in.  Otherwise, the 30-day cookie or /login fallback handles auth.
-  const portalUrl = magicLinkToken
-    ? `${siteUrl}/portfolio?ml=${encodeURIComponent(magicLinkToken)}`
-    : `${siteUrl}/portfolio`;
+  // Direct password-setup URL. The token was minted as a "setup" magic link by
+  // api/admin/update.js when the wire was marked cleared. One use only — once the
+  // member sets their password, the access code is revoked and this token is consumed.
+  const setupUrl = magicLinkToken
+    ? `${siteUrl}/setup-password?ml=${encodeURIComponent(magicLinkToken)}`
+    : `${siteUrl}/setup-password`;
 
   const text = [
-    `Welcome to the 100.  Your wire has cleared.`,
+    `Welcome to the 100. Your wire has cleared.`,
     ``,
-    `Your portfolio is now live.  Open it directly:`,
+    `You're now an admitted member. Set up a password to access your portfolio:`,
     ``,
-    portalUrl,
+    setupUrl,
     ``,
-    `The link above logs you in and sets a 30-day session.`,
-    `Bookmark ${siteUrl}/portfolio for return visits.`,
-    `For future sign-ins, use ${siteUrl}/login (passwordless, email-based).`,
+    `The link above is one-time. After you set a password, the access code from`,
+    `earlier emails will no longer work — your email + password is your permanent`,
+    `sign-in for ${siteUrl}/login.`,
     ``,
-    `Bar serial numbers post within 5 business days as gold is`,
-    `allocated at Singapore Freeport.  You'll be notified by email`,
-    `at each milestone.`,
+    `Bar serial numbers post within 5 business days as gold is allocated at`,
+    `Singapore Freeport. You'll be notified by email at each milestone.`,
     ``,
     `— The Partners`,
     `Aurum · TACC Pte Ltd · Singapore`,
     ``,
     `─────────────────────────────────────────`,
     ``,
-    `창립 100인에 오신 것을 환영합니다.  송금이 정산되었습니다.`,
+    `창립 100인에 오신 것을 환영합니다. 송금이 정산되었습니다.`,
     ``,
-    `포트폴리오가 활성화되었습니다.  바로 열기:`,
+    `정식 등재되셨습니다. 포트폴리오 접근을 위해 비밀번호를 설정해 주십시오:`,
     ``,
-    portalUrl,
+    setupUrl,
     ``,
-    `위 링크로 즉시 로그인되며 30일간 세션이 유지됩니다.`,
-    `재방문 시 ${siteUrl}/portfolio 를 즐겨찾기에 추가하십시오.`,
-    `차후 로그인은 ${siteUrl}/login 에서 이메일로 (비밀번호 불필요).`,
+    `위 링크는 1회용입니다. 비밀번호 설정 후에는 기존 접근 코드가 만료되며,`,
+    `${siteUrl}/login 에서 이메일과 비밀번호로 로그인하시게 됩니다.`,
     ``,
-    `금괴 일련번호는 싱가포르 Freeport 보관소에 배정 완료 후`,
-    `영업일 5일 이내 포트폴리오에 게시됩니다.  각 단계마다`,
-    `이메일로 알려드립니다.`,
+    `금괴 일련번호는 싱가포르 Freeport 보관소에 배정 완료 후 영업일 5일 이내`,
+    `포트폴리오에 게시됩니다. 각 단계마다 이메일로 알려드립니다.`,
     ``,
     `— 파트너 일동`,
     `Aurum · TACC Pte Ltd · 싱가포르`,
@@ -783,49 +916,42 @@ export function buildAdmissionEmail({ lead, magicLinkToken }) {
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px;font-family:Georgia,serif;font-size:16px;line-height:1.78;color:#aaa39a">
-      Your wire has cleared.  Your portfolio is now live.
+      Your wire has cleared. You're now an admitted member. Set up a password to access your portfolio.
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 26px" align="left">
-      <a href="${portalUrl}" style="display:inline-block;padding:14px 26px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.30em;text-transform:uppercase;font-weight:600">OPEN PORTFOLIO  →</a>
+      <a href="${setupUrl}" style="display:inline-block;padding:14px 26px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.30em;text-transform:uppercase;font-weight:600">SET UP PASSWORD  →</a>
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 12px;font-family:Georgia,serif;font-size:14px;line-height:1.7;color:#aaa39a">
-      The link above logs you in and sets a 30-day session.  Bookmark
-      <a href="${siteUrl}/portfolio" style="color:#C5A572;text-decoration:none">${siteUrl}/portfolio</a>
-      for return visits.
-    </td></tr>
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 26px;font-family:Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#6b655e">
-      For future sign-ins, use
-      <a href="${siteUrl}/login" style="color:#8a7d6b;text-decoration:none;border-bottom:1px dashed #8a7d6b">${siteUrl}/login</a>
-      — enter your email, click the link we send, you're in.  No password.
+      The link above is one-time. After you set a password, the access code from earlier emails will no longer work — your email + password is your permanent sign-in for
+      <a href="${siteUrl}/login" style="color:#C5A572;text-decoration:none">${siteUrl}/login</a>.
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 16px;font-family:Georgia,serif;font-size:14px;line-height:1.7;color:#aaa39a">
-      Bar serial numbers post within 5 business days as gold is allocated
-      at Singapore Freeport.  You'll be notified by email at each milestone.
+      Bar serial numbers post within 5 business days as gold is allocated at Singapore Freeport. You'll be notified by email at each milestone.
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:14px 32px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" bgcolor="#1a1815" style="background:#1a1815;line-height:1px;font-size:1px">&nbsp;</td></tr></table></td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 14px;font-family:'Noto Serif KR',Georgia,serif;font-size:14.5px;line-height:1.85;color:#aaa39a">
-      송금이 정산되었습니다.  포트폴리오가 활성화되었습니다.
+      송금이 정산되었습니다. 정식 등재되셨습니다. 포트폴리오 접근을 위해 비밀번호를 설정해 주십시오.
     </td></tr>
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px" align="left">
-      <a href="${portalUrl}" style="display:inline-block;padding:14px 26px;background:transparent;border:1px solid #C5A572;color:#C5A572;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.30em;text-transform:uppercase">포트폴리오 열기  →</a>
+      <a href="${setupUrl}" style="display:inline-block;padding:14px 26px;background:transparent;border:1px solid #C5A572;color:#C5A572;text-decoration:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.30em;text-transform:uppercase">비밀번호 설정  →</a>
     </td></tr>
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 16px;font-family:'Noto Serif KR',Georgia,serif;font-size:14px;line-height:1.7;color:#aaa39a">
-      위 링크로 즉시 로그인되며 30일간 세션이 유지됩니다.  차후 로그인은
+      위 링크는 1회용입니다. 비밀번호 설정 후에는 기존 접근 코드가 만료되며,
       <a href="${siteUrl}/login" style="color:#C5A572;text-decoration:none">${siteUrl}/login</a>
-      에서 이메일로 (비밀번호 불필요).
+      에서 이메일과 비밀번호로 로그인하시게 됩니다.
     </td></tr>
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 30px;font-family:'Noto Serif KR',Georgia,serif;font-size:14px;line-height:1.7;color:#aaa39a">
-      금괴 일련번호는 싱가포르 Freeport 보관소에 배정 완료 후 영업일 5일 이내 포트폴리오에 게시됩니다.  각 단계마다 이메일로 알려드립니다.
+      금괴 일련번호는 싱가포르 Freeport 보관소에 배정 완료 후 영업일 5일 이내 포트폴리오에 게시됩니다. 각 단계마다 이메일로 알려드립니다.
     </td></tr>
 
     ${signOffRow}
   `;
-  const html = shellHtml({ inner, hidden_preheader: 'Welcome to the founding cohort. Your portfolio is now live.' });
+  const html = shellHtml({ inner, hidden_preheader: 'Welcome to the 100. Set up your password.' });
   return { subject, text, html };
 }
 
@@ -1063,7 +1189,9 @@ function escape(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 function row(label, val) {
-  return `<tr><td style="padding:6px 12px 6px 0;color:#8a7d6b;font:9.5px 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.30em;width:90px;vertical-align:top">${escape(label)}</td><td style="padding:6px 0;color:#e8e3d8">${escape(val || '—')}</td></tr>`;
+  // Conditional render: skip the row entirely when value is empty or dash placeholder
+  if (val === null || val === undefined || val === '' || val === '—') return '';
+  return `<tr><td style="padding:6px 12px 6px 0;color:#8a7d6b;font:9.5px 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.30em;width:90px;vertical-align:top">${escape(label)}</td><td style="padding:6px 0;color:#e8e3d8">${escape(val)}</td></tr>`;
 }
 function tierLabel(w) {
   return ({

@@ -27,7 +27,7 @@
 import { ok, bad, notFound, methodNotAllowed, readBody, getQuery, getCookie } from './_lib/http.js';
 import { verifyToken } from './_lib/auth.js';
 import { getLead, saveLead, leadIdForIoiCode } from './_lib/storage.js';
-import { sendRaw, buildPartnerNotice, buildIoiReceivedEmail } from './_lib/email.js';
+import { sendRaw, buildPartnerNotice, buildIoiReceivedEmail, partnerBcc, partnerEmailsOff } from './_lib/email.js';
 import { getKrwPerKg } from './_lib/krw.js';
 import { formatKRW } from './_lib/format.js';
 
@@ -313,9 +313,13 @@ async function opSubmitIoi(req, res) {
   });
   await saveLead(lead);
 
-  // Optional: notify partners that an IOI just landed (BCC partners on the dashboard).
-  // Simple notice using existing partner-notice template builder pattern.
+  // Optional: notify partners that an IOI just landed.
+  // Suppressed when PARTNER_EMAILS_OFF=1 (testing mode).
   try {
+    if (partnerEmailsOff()) {
+      lead.audit = lead.audit || [];
+      lead.audit.push({ at: Date.now(), actor: 'system', action: 'partner_notify_suppressed', kind: 'ioi_submitted', reason: 'PARTNER_EMAILS_OFF' });
+    } else {
     const notify = (process.env.NOTIFY_EMAILS || '').split(',').map((s) => s.trim()).filter(Boolean);
     if (notify.length) {
       const krwFmt = formatKRW(krw);
@@ -343,6 +347,7 @@ Spot:       ${spotFmt} /kg (${spot.source})
 Review:     <a href="${process.env.SITE_URL || 'https://www.theaurumcc.com'}/admin?lead=${encodeURIComponent(lead.id)}">dashboard</a></pre>`,
       });
     }
+    } // end else branch (partner emails enabled)
   } catch (e) {
     console.warn('partner notify after IOI failed', e);
   }
@@ -355,7 +360,7 @@ Review:     <a href="${process.env.SITE_URL || 'https://www.theaurumcc.com'}/adm
         to: lead.email,
         subject: tpl.subject, html: tpl.html, text: tpl.text,
         replyTo: process.env.REPLY_TO || undefined,
-        bcc: (process.env.BCC_PARTNERS || '').split(',').map((s) => s.trim()).filter(Boolean).join(',') || undefined,
+        bcc: partnerBcc(),
       });
       lead.audit = lead.audit || [];
       lead.audit.push({
@@ -383,7 +388,11 @@ async function opSpot(req, res) {
 }
 
 // ── op: portfolio ───────────────────────────────────────────────────────────
-// Returns the member's full portfolio data shape. Reads aurum_access cookie.
+// Returns the member's full portfolio data shape.
+// Two auth paths:
+//   1. Member: aurum_access cookie (session.sub === 'member') → own portfolio only
+//   2. Admin:  aurum_admin cookie (session.sub === 'admin') + ?lead=L_xxx
+//              → view any member's portfolio (read-only, watermarked with admin email)
 // State machine on the client decides which view to render based on:
 //   - lead.ioi.submitted_at exists?         → not pre-IOI
 //   - lead.wire?.cleared_at exists?         → admitted (vault state)
@@ -391,17 +400,48 @@ async function opSpot(req, res) {
 //   - lead.positions?.length > 0?           → portfolio state
 async function opPortfolio(req, res) {
   if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
-  const tok = getCookie(req, 'aurum_access');
-  const session = verifyToken(tok);
-  if (!session || session.sub !== 'member' || !session.leadId) {
-    return ok(res, { ok: false, reason: 'no-session' });
+
+  // Path 1 — admin viewing a specific member ──────────────────────────
+  const adminTok = getCookie(req, 'aurum_admin');
+  const adminSession = verifyToken(adminTok);
+  let lead = null;
+  let viewerKind = 'member';
+  let viewerId = null;
+  if (adminSession && adminSession.sub === 'admin') {
+    const leadIdParam = String(getQuery(req).lead || '').trim();
+    if (!leadIdParam) {
+      // Admin without a lead specified — surface a clear error
+      return ok(res, { ok: false, reason: 'admin-no-lead', message: 'Admin viewers must specify ?lead=' });
+    }
+    lead = await getLead(leadIdParam);
+    if (!lead) return ok(res, { ok: false, reason: 'no-lead' });
+    viewerKind = 'admin';
+    viewerId = adminSession.email || adminSession.id || 'admin';
+  } else {
+    // Path 2 — member viewing own portfolio ─────────────────────────────
+    const tok = getCookie(req, 'aurum_access');
+    const session = verifyToken(tok);
+    if (!session || session.sub !== 'member' || !session.leadId) {
+      return ok(res, { ok: false, reason: 'no-session' });
+    }
+    lead = await getLead(session.leadId);
+    if (!lead) return ok(res, { ok: false, reason: 'no-lead' });
+    viewerId = lead.email || lead.code || 'member';
   }
-  const lead = await getLead(session.leadId);
-  if (!lead) return ok(res, { ok: false, reason: 'no-lead' });
-  if (lead.nda_state !== 'approved') return ok(res, { ok: false, reason: 'nda-not-approved' });
-  if (!lead.ioi || !lead.ioi.submitted_at) {
-    // No IOI yet — client should redirect to /memo (still in materials phase)
-    return ok(res, { ok: false, reason: 'no-ioi' });
+
+  // Members must have NDA approved + IOI submitted to view portfolio.
+  // Admins can view at any stage (it's their job to monitor).
+  if (viewerKind === 'member') {
+    if (lead.nda_state !== 'approved') return ok(res, { ok: false, reason: 'nda-not-approved' });
+    if (!lead.ioi || !lead.ioi.submitted_at) {
+      // No IOI yet — client should redirect to /memo (still in materials phase)
+      return ok(res, { ok: false, reason: 'no-ioi' });
+    }
+  } else {
+    // Admin pre-IOI peek: surface placeholder shape so portfolio.html can render the empty state
+    if (!lead.ioi || !lead.ioi.submitted_at) {
+      return ok(res, { ok: false, reason: 'no-ioi', viewer: 'admin', member: { name: lead.name || '', name_ko: lead.name_ko || '' } });
+    }
   }
 
   let spot = null;
@@ -412,9 +452,13 @@ async function opPortfolio(req, res) {
 
   return ok(res, {
     ok: true,
+    viewer: viewerKind,
+    viewer_id: viewerId,
     member: {
       name: lead.name || '',
       name_ko: lead.name_ko || '',
+      email: lead.email || '',
+      code: lead.code || '',
     },
     ioi: {
       kg: lead.ioi.kg,
