@@ -101,6 +101,16 @@ a{color:inherit;text-decoration:none}em{font-style:italic}
 .session .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--goldGlow)}
 .session .code{color:var(--goldD)}
 
+/* Per-member screen watermark — diagonal repeating background.
+   The pattern URL is set dynamically by JS once we know the member's email.
+   Low opacity (0.05) so it's a deterrent on screenshots without disrupting reading. */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9;background:var(--wm-bg,none) repeat;opacity:1}
+
+/* Corner watermark stamp — small, always-visible identifier */
+.wm-stamp{position:fixed;bottom:14px;right:18px;z-index:11;font-family:var(--mono);font-size:9px;letter-spacing:0.18em;color:var(--goldD);opacity:0.55;text-transform:uppercase;pointer-events:none;text-align:right;line-height:1.5;max-width:60vw}
+.wm-stamp .ident{color:var(--gold)}
+@media print{.wm-stamp{opacity:1;color:#000}}
+
 /* Loading + error states */
 .gate{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
 .gate.hide{display:none}
@@ -260,15 +270,6 @@ a{color:inherit;text-decoration:none}em{font-style:italic}
         <span data-lang="ko">의향서 작성</span>
         <span class="arrow">→</span>
       </a>
-      <a class="ioi-cta-btn" id="portfolioBtn" href="/portfolio" style="display:none;background:transparent;color:var(--gold);border:1px solid var(--goldBorderS)">
-        <span data-lang="en">VIEW PORTFOLIO</span>
-        <span data-lang="ko">포트폴리오 보기</span>
-        <span class="arrow">→</span>
-      </a>
-    </div>
-    <div class="ioi-cta-note" id="ioiBtnNote" style="display:none">
-      <span data-lang="en">You've already submitted an IOI. Track your status in your portfolio.</span>
-      <span data-lang="ko">이미 의향서를 제출하셨습니다. 포트폴리오에서 진행 상황을 확인하실 수 있습니다.</span>
     </div>
   </section>
 
@@ -323,8 +324,10 @@ a{color:inherit;text-decoration:none}em{font-style:italic}
     .then(function(r){
       if(r.status === 200){
         var c = r.headers.get('X-Member-Code');
+        var em = r.headers.get('X-Member-Email');
         if(c){ sessionCode.textContent = c.slice(-4); sessionPill.style.display='inline-flex'; }
         else { sessionPill.style.display='inline-flex'; sessionCode.textContent=''; }
+        applyWatermark(em || c);
         hideGate();
       } else if(r.status === 403 && r.headers.get('X-Aurum-Gate') === 'nda'){
         redirectToNda();
@@ -337,6 +340,30 @@ a{color:inherit;text-decoration:none}em{font-style:italic}
     .catch(function(){
       hideGate();
     });
+
+  // ---------- Per-member screen watermark ----------
+  // Builds a diagonal repeating SVG of the member's email + timestamp and applies
+  // it as a fixed-position background overlay. Plus a small corner stamp.
+  // Goal: every screenshot or screen-share identifies who leaked it.
+  function applyWatermark(ident) {
+    if (!ident) return;
+    var ts = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    var text = ident + ' · ' + ts;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="700" height="420">' +
+      '<text x="350" y="210" fill="#C5A572" fill-opacity="0.045" ' +
+      'font-family="ui-monospace,monospace" font-size="13" letter-spacing="2.4" ' +
+      'text-anchor="middle" transform="rotate(-28 350 210)">' + esc(text) + '</text>' +
+      '</svg>';
+    var url = "url('data:image/svg+xml;utf8," + encodeURIComponent(svg) + "')";
+    document.body.style.setProperty('--wm-bg', url);
+
+    // Corner stamp — small, always-visible identifier
+    var stamp = document.createElement('div');
+    stamp.className = 'wm-stamp';
+    stamp.innerHTML = '<div>CONFIDENTIAL</div><div class="ident">' + esc(ident) + '</div><div>' + esc(ts) + '</div>';
+    document.body.appendChild(stamp);
+  }
+  function esc(s) { return String(s).replace(/[<>&"']/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
   // ---------- doc click handler ----------
   // If a doc 401s/403s when clicked, route to the right place.
@@ -361,24 +388,17 @@ a{color:inherit;text-decoration:none}em{font-style:italic}
   // If they've ALREADY submitted, we hide the SUBMIT IOI button and show the
   // VIEW PORTFOLIO button instead — the portfolio is now their primary surface.
   var ioiBtn = document.getElementById('ioiBtn');
-  var portfolioBtn = document.getElementById('portfolioBtn');
   var ioiBtnNote = document.getElementById('ioiBtnNote');
   if(ioiBtn){
     fetch('/api/ioi?op=context', { credentials:'same-origin', cache:'no-store' })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(j){
-        if(j && j.ok){
-          if(j.ioi_code){
-            ioiBtn.setAttribute('href', '/ioi?c=' + encodeURIComponent(j.ioi_code));
-          }
-          if(j.has_ioi){
-            // IOI already submitted — swap buttons and surface the note
-            ioiBtn.style.display = 'none';
-            portfolioBtn.style.display = 'inline-flex';
-            ioiBtnNote.style.display = 'block';
-          }
+        if(j && j.ok && j.ioi_code){
+          // Pre-fill the IOI code so the member doesn't have to type it
+          ioiBtn.setAttribute('href', '/ioi?c=' + encodeURIComponent(j.ioi_code));
         }
-        // If j.ok is false or no ioi_code, leave defaults — member enters code on /ioi
+        // Note: even if member has already submitted, button still goes to /ioi
+        // (the page itself handles the "already submitted" view).
       })
       .catch(function(){});
   }

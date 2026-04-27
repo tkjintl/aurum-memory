@@ -9,6 +9,8 @@ import { json, getQuery, getCookie, unauthorized, notFound, methodNotAllowed } f
 import { verifyToken } from './_lib/auth.js';
 import { getLead, saveLead } from './_lib/storage.js';
 import { getPrivate, isConfigured as blobConfigured } from './_lib/blob.js';
+import { extractGeo, geoSummary } from './_lib/geo.js';
+import { watermarkPdf } from './_lib/pdf-watermark.js';
 
 const DOCS = {
   package:    { file: 'package.pdf',    label: 'AURUM Century Club Package' },
@@ -30,6 +32,23 @@ export default async function handler(req, res) {
   try { lead = await getLead(session.leadId); } catch {}
   if (!lead) return unauthorized(res, 'access not found');
   if (lead.code_revoked || lead.code !== session.code) return unauthorized(res, 'code revoked');
+
+  // ── Auth ping — used by /memo and /portfolio to verify session + get
+  //    identity headers for the on-screen watermark. Doesn't serve a doc.
+  if (id === 'memo' || id === 'session') {
+    if (lead.nda_state !== 'approved') {
+      res.statusCode = 403;
+      res.setHeader('X-Aurum-Gate', 'nda');
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify({ ok: false, error: 'nda required' }));
+    }
+    res.statusCode = 200;
+    res.setHeader('Cache-Control', 'private, no-store');
+    if (lead.code) res.setHeader('X-Member-Code', lead.code);
+    if (lead.email) res.setHeader('X-Member-Email', lead.email);
+    res.setHeader('Content-Type', 'application/json');
+    return res.end('{"ok":true}');
+  }
 
   // ── NDA self-download — member can re-download their own signed NDA ───
   if (id === 'nda-mine') {
@@ -117,10 +136,28 @@ export default async function handler(req, res) {
     return notFound(res, 'document unavailable');
   }
 
-  // Audit
+  // Apply per-member watermark before sending
   try {
+    buf = await watermarkPdf(buf, {
+      email: lead.email || '',
+      code: lead.code || '',
+      timestamp: new Date().toISOString().slice(0, 16).replace('T', ' '),
+    });
+  } catch (e) {
+    console.warn('[doc] watermark failed, sending unmarked', e);
+  }
+
+  // Audit (with geo)
+  try {
+    const geo = extractGeo(req);
     lead.audit = lead.audit || [];
-    lead.audit.push({ at: Date.now(), actor: 'member', action: 'download', doc: id });
+    lead.audit.push({
+      at: Date.now(),
+      actor: 'member',
+      action: 'download',
+      doc: id,
+      geo,
+    });
     lead.downloads = (lead.downloads || 0) + 1;
     await saveLead(lead);
   } catch {}
@@ -131,5 +168,6 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   if (lead.code) res.setHeader('X-Member-Code', lead.code);
+  if (lead.email) res.setHeader('X-Member-Email', lead.email);
   res.end(buf);
 }

@@ -6,6 +6,7 @@
 import { json, ok, bad, unauthorized, getQuery, readBody, setCookie, getCookie } from './_lib/http.js';
 import { signToken, verifyToken } from './_lib/auth.js';
 import { getLead, leadIdForCode, saveLead } from './_lib/storage.js';
+import { extractGeo } from './_lib/geo.js';
 
 const ACCESS_TTL = 60 * 60 * 24 * 30; // 30 days
 
@@ -87,8 +88,9 @@ async function logOpen(req, lead, action, code) {
   const session = verifyToken(getCookie(req, 'aurum_access'));
   const already = session?.leadId === lead.id;
   if (!already) {
+    const geo = extractGeo(req);
     lead.audit = lead.audit || [];
-    lead.audit.push({ at: now, actor: 'member', action, code });
+    lead.audit.push({ at: now, actor: 'member', action, code, geo });
     lead.last_opened_at = now;
     lead.opens = (lead.opens || 0) + 1;
   }

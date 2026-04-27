@@ -157,6 +157,11 @@
 
     .caveat{font-family:var(--serifKr);font-style:italic;font-weight:300;font-size:13.5px;line-height:1.7;color:var(--goldD);border-left:1px solid var(--gold);padding:8px 14px;margin:22px 0 0}
 
+    /* Prior-IOI revision banner — shown when member returns to revise */
+    .prior-banner{margin:0 0 28px;padding:18px 22px;border:1px solid var(--goldBorder);background:linear-gradient(180deg,rgba(197,165,114,0.06),transparent);border-left:3px solid var(--gold)}
+    .prior-banner-eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:0.30em;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+    .prior-banner-text{font-family:var(--serifKr);font-size:14px;line-height:1.6;color:var(--sub)}
+
     /* Dashboard-style summary card (signature/review section) */
     .dash-card{padding:28px;margin:0 0 32px;border:1px solid var(--goldBorderS);background:linear-gradient(180deg,var(--goldWash),transparent)}
     @media (max-width:720px){.dash-card{padding:22px 18px}}
@@ -706,11 +711,70 @@ function tryCode(code) {
     if (!r.ok) return r.json().then(function(j) { showCodeErr(j.error || 'invalid code'); show('s-codegate'); });
     return r.json().then(function(j) {
       state.lead = j.lead; state.kyc_status = j.kyc_status;
-      if (j.has_ioi) show('s-done');
-      else if (j.kyc_status === 'verified') show('s-form');
-      else show('s-kyc');
+      state.prior_ioi = j.prior_ioi || null;
+      state.prior_profile = j.prior_profile || null;
+      // Always route to the form (pre-filled if previously submitted) when KYC is verified.
+      // IOIs are non-binding indications — members may revise. Submit overwrites.
+      if (j.kyc_status === 'verified') {
+        if (state.prior_ioi) prefillForm();
+        show('s-form');
+      } else {
+        show('s-kyc');
+      }
     });
   }).catch(function() { showCodeErr('network error'); show('s-codegate'); });
+}
+
+// Pre-fill the form with previously-submitted values so members can revise.
+function prefillForm() {
+  var p = state.prior_ioi;
+  var prof = state.prior_profile || {};
+  if (!p) return;
+  // Profile fields
+  Object.keys(prof).forEach(function(k) {
+    var el = document.querySelector('[name="' + k + '"]');
+    if (el && el.tagName === 'INPUT' && el.type === 'checkbox') el.checked = !!prof[k];
+    else if (el) el.value = prof[k] == null ? '' : String(prof[k]);
+  });
+  // PEP toggle visibility
+  var pepEl = document.querySelector('[name="pep"]');
+  if (pepEl && pepEl.value === 'yes') {
+    var pepRel = document.getElementById('pep-relation-field');
+    if (pepRel) pepRel.classList.remove('hidden');
+  }
+  // KG stepper
+  if (p.kg) {
+    var kgInput = document.getElementById('kg-input');
+    if (kgInput) kgInput.value = Math.round(p.kg) || 1;
+  }
+  // LTV slider
+  if (p.ltv_pct != null) {
+    var ltvSlider = document.getElementById('ltv-slider');
+    var ltvVal = document.getElementById('ltv-val');
+    if (ltvSlider) ltvSlider.value = p.ltv_pct;
+    if (ltvVal) ltvVal.textContent = p.ltv_pct + '%';
+  }
+  // Signature
+  if (p.signature) {
+    var sigEl = document.querySelector('[name="signature"]');
+    if (sigEl) sigEl.value = p.signature;
+  }
+  // Recompute calc with pre-filled values
+  if (typeof updateCalc === 'function') updateCalc();
+
+  // Show "revising prior submission" banner above the form
+  var bannerHtml = '<div class="prior-banner">' +
+    '<div class="prior-banner-eyebrow"><span data-lang="en">REVISING PRIOR INDICATION</span><span data-lang="ko">기존 의향 수정</span></div>' +
+    '<div class="prior-banner-text">' +
+    '<span data-lang="en">You submitted an IOI on ' + new Date(p.submitted_at).toLocaleDateString() + '. ' +
+    'IOIs are non-binding — adjust kg or LTV and re-submit. Your most recent submission is what your partner reviews.</span>' +
+    '<span data-lang="ko">' + new Date(p.submitted_at).toLocaleDateString('ko-KR') + '에 의향서를 제출하셨습니다. ' +
+    '의향서는 비구속 표명이므로, kg 또는 LTV를 조정하여 재제출하실 수 있습니다. 가장 최근 제출본이 검토 대상입니다.</span>' +
+    '</div></div>';
+  var formSection = document.getElementById('s-form');
+  if (formSection && !formSection.querySelector('.prior-banner')) {
+    formSection.insertAdjacentHTML('afterbegin', bannerHtml);
+  }
 }
 
 function showCodeErr(msg) {

@@ -101,6 +101,14 @@ async function opStatus(req, res) {
     kyc_status: (lead.kyc && lead.kyc.status) || 'pending',
     has_ioi: !!(lead.ioi && lead.ioi.submitted_at),
     has_profile: !!lead.profile,
+    // Pre-fill payload for re-visits (lets members revise their non-binding indication).
+    prior_ioi: lead.ioi ? {
+      kg: lead.ioi.kg || null,
+      ltv_pct: lead.ioi.ltv_pct ?? null,
+      signature: lead.ioi.signature || '',
+      submitted_at: lead.ioi.submitted_at || null,
+    } : null,
+    prior_profile: lead.profile || null,
   });
 }
 
@@ -279,8 +287,13 @@ async function opSubmitIoi(req, res) {
     },
     submitted_at: now,
   };
+  const wasRevision = !!(lead.ioi && lead.ioi.submitted_at);
   lead.audit = lead.audit || [];
-  lead.audit.push({ at: now, action: 'ioi_submitted', krw, kg: kg.toFixed(4), ltv_pct });
+  lead.audit.push({
+    at: now,
+    action: wasRevision ? 'ioi_revised' : 'ioi_submitted',
+    krw, kg: kg.toFixed(4), ltv_pct,
+  });
   await saveLead(lead);
 
   // Optional: notify partners that an IOI just landed (BCC partners on the dashboard).

@@ -1191,7 +1191,7 @@ function renderDetail() {
         ${(l.audit||[]).slice().reverse().map((a) => `
           <div class="audit-item">
             <span class="when">${esc(fmtDate(a.at))}</span>
-            <span class="what">${describeAudit(a)}</span>
+            <span class="what">${describeAudit(a)}${a.geo ? renderGeo(a.geo) : ''}</span>
             <span class="who">${esc(a.actor||'')}</span>
           </div>
         `).join('') || '<div class="notes-empty">No history.</div>'}
@@ -1250,6 +1250,18 @@ function renderDetail() {
   }
 }
 
+// Render an audit row's geo info (city/country/IP) when present.
+// Returns HTML string with a leading separator, or '' if nothing useful.
+function renderGeo(g) {
+  if (!g) return '';
+  const parts = [];
+  if (g.city && g.country) parts.push(`${esc(g.city)}, ${esc(g.country)}`);
+  else if (g.country) parts.push(esc(g.country));
+  if (g.ip) parts.push(`<span style="color:var(--muted)">${esc(g.ip)}</span>`);
+  if (!parts.length) return '';
+  return ` <span style="color:var(--goldD);font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;margin-left:8px">↳ ${parts.join(' · ')}</span>`;
+}
+
 function describeAudit(a) {
   switch (a.action) {
     case 'submitted':   return 'Inquiry submitted';
@@ -1275,6 +1287,7 @@ function describeAudit(a) {
     case 'kyc_verified_stub_pending_useb': return `<span style="color:var(--green)">KYC verified</span> <em style="color:var(--goldD)">(stub — awaiting Useb wiring)</em>`;
     case 'kyc_failed': return `<span style="color:var(--red)">KYC failed</span>${a.ref ? ' · ref ' + esc(a.ref) : ''}`;
     case 'ioi_submitted': return `<span style="color:var(--green)">IOI submitted</span> · ${esc(a.kg||'')} kg @ ${a.ltv_pct||0}% LTV`;
+    case 'ioi_revised':   return `<span style="color:var(--goldB)">IOI revised</span> · ${esc(a.kg||'')} kg @ ${a.ltv_pct||0}% LTV`;
     case 'ioi_verified': return `<span style="color:var(--green)">IOI verified</span> by partner — wire instructions issued`;
     case 'wire_instructions_sent': return `Wire instructions sent to <em>${esc(a.to||'')}</em>`;
     case 'wire_instructions_failed': return `<span style="color:var(--red)">Wire instructions failed</span> · ${esc(a.reason||'')}`;
