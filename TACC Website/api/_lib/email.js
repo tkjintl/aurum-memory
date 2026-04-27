@@ -152,40 +152,28 @@ export function buildMagicLinkEmail({ lead, linkUrl }) {
 //    Deliberately quiet. No code, no link, no promise of timing — just acknowledgement.
 //    A partner will follow up separately with the formal invitation if approved.
 export function buildInquiryReceivedEmail({ lead }) {
-  const subject = `Your inquiry has been received  ·  문의가 접수되었습니다`;
+  const subject = `We received your inquiry  ·  문의가 접수되었습니다`;
   const firstName = (lead.name_ko || lead.name || '').split(' ')[0] || '';
-  const submittedIso = new Date(lead.submitted_at_ms || Date.now()).toISOString();
 
   const text = [
-    `Your inquiry has been received.`,
+    `Thank you for your interest in The Aurum Century Club.`,
     ``,
-    `A timestamp record of your submission is on file. A member of the team will`,
-    `review and respond from a private address. On verification, next steps will`,
-    `be communicated, including review of the confidentiality agreement.`,
+    `We have received your inquiry. The partners review each note personally`,
+    `and will respond directly if we believe there is a fit.`,
     ``,
-    `This email confirms the receipt of your inquiry, made of your own accord.`,
-    `The Aurum Century Club does not solicit publicly. All members initiate`,
-    `contact in writing prior to receipt of substantive offering materials.`,
-    ``,
-    `Reference: ${lead.id}`,
-    `Submitted: ${submittedIso}`,
+    `No further action is required from you at this time.`,
     ``,
     `— The Partners`,
     `Aurum · TACC Pte Ltd · Singapore`,
     ``,
     `─────────────────────────────────────────`,
     ``,
-    `문의가 접수되었습니다.`,
+    `The Aurum Century Club에 관심을 가져주셔서 감사합니다.`,
     ``,
-    `제출하신 문의의 시각 기록이 보관되어 있습니다. 팀의 일원이 검토 후 비공개 주소에서`,
-    `회신드립니다. 확인이 완료되면 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.`,
+    `문의가 접수되었습니다. 파트너가 직접 검토하며,`,
+    `적합하다고 판단될 경우 별도로 연락드립니다.`,
     ``,
-    `본 이메일은 귀하께서 자발적으로 제기하신 문의의 접수를 확인하는 것입니다.`,
-    `The Aurum Century Club은 공개적인 권유를 하지 않습니다. 모든 회원은 실질적`,
-    `자료 수령에 앞서 서면으로 직접 연락을 개시하셔야 합니다.`,
-    ``,
-    `참조 번호: ${lead.id}`,
-    `제출 시각: ${submittedIso}`,
+    `현 시점에서 별도의 조치는 필요하지 않습니다.`,
     ``,
     `— 파트너 일동`,
     `Aurum · TACC Pte Ltd · 싱가포르`,
@@ -201,16 +189,11 @@ export function buildInquiryReceivedEmail({ lead }) {
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 18px;font-family:Georgia,serif;font-size:16px;line-height:1.78;color:#aaa39a">
-      Your inquiry has been received. A timestamp record of your submission is on file. A member of the team will review and respond from a private address. On verification, next steps will be communicated, including review of the confidentiality agreement.
+      We have received your inquiry. The partners review each note personally and will respond directly if we believe there is a fit.
     </td></tr>
 
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 22px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.7;color:#8a7d6b">
-      This email confirms the receipt of your inquiry, made of your own accord. The Aurum Century Club does not solicit publicly. All members initiate contact in writing prior to receipt of substantive offering materials.
-    </td></tr>
-
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 24px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:#6b655e;line-height:1.8">
-      Reference: <span style="color:#C5A572">${escape(lead.id)}</span><br>
-      Submitted: <span style="color:#C5A572">${escape(submittedIso)}</span>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 30px;font-family:Georgia,serif;font-style:italic;font-size:14px;line-height:1.7;color:#6b655e">
+      No further action is required from you at this time.
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 24px">
@@ -218,14 +201,10 @@ export function buildInquiryReceivedEmail({ lead }) {
     </td></tr>
 
     <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 14px;font-family:'Noto Serif KR',Georgia,serif;font-size:14.5px;line-height:1.85;color:#aaa39a">
-      문의가 접수되었습니다. 제출하신 문의의 시각 기록이 보관되어 있습니다. 팀의 일원이 검토 후 비공개 주소에서 회신드립니다. 확인이 완료되면 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.
+      The Aurum Century Club에 관심을 가져주셔서 감사합니다. 파트너가 직접 검토하며, 적합하다고 판단될 경우 별도로 연락드립니다.
     </td></tr>
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 16px;font-family:'Noto Serif KR',Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#8a7d6b">
-      본 이메일은 귀하께서 자발적으로 제기하신 문의의 접수를 확인하는 것입니다. The Aurum Century Club은 공개적인 권유를 하지 않습니다. 모든 회원은 실질적 자료 수령에 앞서 서면으로 직접 연락을 개시하셔야 합니다.
-    </td></tr>
-    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 36px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.18em;color:#6b655e;line-height:1.8">
-      참조 번호: <span style="color:#C5A572">${escape(lead.id)}</span><br>
-      제출 시각: <span style="color:#C5A572">${escape(submittedIso)}</span>
+    <tr><td bgcolor="#0a0a0a" style="background:#0a0a0a;padding:0 32px 36px;font-family:'Noto Serif KR',Georgia,serif;font-style:italic;font-size:13px;line-height:1.7;color:#6b655e">
+      현 시점에서 별도의 조치는 필요하지 않습니다.
     </td></tr>
 
     ${signOffRow}
@@ -407,39 +386,25 @@ export function buildIoiReceivedEmail({ lead, ioi }) {
 
 // 1) Notify the partners that a new inquiry came in.
 export function buildPartnerNotice(lead) {
-  // Subject: handles missing wealth tier (new schema doesn't capture it)
-  const subject = lead.wealth
-    ? `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${tierLabel(lead.wealth)}`
-    : `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${countryLabel(lead.country)}`;
-
-  // Text body — conditional. Only show rows when data is populated.
+  const subject = `[AURUM] New inquiry · ${lead.name || 'Unnamed'} · ${tierLabel(lead.wealth)}`;
   const lines = [
     `Name:        ${lead.name || ''}${lead.name_ko ? '  (' + lead.name_ko + ')' : ''}`,
+    `Email:       ${lead.email || ''}`,
+    `Phone:       ${(lead.phone_cc || '') + ' ' + (lead.phone || '')}`,
+    `Country:     ${lead.country || ''}`,
+    `Wealth:      ${tierLabel(lead.wealth)}`,
+    `Occupation:  ${lead.occupation || '—'}`,
+    `Source:      ${sourceOfWealthLabel(lead.source_of_wealth)}`,
+    `Interests:   ${interestsLabel(lead)}`,
+    `Referral:    ${lead.referral || '—'}`,
+    `Note:        ${lead.note || '—'}`,
+    ``,
+    `Submitted:   ${new Date(lead.submitted_at_ms || Date.now()).toISOString()}`,
+    `Lead ID:     ${lead.id}`,
+    ``,
+    `Open the dashboard:  ${brand()}/admin?lead=${encodeURIComponent(lead.id)}`,
   ];
-  if (lead.email) lines.push(`Email:       ${lead.email}`);
-  if (lead.country) lines.push(`Country:     ${countryLabel(lead.country)}`);
-  if (lead.hear_about) lines.push(`Heard via:   ${hearAboutLabel(lead.hear_about)}`);
-  // Legacy fields — only if populated (old leads pre-schema-change)
-  const phone = ((lead.phone_cc || '') + ' ' + (lead.phone || '')).trim();
-  if (phone) lines.push(`Phone:       ${phone}`);
-  if (lead.wealth) lines.push(`Wealth:      ${tierLabel(lead.wealth)}`);
-  if (lead.occupation) lines.push(`Occupation:  ${lead.occupation}`);
-  if (lead.source_of_wealth) lines.push(`Source:      ${sourceOfWealthLabel(lead.source_of_wealth)}`);
-  const interests = interestsLabel(lead);
-  if (interests && interests !== '—') lines.push(`Interests:   ${interests}`);
-  if (lead.referral) lines.push(`Referral:    ${lead.referral}`);
-
-  if (lead.note) lines.push(`Note:        ${lead.note}`);
-  lines.push(``);
-  lines.push(`Submitted:   ${new Date(lead.submitted_at_ms || Date.now()).toISOString()}`);
-  lines.push(`Lead ID:     ${lead.id}`);
-  lines.push(``);
-  lines.push(`Open the dashboard:  ${brand()}/admin?lead=${encodeURIComponent(lead.id)}`);
-
   const text = lines.join('\n');
-
-  // HTML body — same conditional approach via the row() helper which now
-  // returns empty string when value is falsy (see helper change below).
   const html = `
 <!doctype html><html><body style="margin:0;padding:0;background:#0a0a0a;color:#e8e3d8;font-family:Georgia,serif">
   <div style="max-width:560px;margin:0 auto;padding:32px 28px">
@@ -456,14 +421,13 @@ export function buildPartnerNotice(lead) {
     <h1 style="font-family:Georgia,serif;font-weight:500;font-size:28px;line-height:1.2;color:#e8e3d8;margin:0 0 24px">${escape(lead.name || 'Unnamed')}${lead.name_ko ? ' <span style="color:#8a7d6b">· ' + escape(lead.name_ko) + '</span>' : ''}</h1>
     <table cellpadding="0" cellspacing="0" style="width:100%;font-family:Georgia,serif;font-size:14px;color:#aaa39a;line-height:1.7">
       ${row('Email', lead.email)}
-      ${row('Country', lead.country ? countryLabel(lead.country) : null)}
-      ${row('Heard via', lead.hear_about ? hearAboutLabel(lead.hear_about) : null)}
-      ${row('Phone', phone || null)}
-      ${row('Wealth', lead.wealth ? tierLabel(lead.wealth) : null)}
-      ${row('Occupation', lead.occupation)}
-      ${row('Source', lead.source_of_wealth ? sourceOfWealthLabel(lead.source_of_wealth) : null)}
-      ${row('Interests', interests && interests !== '—' ? interests : null)}
-      ${row('Referral', lead.referral)}
+      ${row('Phone', (lead.phone_cc || '') + ' ' + (lead.phone || ''))}
+      ${row('Country', lead.country)}
+      ${row('Wealth', tierLabel(lead.wealth))}
+      ${row('Occupation', lead.occupation || '—')}
+      ${row('Source', sourceOfWealthLabel(lead.source_of_wealth))}
+      ${row('Interests', interestsLabel(lead))}
+      ${row('Referral', lead.referral || '—')}
     </table>
     ${lead.note ? `<div style="margin-top:18px;padding:14px;border-left:1px solid #C5A572;color:#e8e3d8;font-style:italic;font-size:14px;line-height:1.6">${escape(lead.note)}</div>` : ''}
     <div style="margin-top:32px">
@@ -473,23 +437,6 @@ export function buildPartnerNotice(lead) {
   </div>
 </body></html>`;
   return { subject, text, html };
-}
-
-function countryLabel(code) {
-  return ({
-    KR: 'South Korea', SG: 'Singapore', HK: 'Hong Kong SAR', JP: 'Japan',
-    US: 'United States', GB: 'United Kingdom', AU: 'Australia', CA: 'Canada',
-    CH: 'Switzerland', AE: 'United Arab Emirates', OTHER: 'Other',
-  })[String(code || '').toUpperCase()] || code || '—';
-}
-function hearAboutLabel(code) {
-  return ({
-    member:    'Existing member',
-    advisor:   'Advisor / family office',
-    partner:   'Aurum partner',
-    personal:  'Personal connection',
-    community: 'HNW community',
-  })[code] || code || '—';
 }
 
 function sourceOfWealthLabel(s) {
@@ -1116,9 +1063,7 @@ function escape(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 function row(label, val) {
-  // Conditional render: skip the row entirely when value is empty or dash placeholder
-  if (val === null || val === undefined || val === '' || val === '—') return '';
-  return `<tr><td style="padding:6px 12px 6px 0;color:#8a7d6b;font:9.5px 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.30em;width:90px;vertical-align:top">${escape(label)}</td><td style="padding:6px 0;color:#e8e3d8">${escape(val)}</td></tr>`;
+  return `<tr><td style="padding:6px 12px 6px 0;color:#8a7d6b;font:9.5px 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.30em;width:90px;vertical-align:top">${escape(label)}</td><td style="padding:6px 0;color:#e8e3d8">${escape(val || '—')}</td></tr>`;
 }
 function tierLabel(w) {
   return ({

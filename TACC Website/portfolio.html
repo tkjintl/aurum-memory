@@ -159,7 +159,7 @@
     .bar-custodian{font-family:var(--serifKr);font-size:12px;color:var(--muted);font-style:italic}
 
     /* ─────────── State B: LTV slider visual ─────────── */
-    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 75%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
+    .ltv-bar{position:relative;height:30px;background:linear-gradient(90deg,rgba(122,168,133,0.20) 0%,rgba(197,165,114,0.20) 65%,rgba(199,112,97,0.20) 80%,rgba(199,112,97,0.30) 100%);border:1px solid var(--border);margin:24px 0 32px}
     .ltv-fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .4s ease}
     .ltv-marker{position:absolute;top:-8px;bottom:-8px;width:1px;background:var(--text)}
     .ltv-marker.ceiling{background:var(--gold)}
@@ -1006,8 +1006,8 @@ function renderLimbo(d) {
     }
   } else {
     wirePillEl.innerHTML = '<span data-lang="en">AWAITING CLEARANCE</span><span data-lang="ko">정산 대기</span>';
-    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank.</span>' +
-                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중.</span>';
+    wireMsgEl.innerHTML = '<span data-lang="en">Your wire has been received. Awaiting clearance at the receiving bank — typically 2 business days.</span>' +
+                          '<span data-lang="ko">송금이 수령되었습니다. 수취 은행 정산 대기 중 — 일반적으로 2 영업일 소요됩니다.</span>';
     statusTextEl.innerHTML = '<span data-lang="en">Your wire has been received and is clearing. Bar assignment follows.</span>' +
                              '<span data-lang="ko">송금이 수령되어 정산 진행 중입니다. 곧 금괴 배정이 진행됩니다.</span>';
     if (d.wire.ref) {
@@ -1118,7 +1118,7 @@ function renderVault(d) {
     var det = document.getElementById('mp-ltv-details');
     if (det) {
       det.style.display = 'block';
-      document.getElementById('mp-ltv-pct').textContent = (ltv.ceiling_pct || ltv.approved_pct || 75) + '%';
+      document.getElementById('mp-ltv-pct').textContent = (ltv.ceiling_pct || ltv.approved_pct || 60) + '%';
       document.getElementById('mp-ltv-drawn').textContent = formatKRW(drawnKrw);
     }
   }

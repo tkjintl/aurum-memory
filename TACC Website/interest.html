@@ -316,11 +316,11 @@ select.field-input {
   <div class="page-inner">
     <header class="head" id="head">
       <div class="head-eyebrow">
-        <span data-lang="en">INQUIRE</span>
-        <span class="ko">문의</span>
+        <span data-lang="en">INDICATE INTEREST</span>
+        <span class="ko">관심 표명</span>
       </div>
-      <h1 data-lang="en">Begin the <em>inquiry.</em></h1><h1 data-lang="ko">문의를 <em>시작합니다.</em></h1>
-      <p data-lang="en">A short form to register your inquiry with the partners. On verification, you will receive an invitation to schedule next steps including review of the confidentiality agreement.</p><p data-lang="ko">파트너에게 문의를 등록하는 짧은 양식입니다. 확인 후 비밀유지 계약 검토를 포함한 다음 단계 안내를 받으시게 됩니다.</p>
+      <h1 data-lang="en">Begin the <em>conversation.</em></h1><h1 data-lang="ko">대화를 <em>시작합니다.</em></h1>
+      <p data-lang="en">A short form to begin a private exchange with the partners. On verification, you will receive an <em>invitation code</em> giving access to the full memo and the two opening positions.</p><p data-lang="ko">파트너와의 비공개 소통을 시작하기 위한 짧은 양식입니다. 확인이 완료되면 <em>초대 코드</em>가 발급되며, 전체 투자 메모와 두 개시 포지션이 열립니다.</p>
     </header>
     <form class="form" id="form" autocomplete="on" novalidate>
       <div class="field-group">
@@ -329,9 +329,33 @@ select.field-input {
         <div class="field-err" data-err="name"><span data-lang="en">Required.</span><span data-lang="ko">필수 항목입니다.</span></div>
       </div>
       <div class="field-group">
+        <label class="field-label" for="name_ko">한글 이름<span class="opt"><span data-lang="en">OPTIONAL</span><span data-lang="ko">선택</span></span></label>
+        <input type="text" id="name_ko" name="name_ko" class="field-input" lang="ko" placeholder="홍길동" data-ph-en="홍길동" data-ph-ko="홍길동">
+      </div>
+      <div class="field-group">
         <label class="field-label" for="email"><span data-lang="en">EMAIL</span><span data-lang="ko">이메일</span><span class="req">·</span></label>
         <input type="email" id="email" name="email" class="field-input" required placeholder="you@domain.com" autocomplete="email" data-ph-en="you@domain.com" data-ph-ko="you@domain.com">
         <div class="field-err" data-err="email"><span data-lang="en">A valid email is required.</span><span data-lang="ko">유효한 이메일을 입력해 주세요.</span></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label"><span data-lang="en">PHONE</span><span data-lang="ko">전화번호</span></label>
+        <div class="phone-row">
+          <select id="phone_cc" name="phone_cc" class="field-input">
+            <option value="+82" selected>🇰🇷 +82</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+852">🇭🇰 +852</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+886">🇹🇼 +886</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+41">🇨🇭 +41</option>
+            <option value="+other">other</option>
+          </select>
+          <input type="tel" id="phone" name="phone" class="field-input" placeholder="10-1234-5678" autocomplete="tel-national" data-ph-en="10-1234-5678" data-ph-ko="10-1234-5678">
+        </div>
       </div>
       <div class="field-group">
         <label class="field-label" for="country"><span data-lang="en">COUNTRY OF RESIDENCE</span><span data-lang="ko">거주 국가</span><span class="req">·</span></label>
@@ -352,30 +376,81 @@ select.field-input {
         <div class="field-err" data-err="country"><span data-lang="en">Required.</span><span data-lang="ko">필수 항목입니다.</span></div>
       </div>
       <div class="field-group">
-        <label class="field-label" for="hear_about"><span data-lang="en">HOW DID YOU HEAR ABOUT US?</span><span data-lang="ko">어떻게 알게 되셨습니까?</span><span class="req">·</span></label>
-        <select id="hear_about" name="hear_about" class="field-input" required>
-          <option value="" disabled selected data-lang-en="— Select —" data-lang-ko="— 선택 —">— 선택 —</option>
-          <option value="member" data-lang-en="Through an existing member of the fund" data-lang-ko="펀드의 기존 멤버를 통해">펀드의 기존 멤버를 통해</option>
-          <option value="advisor" data-lang-en="Through a financial advisor or family office" data-lang-ko="재무 자문 또는 패밀리 오피스를 통해">재무 자문 또는 패밀리 오피스를 통해</option>
-          <option value="partner" data-lang-en="Through a partner of Aurum" data-lang-ko="Aurum의 파트너를 통해">Aurum의 파트너를 통해</option>
-          <option value="personal" data-lang-en="Through a personal connection" data-lang-ko="개인적 연결을 통해">개인적 연결을 통해</option>
-          <option value="community" data-lang-en="Through a long-standing relationship in the HNW community" data-lang-ko="자산가 커뮤니티 내 오랜 관계를 통해">자산가 커뮤니티 내 오랜 관계를 통해</option>
+        <label class="field-label"><span data-lang="en">TOTAL INVESTABLE ASSETS</span><span data-lang="ko">총 투자 가능 자산</span><span class="req">·</span></label>
+        <div class="field-hint" data-lang="en">A sense of your overall portfolio — for program qualification only. Treated in confidence. The actual commitment amount is set later, at the IOI stage.</div><div class="field-hint" data-lang="ko">전체 포트폴리오 규모 — 프로그램 자격 확인용입니다. 기밀로 처리됩니다. 실제 약정 금액은 추후 의향 표명(IOI) 단계에서 결정됩니다.</div>
+        <div class="tier-grid">
+          <label class="tier-option">
+            <input type="radio" name="wealth" value="250k_500k" required>
+            <span class="check"></span>
+            <span class="tier-range">$250K – $500K</span>
+            <span class="tier-tag"><span data-lang="en">EMERGING</span><span data-lang="ko">신흥</span></span>
+          </label>
+          <label class="tier-option">
+            <input type="radio" name="wealth" value="500k_2m">
+            <span class="check"></span>
+            <span class="tier-range">$500K – $2M</span>
+            <span class="tier-tag"><span data-lang="en">ESTABLISHED</span><span data-lang="ko">안정</span></span>
+          </label>
+          <label class="tier-option">
+            <input type="radio" name="wealth" value="2m_5m">
+            <span class="check"></span>
+            <span class="tier-range">$2M – $5M</span>
+            <span class="tier-tag"><span data-lang="en">SENIOR</span><span data-lang="ko">시니어</span></span>
+          </label>
+          <label class="tier-option">
+            <input type="radio" name="wealth" value="5m_plus">
+            <span class="check"></span>
+            <span class="tier-range">$5M+</span>
+            <span class="tier-tag"><span data-lang="en">PRINCIPAL</span><span data-lang="ko">주축</span></span>
+          </label>
+        </div>
+        <div class="field-err" data-err="wealth"><span data-lang="en">Please select a range.</span><span data-lang="ko">범위를 선택해 주세요.</span></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="occupation"><span data-lang="en">OCCUPATION</span><span data-lang="ko">직업</span><span class="req">·</span></label>
+        <div class="field-hint" data-lang="en">What you do. A line, not a title.</div><div class="field-hint" data-lang="ko">하시는 일. 직함이 아닌 한 줄.</div>
+        <input type="text" id="occupation" name="occupation" class="field-input" required maxlength="120" placeholder="예: 물류 그룹 창업자 / 의사 / 패밀리 오피스 운영" data-ph-en="e.g., Founder, Logistics Group / Surgeon / Family office principal" data-ph-ko="예: 물류 그룹 창업자 / 의사 / 패밀리 오피스 운영">
+        <div class="field-err" data-err="occupation"><span data-lang="en">Required.</span><span data-lang="ko">필수 항목입니다.</span></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="source_of_wealth"><span data-lang="en">SOURCE OF WEALTH</span><span data-lang="ko">자산 형성 배경</span><span class="req">·</span></label>
+        <div class="field-hint" data-lang="en">Where the wealth originated.</div><div class="field-hint" data-lang="ko">자산이 형성된 주된 배경.</div>
+        <select id="source_of_wealth" name="source_of_wealth" class="field-input" required>
+          <option value="" disabled selected hidden></option>
+          <option value="business">Business income  ·  사업소득</option>
+          <option value="investment">Investment proceeds  ·  투자수익</option>
+          <option value="inheritance">Inheritance  ·  상속</option>
+          <option value="profession">Professional practice  ·  전문직 소득</option>
+          <option value="other">Other  ·  기타</option>
         </select>
-        <div class="field-err" data-err="hear_about"><span data-lang="en">Please select an option.</span><span data-lang="ko">옵션을 선택해 주세요.</span></div>
+        <div class="field-err" data-err="source_of_wealth"><span data-lang="en">Please select a source.</span><span data-lang="ko">배경을 선택해 주세요.</span></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label"><span data-lang="en">EXPERIENCE &amp; INTEREST</span><span data-lang="ko">경험·관심사</span><span class="opt"><span data-lang="en">SELECT ALL THAT APPLY</span><span data-lang="ko">해당 사항 모두 선택</span></span></label>
+        <div class="interest-grid">
+          <label class="interest-option"><input type="checkbox" name="interest_deals" value="1"><span class="box"></span><span data-lang="en">Global private deals</span><span data-lang="ko">글로벌 사모 거래</span></label>
+          <label class="interest-option"><input type="checkbox" name="interest_gold" value="1"><span class="box"></span><span data-lang="en">Gold investment</span><span data-lang="ko">금 투자</span></label>
+          <label class="interest-option"><input type="checkbox" name="interest_familyoffice" value="1"><span class="box"></span><span data-lang="en">Family office establishment</span><span data-lang="ko">패밀리 오피스 설립</span></label>
+          <label class="interest-option"><input type="checkbox" name="interest_all" value="1"><span class="box"></span><span data-lang="en">All of the above</span><span data-lang="ko">위 항목 모두</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="referral"><span data-lang="en">INTRODUCED BY</span><span data-lang="ko">추천인</span><span class="opt"><span data-lang="en">OPTIONAL</span><span data-lang="ko">선택</span></span></label>
+        <input type="text" id="referral" name="referral" class="field-input" placeholder="추천하신 파트너 또는 회원의 성함" data-ph-en="Name of referring partner or member, if any" data-ph-ko="추천하신 파트너 또는 회원의 성함">
       </div>
       <div class="field-group">
         <label class="field-label" for="note"><span data-lang="en">A BRIEF NOTE</span><span data-lang="ko">간단한 메모</span><span class="opt"><span data-lang="en">OPTIONAL</span><span data-lang="ko">선택</span></span></label>
         <textarea id="note" name="note" class="field-input" rows="3" placeholder="파트너들에게 전하고 싶은 내용" data-ph-en="Anything you'd like the partners to know" data-ph-ko="파트너들에게 전하고 싶은 내용"></textarea>
       </div>
       <label class="nda">
-        <input type="checkbox" name="reverse_solicitation_ack" value="1" required>
+        <input type="checkbox" name="nda_ack" value="1" required>
         <span class="nda-box"></span>
-        <span class="nda-text" data-lang="en"><em>I confirm</em> I am initiating this inquiry of my own accord. Aurum has not solicited my participation. I learned of the Fund through private channels and acknowledge this inquiry is confidential.</span><span class="nda-text" data-lang="ko"><em>본 문의를 자발적으로 시작</em>함을 확인합니다. Aurum은 본인의 참여를 권유하지 않았습니다. 본인은 비공개 채널을 통해 본 펀드를 알게 되었으며, 본 문의가 기밀임을 인지합니다.</span>
+        <span class="nda-text" data-lang="en"><em>I acknowledge</em> this is a confidential inquiry. Information disclosed here is private, not for distribution, and provided in good faith for partner review only.</span><span class="nda-text" data-lang="ko"><em>본 문의가 기밀임을 인지합니다.</em> 여기 제공된 정보는 비공개로 처리되고 외부에 배포되지 않으며, 오직 파트너 검토 목적으로 제공됩니다.</span>
       </label>
-      <div class="field-err" data-err="reverse_solicitation_ack" style="margin-top:-24px;"><span data-lang="en">Please acknowledge to continue.</span><span data-lang="ko">진행하시려면 동의해 주세요.</span></div>
+      <div class="field-err" data-err="nda_ack" style="margin-top:-24px;"><span data-lang="en">Please acknowledge to continue.</span><span data-lang="ko">진행하시려면 동의해 주세요.</span></div>
       <div class="submit-row">
         <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="label"><span data-lang="en">SUBMIT INQUIRY</span><span data-lang="ko">문의 제출</span></span>
+          <span class="label"><span data-lang="en">REQUEST INVITATION CODE</span><span data-lang="ko">초대 코드 요청</span></span>
           <span class="arrow">&rarr;</span>
         </button>
         <div class="submit-foot" data-lang="en">QUALIFIED&nbsp;&nbsp;·&nbsp;&nbsp;BY&nbsp;INVITATION&nbsp;·&nbsp;&nbsp;PARTNER REVIEW</div><div class="submit-foot" data-lang="ko">적격&nbsp;&nbsp;·&nbsp;&nbsp;초청제&nbsp;·&nbsp;&nbsp;파트너 검토</div>
@@ -385,11 +460,12 @@ select.field-input {
       <div class="confirm-seal"><em>Au</em></div>
       <div class="confirm-eyebrow"><span data-lang="en">RECEIVED</span><span class="ko">접수 완료</span></div>
       <h1 data-lang="en">Thank you<span id="confirm-name"></span>.</h1><h1 data-lang="ko">감사합니다<span id="confirm-name-ko"></span>.</h1>
-      <p class="confirm-body" data-lang="en">Your inquiry has been received. A member of the team will <em>reach out in due course</em> from a private address. On verification, next steps will be communicated, including review of the confidentiality agreement.</p><p class="confirm-body" data-lang="ko">문의가 접수되었습니다. 팀의 담당자가 <em>적절한 시점에</em> 비공개 주소로 연락드립니다. 확인 후 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.</p>
+      <p class="confirm-body" data-lang="en">Your inquiry has been received by the partners. A member of the team will <em>reach out in due course</em> from a private address. On verification, your <em>invitation code</em> will be sent to the email you provided, granting access to the full memo and the two opening positions under NDA.</p><p class="confirm-body" data-lang="ko">문의가 파트너에게 전달되었습니다. 팀의 담당자가 <em>적절한 시점에</em> 비공개 주소로 연락드릴 예정입니다. 확인이 완료되면 <em>초대 코드</em>가 입력하신 이메일로 발송되며, 비밀유지계약 하에 전체 투자 메모와 두 개시 포지션이 열립니다.</p>
       <div class="confirm-stamp">
-        <span><span data-lang="en">REFERENCE</span><span data-lang="ko">참조</span></span>
+        <span class="pulse"></span>
+        <span><span data-lang="en">INAUGURAL CLOSE</span><span data-lang="ko">첫 마감</span></span>
         <span class="sep">·</span>
-        <span>MMXXVI</span>
+        <span>Q3 MMXXVI</span>
       </div>
       <div><a href="index.html" class="confirm-back"><span>&larr;</span> <span data-lang="en">RETURN HOME</span><span data-lang="ko">처음으로</span></a></div>
     </div>
@@ -436,8 +512,10 @@ select.field-input {
     var email=(data.get('email')||'').trim();
     if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))firstError=firstError||'email';
     if(!data.get('country'))firstError=firstError||'country';
-    if(!data.get('hear_about'))firstError=firstError||'hear_about';
-    if(!data.get('reverse_solicitation_ack'))firstError=firstError||'reverse_solicitation_ack';
+    if(!data.get('wealth'))firstError=firstError||'wealth';
+    if(!data.get('occupation')||!data.get('occupation').trim())firstError=firstError||'occupation';
+    if(!data.get('source_of_wealth'))firstError=firstError||'source_of_wealth';
+    if(!data.get('nda_ack'))firstError=firstError||'nda_ack';
     if(firstError){showError(firstError,true);return false;}
     return true;
   }
