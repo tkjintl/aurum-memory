@@ -327,7 +327,7 @@
     <span class="loading-spin"></span><span data-lang="en">LOADING PORTFOLIO</span><span data-lang="ko">포트폴리오 불러오는 중</span>
   </section>
 
-  <!-- Error / no-access -->
+  <!-- Error / no-access (member context) -->
   <section id="s-error" class="hidden">
     <div class="eyebrow">PORTFOLIO  ·  포트폴리오</div>
     <h1 class="title" data-lang="en">Sign in <em>required.</em></h1>
@@ -335,6 +335,20 @@
     <p class="lede" data-lang="en">Your session has expired or is not yet established. Please open the link sent in your invitation email, or enter your access code.</p>
     <p class="lede" data-lang="ko">세션이 만료되었거나 아직 설정되지 않았습니다. 초대 이메일의 링크를 다시 열거나, 접근 코드를 입력해 주십시오.</p>
     <a href="/code" class="doc-link"><span data-lang="en">ENTER CODE  →</span><span data-lang="ko">코드 입력  →</span></a>
+  </section>
+
+  <!-- Admin error — partner viewing a member's portfolio with a load failure.
+       Shows the actual reason instead of the member-flavored "sign in" copy.
+       Lets the partner see what's wrong and click back to admin manually. -->
+  <section id="s-admin-error" class="hidden">
+    <div class="eyebrow" style="color:#C5A572">ADMIN VIEW  ·  PORTFOLIO LOAD FAILED</div>
+    <h1 class="title" data-lang="en">Could not load <em>this member.</em></h1>
+    <p class="lede" id="admin-err-reason" style="font-family:ui-monospace,monospace;font-size:13px;color:#aaa39a;background:rgba(255,255,255,0.03);padding:14px 18px;border-left:2px solid #C5A572;margin:24px 0">Reason: <span id="admin-err-detail">unknown</span></p>
+    <p class="lede" data-lang="en" style="color:#6b655e;font-style:italic;font-size:14px">This is the partner-context error UI. Member-flavored login prompts are not shown.</p>
+    <div style="display:flex;gap:14px;margin-top:18px">
+      <a href="/admin" class="doc-link"><span>← BACK TO ADMIN</span></a>
+      <a href="javascript:location.reload()" class="doc-link" style="border-color:rgba(197,165,114,0.30)"><span>↻ RETRY</span></a>
+    </div>
   </section>
 
   <!-- No IOI yet — redirect to /memo -->
@@ -921,10 +935,19 @@ function applyWatermark(ident) {
 }
 
 function show(id) {
-  ['s-loading', 's-error', 's-no-ioi', 's-limbo', 's-vault'].forEach(function(s) {
-    document.getElementById(s).classList.toggle('hidden', s !== id);
+  ['s-loading', 's-error', 's-admin-error', 's-no-ioi', 's-limbo', 's-vault'].forEach(function(s) {
+    var el = document.getElementById(s);
+    if (el) el.classList.toggle('hidden', s !== id);
   });
   window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// Surface a load failure with the actual reason. Used in admin context so
+// partners see what went wrong instead of a generic "sign in required" page.
+function showAdminError(reason) {
+  var det = document.getElementById('admin-err-detail');
+  if (det) det.textContent = String(reason || 'unknown');
+  show('s-admin-error');
 }
 
 // ─── Load portfolio data ─────────────────────────────────
@@ -934,7 +957,10 @@ function show(id) {
   // Members arrive without query → uses their own aurum_access cookie
   var qLead = '';
   try { qLead = new URL(location.href).searchParams.get('lead') || ''; } catch (_) {}
-  var adminQs = qLead ? ('?lead=' + encodeURIComponent(qLead)) : '';
+  // adminQs is appended to URLs that ALREADY have ?op=, so it must use &lead=
+  // (not ?lead=). Two question marks would push 'lead' into the value of 'op'
+  // and cause a 404 on the dispatcher.
+  var adminQs = qLead ? ('&lead=' + encodeURIComponent(qLead)) : '';
 
   // Fetch identity headers for watermark in parallel
   fetch('/api/doc?id=session' + (qLead ? ('&lead=' + encodeURIComponent(qLead)) : ''), { method:'HEAD', credentials:'same-origin', cache:'no-store' })
@@ -950,16 +976,42 @@ function show(id) {
     }).catch(function(){});
 
   fetch('/api/ioi?op=portfolio' + adminQs, { credentials: 'same-origin', cache: 'no-store' })
-    .then(function(r) { return r.json(); })
-    .then(function(j) {
+    .then(function(r) {
+      // Capture status for diagnostic. Non-200 statuses still might have JSON
+      // body; let it through to the JSON parse.
+      var status = r.status;
+      return r.text().then(function(txt) {
+        try {
+          return { status: status, body: JSON.parse(txt) };
+        } catch (e) {
+          return { status: status, body: null, raw: txt, parseError: e.message };
+        }
+      });
+    })
+    .then(function(res) {
+      var j = res.body;
+      // If body is null, JSON parse failed — surface what came back
+      if (!j) {
+        console.error('[portfolio] non-JSON response', res.status, res.raw);
+        if (qLead) {
+          showAdminError('non-JSON response (status ' + res.status + ')');
+        } else {
+          show('s-error');
+        }
+        return;
+      }
       if (!j.ok) {
         if (j.reason === 'no-ioi') { show('s-no-ioi'); return; }
-        if (j.reason === 'admin-no-lead') {
-          // Admin without ?lead= → bounce back to admin
-          window.location.replace('/admin');
+        // Admin context (qLead set) — render admin error UI with the actual
+        // reason. NEVER redirect — the partner needs to see what went wrong.
+        if (qLead) {
+          var reason = j.reason || ('status ' + res.status);
+          if (j.message) reason += ' · ' + j.message;
+          console.error('[portfolio] admin load failed', j);
+          showAdminError(reason);
           return;
         }
-        // No cookie / expired session → redirect to /login (Path B passwordless flow)
+        // Member context (no qLead) — no/expired session → inquiry page
         if (j.reason === 'no-session' || j.reason === 'no-lead') {
           window.location.replace('/');
           return;
@@ -973,7 +1025,14 @@ function show(id) {
       if (hasCleared) renderVault(j);
       else renderLimbo(j);
     })
-    .catch(function() { show('s-error'); });
+    .catch(function(err) {
+      console.error('[portfolio] fetch failed', err);
+      if (qLead) {
+        showAdminError('network error · ' + (err && err.message ? err.message : 'fetch failed'));
+      } else {
+        show('s-error');
+      }
+    });
 })();
 
 // Admin-view banner — shown across the top when a partner is viewing a member's portfolio
@@ -1215,6 +1274,11 @@ function renderVault(d) {
 
   // LTV visual (unchanged math, uses live numbers)
   var ceilingKrw = goldNow * (ltv.ceiling_pct / 100);
+  var marginKrw = goldNow * (ltv.margin_pct / 100);
+  // deployable = remaining capacity under the approved ceiling
+  // headroom   = buffer before bank margin call (drawn vs margin threshold)
+  var deployable = Math.max(0, ceilingKrw - drawnKrw);
+  var headroom = Math.max(0, marginKrw - drawnKrw);
   var fillPct = goldNow > 0 ? Math.min(100, (drawnKrw / goldNow) * 100) : 0;
   document.getElementById('ltv-fill').style.width = fillPct + '%';
   document.getElementById('ltv-ceiling-marker').style.left = ltv.ceiling_pct + '%';
@@ -1259,7 +1323,7 @@ function renderVault(d) {
   }
 
   // ── Positions panel + NAV band (Phase 3) ──
-  renderPositions(d, totalKg, spotKrwPerKg, drawnKrw);
+  renderPositions(d, totalKg, liveSpot, drawnKrw);
 
   // ── Capital call banners ──
   renderCapitalCalls(d.capital_calls || []);

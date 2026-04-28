@@ -11,7 +11,7 @@
    The Aurum Century Club · PRINT EDITION · 18 pp · Letter
    Dark register throughout · HTML-version graphics applied to PDF page format
    ═══════════════════════════════════════════════════════════════════════════ */
-@page { size: Letter; margin: 0; }
+@page { size: Letter; margin: 0; background: #0a0a0a; }
 
 :root {
   --bg:         #0a0a0a;
@@ -533,7 +533,7 @@ h2.page-h em {
   display: flex;
   flex-direction: column;
 }
-.mech-step + .mech-step { border-left: none; }
+.mech-step + .mech-step { margin-left: -1px; }
 .mech-step .roman {
   font-family: var(--serif); font-style: italic; font-weight: 500;
   font-size: 18px; color: var(--gold); margin-bottom: 12px;
@@ -736,9 +736,9 @@ h2.page-h em {
 
 .gap-flow {
   display: grid; grid-template-columns: 56px repeat(4, 1fr) 80px;
-  align-items: center; gap: 9px;
+  align-items: stretch; gap: 9px;
 }
-.gap-member { text-align: center; }
+.gap-member { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .gap-member .circle {
   width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid var(--goldBorderS);
@@ -753,14 +753,15 @@ h2.page-h em {
   line-height: 1.3;
 }
 .wall {
-  padding: 10px 7px;
+  padding: 24px 7px 10px;
   border: 1px solid rgba(199,112,97,0.45);
   background: rgba(199,112,97,0.04);
   text-align: center; position: relative;
+  display: flex; flex-direction: column; justify-content: flex-start;
 }
 .wall::after {
   content: '✗';
-  position: absolute; top: -9px; left: 50%;
+  position: absolute; top: 6px; left: 50%;
   transform: translateX(-50%);
   width: 18px; height: 18px;
   background: var(--red); color: var(--bg);
@@ -788,6 +789,7 @@ h2.page-h em {
 .gap-result {
   font-family: var(--serif); font-style: italic;
   font-size: 11px; color: var(--red); line-height: 1.3;
+  display: flex; align-items: center; justify-content: center;
 }
 
 .gap-aurum-row {
@@ -1615,7 +1617,7 @@ h2.page-h em {
 }
 .pipe-steps .step {
   padding: 12px 14px;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--goldBorder);
   background: var(--card);
 }
 .pipe-steps .step:last-child { border-right: none; }
@@ -2342,6 +2344,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
   background: rgba(199,112,97,0.04);
   padding: 14px 12px 12px;
   display: flex; flex-direction: column;
+  overflow: hidden;
 }
 .origin-walls .label {
   font-family: var(--mono); font-size: 7.5px;
@@ -2354,7 +2357,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
 }
 .origin-walls .wall {
   border: 1px solid rgba(199,112,97,0.28);
-  padding: 9px 6px 8px;
+  padding: 14px 6px 8px;
   text-align: center;
   display: flex; flex-direction: column; justify-content: space-between;
   background: rgba(0,0,0,0.20);
@@ -2837,7 +2840,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
 
   <h1 class="toc-h1">What is <em>inside.</em></h1>
   <p class="toc-lede">
-    The program at a glance — followed by how it works, why Korean capital needs this structure,
+    The program at a glance — followed by how it works, why this structure exists,
     and how new deals reach you.
   </p>
 
@@ -2848,7 +2851,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <div class="ti">The Origin  ·  <em>how the fund found its place</em></div>
         <div class="desc">Why Aurum exists. The gap we saw, the three forces, the fund built to hold them.</div>
       </div>
-      <div class="pg">PG. 04</div>
+      <div class="pg">PG. 03</div>
     </div>
     <div class="toc-row">
       <div class="num">II</div>
@@ -2856,7 +2859,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <div class="ti">The program  ·  <em>one kilogram, the founding 100</em></div>
         <div class="desc">The program in a single page. What it is, what it costs, what a member receives.</div>
       </div>
-      <div class="pg">PG. 07</div>
+      <div class="pg">PG. 06</div>
     </div>
     <div class="toc-row">
       <div class="num">III</div>
@@ -2864,15 +2867,15 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <div class="ti">Mechanism  ·  <em>two jobs, two engines</em></div>
         <div class="desc">Gold protects, credit earns, both compound into member NAV.</div>
       </div>
-      <div class="pg">PG. 09</div>
+      <div class="pg">PG. 08</div>
     </div>
     <div class="toc-row">
       <div class="num">IV</div>
       <div>
         <div class="ti">The simplification  ·  <em>once, not every time</em></div>
-        <div class="desc">The structural gap between cross-border capital and offshore private markets — and how this Fund addresses it.</div>
+        <div class="desc">The cross-border compliance gap — and how one subscription closes it.</div>
       </div>
-      <div class="pg">PG. 12</div>
+      <div class="pg">PG. 11</div>
     </div>
     <div class="toc-row">
       <div class="num">V</div>
@@ -2880,7 +2883,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <div class="ti">The Platform  ·  <em>where new deals reach you first</em></div>
         <div class="desc">Member-gated deal flow and live position visibility through the Aurum platform.</div>
       </div>
-      <div class="pg">PG. 14</div>
+      <div class="pg">PG. 13</div>
     </div>
     <div class="toc-row">
       <div class="num">VI</div>
@@ -2888,7 +2891,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <div class="ti">Featured deals  ·  <em>the opening book</em></div>
         <div class="desc">Two exceptional positions Aurum is sourcing to seed the fund — the $20M opening book.</div>
       </div>
-      <div class="pg">PG. 17</div>
+      <div class="pg">PG. 16</div>
     </div>
   </div>
 
@@ -2949,7 +2952,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
       <div class="colhead">FRICTION</div>
       <h3>Demand <em>outgrew the structures</em> built to serve it.</h3>
       <p>
-        Korean appetite for offshore private positions rose faster than the channels designed to receive
+        Cross-border appetite for offshore private positions rose faster than the channels designed to receive
         it. Each direct deal triggered another regulatory filing, another AML review, another year-end line
         on the member's overseas account return. <em>The friction compounded with every deal.</em>
       </p>
@@ -3368,7 +3371,6 @@ table.deals tbody tr:last-child td { border-bottom: none; }
 
   <div class="qstats">
     <div class="cell"><div class="k">BASE IRR<span style="opacity:0.6"> · TARGET · NEW FUND</span></div><div class="v">~15%</div></div>
-    <div class="cell"><div class="k">UPSIDE IRR<span style="opacity:0.6"> · TARGET · NEW FUND</span></div><div class="v">18–25%</div></div>
     <div class="cell"><div class="k">MIN.</div><div class="v">1 kg</div></div>
     <div class="cell"><div class="k">TERM</div><div class="v">5–7 yr</div></div>
     <div class="cell"><div class="k">FEES</div><div class="v">2 / 20</div></div>
@@ -3489,7 +3491,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
     <span class="irr">~15% base IRR · net of fees · targets · new fund vehicle · illustrative</span>
   </div>
   <div class="mech-foot-2">
-    <span>20% FUND RESERVE  ·  CAPITAL CALL MECHANISM  ·  LBMA SPOT AT EXECUTION</span>
+    <span>20% FUND-LEVEL RESERVE (CREDIT FACILITY)  ·  CAPITAL CALL MECHANISM  ·  LBMA SPOT AT EXECUTION</span>
   </div>
 
   <div class="foot">
@@ -3585,7 +3587,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
       <h3>Compounds at the rate of <em>money supply.</em></h3>
       <p>
         The kilogram appreciates passively against won, dollar, yen — the asymmetry that
-        makes Korean families hold it in the first place. Aurum doesn't accelerate it.
+        makes families across Asia hold it in the first place. Aurum doesn't accelerate it.
         It simply stops the metal from sitting idle.
       </p>
     </div>
@@ -3593,8 +3595,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
       <div class="k">ENGINE II  ·  THE PIPELINE</div>
       <h3>Compounds at the rate of <em>the deal book.</em></h3>
       <p>
-        The credit drawn against the bar deploys into pre-IPO equity at 18–25%
-        and private credit at gross target. The bar grows the floor; the deals grow the ceiling.
+        The credit drawn against the bar deploys into pre-IPO equity and private credit at target gross ranges. The bar grows the floor; the deals grow the ceiling.
       </p>
     </div>
   </div>
@@ -3808,7 +3809,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
     </div>
     <div class="cell">
       <div class="k">WHAT YOU GET</div>
-      <div class="v"><em>First look</em> on Aurum-sourced fund deals. Allotment priority by member commitment. Optional step-up at partner discretion.</div>
+      <div class="v"><em>First look</em> on Aurum-sourced fund deals. Pro-rata allotment by Member commitment, with optional concentration above pro-rata available case by case under the Fund's side-letter framework (PPM §19).</div>
     </div>
   </div>
 
@@ -3831,7 +3832,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
     <div class="step">
       <div class="k">04 · SUBSCRIBED</div>
       <h4>Allotment <em>closes</em></h4>
-      <p>On a clock · FCFS</p>
+      <p>Subscription window · pro-rata allocation</p>
     </div>
   </div>
 
@@ -3880,9 +3881,9 @@ table.deals tbody tr:last-child td { border-bottom: none; }
   <div class="pipe-extra">
     <div class="k">ADDITIONAL ALLOTMENT</div>
     <p>
-      Members who wish to concentrate beyond pro-rata may participate at a step-up,
-      subject to platform availability and LP agreement terms — <em>a feature of the founding group,
-      not a marketing lever.</em>
+      Members who wish to concentrate above pro-rata may do so on a case-by-case basis
+      under the Fund's side-letter framework (PPM §19), subject to platform availability
+      and LP agreement terms — <em>a feature of the founding group, not a marketing lever.</em>
     </p>
   </div>
 
@@ -4102,13 +4103,12 @@ table.deals tbody tr:last-child td { border-bottom: none; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
         <path d="M12 2 L12 22 M2 12 L22 12 M4.9 4.9 L19.1 19.1 M19.1 4.9 L4.9 19.1" />
       </svg>
-      <span class="n">Anthropic<span class="s">ANTHROPIC PBC</span></span>
+      <span class="n"><em>Position № 01</em><span class="s">NAME DISCLOSED UNDER NDA</span></span>
     </div>
     <div class="prose">
       <h3>Frontier <em>AI infrastructure.</em></h3>
       <p>
-        Maker of <em>Claude</em>. Late-stage AI infrastructure with significant
-        enterprise traction.
+        Late-stage US AI-infrastructure secondary. Genuinely scarce at current valuation; primary market is closed.
       </p>
       <p class="route">
         Aurum participates through a direct-LP secondary allocation; access is by
@@ -4132,7 +4132,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
         <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z" />
         <path d="M12 9 L12 15 M9 12 L15 12" />
       </svg>
-      <span class="n">SHIELD<span class="s">SHIELD AI INC</span></span>
+      <span class="n"><em>Position № 02</em><span class="s">NAME DISCLOSED UNDER NDA</span></span>
     </div>
     <div class="prose">
       <h3>AI-piloted systems for <em>allied defense.</em></h3>
@@ -4215,7 +4215,7 @@ table.deals tbody tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="foot">
-    <span class="conf">MMXXVI  ·  TACC PTE LTD  ·  FORWARD-LOOKING  ·  NO REPRESENTATION AS TO ACCURACY  ·  RECIPIENT CONFIDENTIALITY APPLIES</span>
+    <span class="conf">MMXXVI  ·  TACC PTE LTD  ·  FORWARD-LOOKING  ·  PPM IS THE DEFINITIVE OFFERING DOCUMENT  ·  RECIPIENT CONFIDENTIALITY APPLIES</span>
     <span>18</span>
   </div>
 </section>

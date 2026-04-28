@@ -75,6 +75,8 @@ input,textarea,select{font-family:inherit;color:inherit}
 .btn-ghost{font-family:var(--mono);font-size:10px;letter-spacing:0.26em;color:var(--sub);padding:7px 13px;border:1px solid var(--border);background:transparent;transition:all .2s;white-space:nowrap;flex-shrink:0;text-decoration:none;cursor:pointer;display:inline-block}
 .btn-ghost:hover{color:var(--goldB);border-color:var(--goldBorderS);background:var(--goldWash)}
 .nav-cta-link{color:var(--goldD);border-color:var(--goldBorder)}
+.nav-link-disabled{opacity:0.35;cursor:help;pointer-events:auto}
+.nav-link-disabled:hover{color:var(--sub);border-color:var(--border);background:transparent}
 .nav-cta-link:hover{color:var(--gold)}
 
 /* Tab nav for lead detail (5-tab consolidation) */
@@ -178,23 +180,43 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 @media (max-width:960px){
   .stats{grid-template-columns:1fr 1fr;padding:0;gap:0}
-  .stat{padding:14px 14px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-left:0;gap:6px}
+  .stat{padding:14px 16px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-left:0;border-top:0;gap:6px;overflow:hidden;min-width:0}
   .stat:nth-child(2n){border-right:0}
   .stat:nth-child(n+3){border-bottom:0}
-  .stat-val{font-size:24px}
-  .stat-lbl{font-size:8.5px;letter-spacing:0.22em}
+  .stat-val{font-size:22px}
+  .stat-lbl{font-size:8.5px;letter-spacing:0.20em}
   .tier-row{font-size:8.5px}
   .tier-row .tlbl{flex:0 0 56px}
 }
 @media (max-width:760px){
-  .stats{padding:0}
-  .stat{padding:14px 14px;border-left:1px solid var(--border)}
-  .stat:nth-child(2n+1){border-left:0}
+  .stats{padding:0;grid-template-columns:1fr 1fr}
+  .stat{padding:14px 14px;border-left:0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;min-width:0}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-child(n+3){border-bottom:0}
+  /* PIPELINE chips: collapse 2x2 → 1 col on narrow viewports so chips don't crop */
+  .stage-chips{grid-template-columns:1fr;gap:3px}
+  .stage-chip{padding:4px 8px;font-size:8.5px;letter-spacing:0.16em}
+}
+@media (max-width:480px){
+  .stat{padding:12px 12px;gap:5px}
+  .stat-val{font-size:20px}
+  .stat-lbl{font-size:8px;letter-spacing:0.18em}
+  .stat-spark,.stat-cal-lbl{font-size:8px;letter-spacing:0.16em}
+  .stat-cal-dot{width:7px;height:7px}
 }
 
 /* main grid */
 .main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.45fr);gap:0;min-height:calc(100vh - 70px - 110px)}
 @media (max-width:960px){.main{grid-template-columns:1fr}}
+
+/* On mobile, when a member is selected, hide the fund banner + stats strip so
+   the user sees the member detail directly without scrolling past dashboard.
+   Also hide the inquiries list pane (the detail takes over the screen). */
+@media (max-width:960px){
+  body.mobile-member-selected #fund-band{display:none}
+  body.mobile-member-selected .stats{display:none}
+  body.mobile-member-selected .pane-list{display:none}
+}
 
 /* list pane */
 .pane-list{border-right:1px solid var(--border);display:flex;flex-direction:column;min-width:0}
@@ -217,30 +239,36 @@ input,textarea,select{font-family:inherit;color:inherit}
 .filter-chip .n{color:var(--goldD);margin-left:6px;font-weight:400}
 .filter-chip.on .n{color:var(--gold)}
 @media (max-width:760px){
-  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin:0 -16px;padding:0 16px 4px}
+  .filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin:0 -16px;padding:0 16px 4px;gap:5px}
   .filters::-webkit-scrollbar{display:none}
-  .filter-chip{flex-shrink:0;font-size:8.5px;letter-spacing:0.18em;padding:5px 9px}
+  .filter-chip{flex-shrink:0;font-size:8px;letter-spacing:0.16em;padding:4px 8px}
+}
+@media (max-width:480px){
+  .filters{gap:4px;flex-wrap:nowrap;justify-content:flex-start}
+  .filter-chip{font-size:7.5px;letter-spacing:0.14em;padding:4px 6px}
+  .filter-chip .n{margin-left:3px;font-size:8.5px}
 }
 
 .list{flex:1;overflow-y:auto;max-height:calc(100vh - 70px - 110px - 132px)}
 @media (max-width:960px){.list{max-height:none}}
-.lead-row{padding:16px var(--pad-x);border-bottom:1px solid var(--border);cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;transition:background .2s}
+.lead-row{padding:16px var(--pad-x);border-bottom:1px solid var(--border);cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;transition:background .2s;min-height:64px;max-height:72px;overflow:hidden}
 .lead-row:hover{background:var(--card)}
 .lead-row.sel{background:var(--card-2);box-shadow:inset 3px 0 0 var(--gold)}
-.lead-status{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.lead-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .lead-status.s-new{background:var(--gold);box-shadow:0 0 10px var(--goldGlow)}
 .lead-status.s-reviewing{background:var(--blue)}
 .lead-status.s-approved{background:var(--green);box-shadow:0 0 10px rgba(122,168,133,0.4)}
 .lead-status.s-sent{background:var(--green);opacity:.6}
 .lead-status.s-declined{background:var(--red);opacity:.5}
-.lead-mid{min-width:0}
-.lead-name{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--text);line-height:1.2;letter-spacing:-0.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead-mid{min-width:0;overflow:hidden;display:flex;flex-direction:column;gap:5px;justify-content:center}
+.lead-name{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--text);line-height:1.2;letter-spacing:-0.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .lead-name .ko{font-family:var(--serifKr);color:var(--goldD);font-weight:300;font-size:14px;margin-left:8px}
-.lead-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:0.18em;color:var(--muted);margin-top:5px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.lead-meta .tier{color:var(--goldB)}
-.lead-meta .country{color:var(--sub)}
-.lead-meta .sep{color:var(--dim)}
-.lead-time{font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;color:var(--muted);text-align:right;flex-shrink:0;margin-top:4px}
+.lead-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:0.18em;color:var(--muted);display:flex;flex-wrap:nowrap;gap:10px;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lead-meta .tier{color:var(--goldB);flex-shrink:0}
+.lead-meta .country{color:var(--sub);flex-shrink:0}
+.lead-meta .sep{color:var(--dim);flex-shrink:0}
+.lead-meta>span{flex-shrink:0}
+.lead-time{font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;color:var(--muted);text-align:right;flex-shrink:0}
 .empty{padding:60px 32px;text-align:center;color:var(--muted);font-style:italic;font-family:var(--serif);font-size:15px}
 
 /* detail pane */
@@ -298,6 +326,10 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 /* Header money cards — KRW primary, USD secondary, growth % on NAV card */
 .hdr-cards{display:grid;grid-template-columns:auto 1fr 1fr;gap:14px;margin:0 0 14px}
+.hdr-cards-quad{grid-template-columns:repeat(4,1fr);gap:12px}
+.hdr-cards-quad .hdr-card-amt{font-size:26px}
+@media (max-width:900px){.hdr-cards-quad{grid-template-columns:repeat(2,1fr);gap:10px}.hdr-cards-quad .hdr-card-amt{font-size:24px}}
+@media (max-width:480px){.hdr-cards-quad{grid-template-columns:1fr}}
 .hdr-card{padding:18px 20px;border:1px solid var(--goldBorder);background:var(--card);display:flex;flex-direction:column;gap:6px}
 .hdr-card-single{grid-column:1/-1}
 .hdr-card-nav{background:linear-gradient(180deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border-color:var(--goldBorder);border-left:3px solid var(--gold)}
@@ -322,6 +354,9 @@ input,textarea,select{font-family:inherit;color:inherit}
 .hdr-resend-opt{display:block;width:100%;text-align:left;background:transparent;border:0;padding:11px 16px;font-family:var(--mono);font-size:10.5px;letter-spacing:0.16em;color:var(--text);cursor:pointer;border-bottom:1px solid var(--rule);transition:background .2s}
 .hdr-resend-opt:last-child{border-bottom:0}
 .hdr-resend-opt:hover{background:var(--goldWash);color:var(--goldB)}
+.hdr-resend-opt-disabled{opacity:0.4;cursor:not-allowed;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.hdr-resend-opt-disabled:hover{background:transparent;color:var(--text)}
+.hdr-resend-why{font-size:9px;letter-spacing:0.16em;color:var(--muted);text-transform:lowercase;font-style:italic}
 
 /* Personal info accordion — collapsed by default */
 .det-accordion{margin:0 0 24px}
@@ -528,6 +563,13 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 .pos-sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--goldBorder);background:var(--card)}
 .pos-sum-grid-5{grid-template-columns:repeat(5,1fr)}
+/* 4-col × 2-row mirror of the fund banner. Cells in row 2 get a top border. */
+.pos-sum-grid-fund{grid-template-columns:repeat(4,1fr)}
+.pos-sum-grid-fund .pos-row{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.pos-sum-grid-fund .pos-row:nth-child(4n){border-right:0}
+.pos-sum-grid-fund .pos-row:nth-child(n+5){border-bottom:0}
+@media (max-width:880px){.pos-sum-grid-fund{grid-template-columns:repeat(2,1fr)}.pos-sum-grid-fund .pos-row:nth-child(2n){border-right:0}.pos-sum-grid-fund .pos-row:nth-child(n+5){border-bottom:1px solid var(--rule)}.pos-sum-grid-fund .pos-row:nth-child(n+7){border-bottom:0}}
+@media (max-width:520px){.pos-sum-grid-fund{grid-template-columns:1fr}.pos-sum-grid-fund .pos-row{border-right:0;border-bottom:1px solid var(--rule)}.pos-sum-grid-fund .pos-row:last-child{border-bottom:0}}
 .pos-row{padding:14px 14px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:6px;position:relative;min-height:120px;min-width:0}
 .pos-sum-grid-5 .pos-row{padding:12px 10px;gap:5px;min-height:115px}
 .pos-row:last-child{border-right:0}
@@ -599,17 +641,80 @@ input,textarea,select{font-family:inherit;color:inherit}
 
 /* Fund overview band on /admin home (B10) — partner-only, activates on first wire cleared */
 .fund-band{padding:22px 28px;margin-bottom:22px;background:linear-gradient(135deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
-.fund-band-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.fund-band-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
 .fund-band-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:0.32em;color:var(--gold);text-transform:uppercase}
-.fund-band-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-.fund-band-cell{display:flex;flex-direction:column;gap:4px}
-.fund-band-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.28em;color:var(--goldD);text-transform:uppercase}
-.fund-band-val{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--text)}
-.fund-band-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.06em}
-.fund-band-status{margin-top:14px;padding-top:14px;border-top:1px solid var(--goldBorder);font-family:var(--mono);font-size:10px;letter-spacing:0.26em;color:var(--gold);text-transform:uppercase}
-@media (max-width:1100px){.fund-band-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
-@media (max-width:720px){.fund-band-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:480px){.fund-band-grid{grid-template-columns:1fr}.fund-band-val{font-size:20px}}
+/* Move A: typographic hierarchy. Labels become quieter (lower contrast,
+   tighter letter-spacing). Values become more authoritative (tabular nums,
+   slightly bigger). Sublines split into KRW (left, mono) and gloss (right,
+   serif italic) for visual distinction. */
+.fund-band-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:0;border:1px solid var(--goldBorder);background:rgba(0,0,0,0.18)}
+.fund-band-cell{display:flex;flex-direction:column;gap:5px;padding:14px 16px;border-right:1px solid var(--rule);min-width:0;overflow:hidden}
+.fund-band-cell:last-child{border-right:0}
+/* Move B: semantic groups via heavier dividers between metric clusters */
+.fund-band-cell.group-end{border-right:2px solid var(--goldBorder)}
+.fund-band-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--goldDeep);text-transform:uppercase;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fund-band-val{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--text);line-height:1.05;letter-spacing:-0.005em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fund-band-cell.cell-emphasis .fund-band-val{color:var(--goldB);font-style:italic}
+.fund-band-sub{font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:0.04em;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fund-band-sub.gloss{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--muted);letter-spacing:0;text-transform:none}
+.fund-band-status{margin-top:18px;padding-top:14px;border-top:1px solid var(--goldBorder);font-family:var(--mono);font-size:10px;letter-spacing:0.26em;color:var(--gold);text-transform:uppercase}
+.fund-band-debug-toggle{margin-top:10px}
+.fund-debug-btn{background:transparent;border:0;color:var(--goldD);font-family:var(--mono);font-size:9.5px;letter-spacing:0.26em;text-transform:uppercase;padding:4px 0;cursor:pointer;transition:color .15s}
+.fund-debug-btn:hover{color:var(--gold)}
+.fund-band-debug{margin-top:14px;padding:18px 20px;border:1px solid var(--goldBorder);background:rgba(0,0,0,0.40);font-family:var(--mono);font-size:11px;line-height:1.55;color:var(--sub)}
+.fund-debug-head{font-size:9.5px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--goldBorder)}
+.fund-debug-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.fund-debug-table th{font-size:9px;letter-spacing:0.22em;color:var(--goldD);text-transform:uppercase;font-weight:400;text-align:left;padding:6px 12px 6px 0;border-bottom:1px solid var(--border);white-space:nowrap}
+.fund-debug-table td{padding:6px 12px 6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fund-debug-table td.muted{color:var(--muted)}
+.fund-debug-table td.gold{color:var(--gold)}
+.fund-debug-table td.red{color:var(--red)}
+.fund-debug-table td.amber{color:#d4a857}
+.fund-debug-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--goldBorder)}
+.fund-debug-pending{padding:8px 0}
+.fund-debug-pending-row{display:flex;justify-content:space-between;padding:4px 0;color:var(--muted)}
+.fund-debug-pending-row .reason{color:#d4a857;font-style:italic}
+.fund-debug-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-top:14px;border-top:1px solid var(--goldBorder)}
+.fund-debug-total-cell{display:flex;flex-direction:column;gap:4px}
+.fund-debug-total-lbl{font-size:9px;letter-spacing:0.22em;color:var(--goldD);text-transform:uppercase}
+.fund-debug-total-val{font-size:13px;color:var(--text);font-variant-numeric:tabular-nums}
+@media (max-width:720px){
+  .fund-debug-totals{grid-template-columns:repeat(2,1fr)}
+  .fund-debug-table{font-size:10px}
+  .fund-debug-table th,.fund-debug-table td{padding:4px 8px 4px 0}
+}
+
+/* Move E: mobile-specific layout. Hero NAV at top spans full width. Other cells
+   compact rows below. Group dividers preserved. */
+@media (max-width:1500px){
+  .fund-band-grid{grid-template-columns:repeat(4,1fr)}
+  .fund-band-cell{border-bottom:1px solid var(--rule)}
+  .fund-band-cell:nth-child(4n){border-right:0}
+  .fund-band-cell:nth-child(n+5){border-bottom:0}
+}
+@media (max-width:900px){
+  .fund-band{padding:18px 16px}
+  .fund-band-grid{grid-template-columns:repeat(2,1fr)}
+  .fund-band-cell{padding:12px 14px}
+  .fund-band-cell:nth-child(2n){border-right:0}
+  .fund-band-cell:nth-child(n+1):nth-child(-n+6){border-bottom:1px solid var(--rule)}
+  .fund-band-cell:nth-child(n+7){border-bottom:0}
+  .fund-band-cell.group-end{border-right:1px solid var(--rule)}
+  .fund-band-cell.group-end:nth-child(2n){border-right:0}
+  .fund-band-val{font-size:22px}
+}
+@media (max-width:480px){
+  .fund-band{padding:14px 12px}
+  .fund-band-grid{grid-template-columns:1fr}
+  .fund-band-cell{padding:11px 14px;border-right:0;border-bottom:1px solid var(--rule)}
+  .fund-band-cell:last-child{border-bottom:0}
+  .fund-band-cell.group-end{border-right:0}
+  /* Mobile: NAV gets hero treatment — bigger, centered */
+  .fund-band-cell.cell-hero{padding:18px 14px;background:linear-gradient(180deg,rgba(197,165,114,0.06),transparent)}
+  .fund-band-cell.cell-hero .fund-band-val{font-size:32px}
+  .fund-band-cell.cell-hero .fund-band-lbl{font-size:10px;letter-spacing:0.28em}
+  .fund-band-val{font-size:20px}
+}
 .ioi-fact{display:flex;flex-direction:column;gap:4px}
 .ioi-fact .lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.26em;color:var(--goldD);text-transform:uppercase}
 .ioi-fact .val{font-family:var(--mono);font-size:14px;color:var(--text)}
@@ -744,6 +849,151 @@ input,textarea,select{font-family:inherit;color:inherit}
   /* Tables — let admin tables scroll horizontally if too wide */
   .section table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
+/* ═══════════════════════════════════════════════════════════════════
+   R27 — STREAMLINED CONSOLE: mode tabs / OPERATIONS / DEAL BOOK / member slim
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Mode tabs strip — sits below nav, above content */
+.mode-tabs{display:flex;gap:0;padding:0 28px;background:var(--bg-2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.mode-tab{font-family:var(--mono);font-size:10.5px;letter-spacing:0.28em;color:var(--muted);background:transparent;border:0;padding:16px 22px;cursor:pointer;border-bottom:2px solid transparent;text-transform:uppercase;transition:all .2s}
+.mode-tab:hover{color:var(--sub)}
+.mode-tab.active{color:var(--goldB);border-bottom-color:var(--gold)}
+.mode-tab .badge{display:inline-block;margin-left:8px;font-size:9px;color:var(--goldD);background:var(--goldWash);border:1px solid var(--goldBorder);padding:1px 6px;letter-spacing:0.18em}
+.mode-tab.active .badge{color:var(--goldB);border-color:var(--gold)}
+
+/* View containers — only one visible at a time */
+.view{display:none}
+.view.view-active{display:block}
+
+/* OPERATIONS view */
+.ops-wrap{padding:24px 28px;display:flex;flex-direction:column;gap:22px}
+.pulse{padding:24px 28px;background:linear-gradient(135deg,rgba(197,165,114,0.10),rgba(197,165,114,0.02));border:1px solid var(--goldBorder);border-left:3px solid var(--gold)}
+.pulse-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.32em;color:var(--gold);text-transform:uppercase}
+.pulse-status{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1.3;color:var(--text);margin:6px 0 0;letter-spacing:-0.005em;font-weight:500}
+.pulse-status em{color:var(--goldB);font-style:italic}
+.pulse-detail{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;color:var(--sub);margin-top:8px;line-height:1.7}
+.pulse-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--goldBorder);padding-top:18px;margin-top:18px}
+.pulse-kpi{padding:0 18px;border-right:1px solid var(--rule);min-width:0}
+.pulse-kpi:first-child{padding-left:0}
+.pulse-kpi:last-child{border-right:0;padding-right:0}
+.pulse-kpi .lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--goldDeep);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pulse-kpi .val{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--text);font-variant-numeric:tabular-nums;line-height:1}
+.pulse-kpi.hero .val{color:var(--goldB);font-style:italic;font-size:30px}
+.pulse-kpi .sub{font-family:var(--mono);font-size:9.5px;color:var(--sub);letter-spacing:0.04em;margin-top:6px}
+.pulse-kpi .pill{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:0.20em;padding:2px 6px;border:1px solid var(--rule);color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.pulse-kpi .pill.active{color:var(--green);border-color:rgba(122,168,133,0.30);background:rgba(122,168,133,0.05)}
+.pulse-kpi .pill.idle{color:var(--amber);border-color:rgba(212,168,87,0.30);background:rgba(212,168,87,0.05)}
+.pulse-kpi .pill.deployed{color:var(--gold);border-color:var(--goldBorder);background:var(--goldWash)}
+
+/* Primary action bar */
+.primary-action-bar{padding:20px 28px;background:rgba(197,165,114,0.04);border:1px solid var(--goldBorder);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.pab-text{flex:1;min-width:280px}
+.pab-h{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--text);margin:0}
+.pab-h em{color:var(--goldB)}
+.pab-sub{font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:0.04em;margin-top:6px}
+.pab-btn{padding:14px 24px;background:var(--gold);color:var(--bg);font-family:var(--mono);font-size:11px;letter-spacing:0.26em;font-weight:600;text-transform:uppercase;border:0;cursor:pointer;flex-shrink:0}
+.pab-btn:hover{background:var(--goldB)}
+.pab-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+/* Action queue */
+.action-queue{padding:0}
+.aq-head{font-family:var(--mono);font-size:10px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.aq-head .count{color:var(--goldD)}
+.aq-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:960px){.aq-list{grid-template-columns:1fr}}
+.aq-card{padding:18px;background:var(--card);border:1px solid var(--border);border-left:2px solid var(--gold);display:flex;flex-direction:column;gap:10px}
+.aq-card.urgent{border-left-color:var(--amber)}
+.aq-card.info{border-left-color:var(--blue)}
+.aq-card .aq-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.26em;color:var(--goldD);text-transform:uppercase}
+.aq-card .aq-h{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--text);line-height:1.25;margin:2px 0}
+.aq-card .aq-meta{font-family:var(--mono);font-size:10.5px;color:var(--sub);letter-spacing:0.04em;line-height:1.6}
+.aq-card .aq-action{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:transparent;color:var(--gold);border:1px solid var(--gold);font-family:var(--mono);font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;text-decoration:none;font-weight:600;align-self:flex-start;margin-top:6px;cursor:pointer}
+.aq-card .aq-action:hover{background:var(--goldWash)}
+
+/* DEAL BOOK view */
+.deals-wrap{padding:28px}
+.deals-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;flex-wrap:wrap;gap:14px}
+.deals-head h2{font-family:var(--serif);font-style:italic;font-size:28px;color:var(--text);margin:0;letter-spacing:-0.005em;font-weight:500}
+.deals-head h2 em{color:var(--goldB)}
+.deals-head .meta{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;color:var(--muted)}
+.deals-head .meta .sep{color:var(--dim);margin:0 8px}
+.deals-list{display:flex;flex-direction:column;gap:0}
+.deal-row{display:grid;grid-template-columns:auto 1fr auto auto auto;gap:24px;padding:20px 22px;background:var(--card);border:1px solid var(--border);align-items:center;margin-bottom:10px;cursor:pointer;transition:background .2s}
+.deal-row:hover{background:var(--card-2);border-color:var(--goldBorder)}
+.deal-row.expanded{border-color:var(--goldBorder);background:var(--card-2)}
+.deal-num{font-family:var(--serif);font-style:italic;font-size:32px;color:var(--goldDeep);min-width:42px;line-height:1}
+.deal-info{min-width:0;display:flex;flex-direction:column;gap:4px}
+.deal-name{font-family:var(--serif);font-size:18px;color:var(--text);line-height:1.3;font-weight:500}
+.deal-meta{font-family:var(--mono);font-size:10px;letter-spacing:0.10em;color:var(--sub)}
+.deal-meta .sep{color:var(--dim);margin:0 8px}
+.deal-amount{font-family:var(--mono);font-size:14px;color:var(--text);font-variant-numeric:tabular-nums;text-align:right}
+.deal-amount .sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-top:3px}
+.deal-status{padding:4px 10px;font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;text-align:center}
+.deal-status.active{color:var(--green);background:rgba(122,168,133,0.08);border:1px solid rgba(122,168,133,0.30)}
+.deal-status.realized{color:var(--gold);background:var(--goldWash);border:1px solid var(--goldBorder)}
+.deal-status.queued{color:var(--amber);background:rgba(212,168,87,0.06);border:1px solid rgba(212,168,87,0.30)}
+.deal-expanded{padding:24px 22px;background:var(--bg-2);border:1px solid var(--goldBorder);border-top:0;margin-top:-10px;margin-bottom:10px;display:none}
+.deal-row.expanded + .deal-expanded{display:block}
+.deal-expanded h3{font-family:var(--mono);font-size:9.5px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center}
+.deal-expanded h3 .deal-status-controls{display:flex;gap:8px}
+.deal-expanded h3 .deal-status-controls button{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--sub);background:transparent;border:1px solid var(--border);padding:5px 10px;cursor:pointer;text-transform:uppercase}
+.deal-expanded h3 .deal-status-controls button:hover{color:var(--gold);border-color:var(--goldBorder)}
+.member-share-table{width:100%;border-collapse:collapse}
+.member-share-table th{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--goldD);text-transform:uppercase;font-weight:400;text-align:left;padding:8px 16px 8px 0;border-bottom:1px solid var(--rule)}
+.member-share-table td{font-family:var(--mono);font-size:11px;color:var(--text);padding:10px 16px 10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-variant-numeric:tabular-nums}
+.member-share-table .member-name{font-family:var(--serif);font-size:14px;color:var(--text)}
+.member-share-table .pct{color:var(--gold)}
+.deals-empty{padding:60px 28px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:0.16em;border:1px dashed var(--border);background:var(--card)}
+
+/* Deploy modal */
+.deploy-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+.deploy-overlay.show{display:flex}
+.deploy-modal{background:var(--bg-2);border:1px solid var(--goldBorder);max-width:640px;width:100%;max-height:90vh;overflow-y:auto;padding:28px}
+.deploy-modal h2{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--text);margin:0 0 4px;font-weight:500}
+.deploy-modal h2 em{color:var(--goldB)}
+.deploy-modal .modal-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.deploy-modal .modal-sub{font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:0.04em;margin-bottom:22px;line-height:1.6}
+.deploy-modal label{display:block;margin-bottom:18px}
+.deploy-modal .field-lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:0.24em;color:var(--goldD);text-transform:uppercase;margin-bottom:6px;display:block}
+.deploy-modal input[type="text"], .deploy-modal input[type="number"], .deploy-modal select{width:100%;padding:12px 14px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.deploy-modal input[type="text"]:focus, .deploy-modal input[type="number"]:focus, .deploy-modal select:focus{border-color:var(--gold);outline:0}
+.deploy-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.deploy-preview{padding:16px 18px;background:var(--card);border:1px solid var(--goldBorder);margin:8px 0 18px;font-family:var(--mono);font-size:11px;letter-spacing:0.04em;color:var(--sub);line-height:1.7}
+.deploy-preview .preview-h{font-family:var(--mono);font-size:9px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.deploy-preview table{width:100%;font-family:var(--mono);font-size:10.5px}
+.deploy-preview td{padding:3px 0;color:var(--text);font-variant-numeric:tabular-nums}
+.deploy-preview td:last-child{text-align:right;color:var(--gold)}
+.deploy-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:18px;border-top:1px solid var(--rule)}
+.deploy-actions .btn-cancel{padding:12px 18px;background:transparent;color:var(--sub);border:1px solid var(--border);font-family:var(--mono);font-size:10.5px;letter-spacing:0.24em;cursor:pointer;text-transform:uppercase}
+.deploy-actions .btn-confirm{padding:12px 22px;background:var(--gold);color:var(--bg);border:0;font-family:var(--mono);font-size:10.5px;letter-spacing:0.26em;cursor:pointer;text-transform:uppercase;font-weight:600}
+.deploy-actions .btn-confirm:hover{background:var(--goldB)}
+.deploy-actions .btn-confirm:disabled{opacity:0.4;cursor:not-allowed}
+
+/* Member detail — slim mode (additive — old detail kept for now, hidden via class toggle) */
+.mem-slim{padding:0}
+.mem-slim .mem-back{font-family:var(--mono);font-size:10px;letter-spacing:0.24em;color:var(--goldD);text-decoration:none;margin-bottom:14px;display:inline-block;cursor:pointer;background:transparent;border:0;padding:0}
+.mem-slim .mem-back:hover{color:var(--gold)}
+.mem-slim .mem-share-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.24em;color:var(--goldD);text-transform:uppercase;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--rule)}
+.mem-slim .mem-share-eyebrow strong{color:var(--goldB);font-weight:500}
+.mem-slim-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:960px){.mem-slim-grid{grid-template-columns:1fr}}
+.mem-panel{padding:22px 24px;background:var(--card);border:1px solid var(--border)}
+.mem-panel h3{font-family:var(--mono);font-size:9.5px;letter-spacing:0.30em;color:var(--gold);text-transform:uppercase;margin:0 0 16px}
+.slice-rows{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)}
+.slice-cell{padding:14px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.slice-cell:nth-child(2n){border-right:0}
+.slice-cell:nth-last-child(-n+2){border-bottom:0}
+.slice-cell .lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--goldDeep);text-transform:uppercase;margin-bottom:5px}
+.slice-cell .val{font-family:var(--serif);font-size:22px;color:var(--text);font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.slice-cell .val.gold{color:var(--goldB);font-style:italic}
+.slice-cell .sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.04em;margin-top:5px}
+.journey-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule);font-size:11px;gap:12px}
+.journey-row:last-child{border-bottom:0}
+.journey-row .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:0.22em;color:var(--goldD);text-transform:uppercase;flex-shrink:0}
+.journey-row .val{font-family:var(--mono);font-size:11px;color:var(--text);font-variant-numeric:tabular-nums;text-align:right}
+.journey-row .val.ok{color:var(--green)}
+.journey-row .val.pending{color:var(--amber)}
+.journey-row .val.muted{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -803,6 +1053,88 @@ input,textarea,select{font-family:inherit;color:inherit}
     </div>
   </div>
 
+  <!-- ═══ R27 MODE TABS ═══ -->
+  <div class="mode-tabs" id="mode-tabs">
+    <button class="mode-tab active" data-mode="ops">OPERATIONS</button>
+    <button class="mode-tab" data-mode="members">MEMBERS <span class="badge" id="mode-badge-members">0</span></button>
+    <button class="mode-tab" data-mode="deals">DEAL BOOK <span class="badge" id="mode-badge-deals">0</span></button>
+  </div>
+
+  <!-- ═══ VIEW: OPERATIONS ═══ -->
+  <div class="view view-active" id="view-ops">
+    <div class="ops-wrap">
+      <!-- Fund pulse — replaces the static fund-band line by giving it a status string + KPIs with state pills -->
+      <div class="pulse" id="ops-pulse">
+        <div class="pulse-eyebrow">FUND PULSE  ·  TODAY</div>
+        <div class="pulse-status" id="pulse-status"><em>Loading fund state…</em></div>
+        <div class="pulse-detail" id="pulse-detail">—</div>
+        <div class="pulse-kpis">
+          <div class="pulse-kpi">
+            <div class="lbl">KILO <span class="pill" id="pk-kilo-pill">—</span></div>
+            <div class="val" id="pk-kilo">—</div>
+            <div class="sub" id="pk-kilo-sub">—</div>
+          </div>
+          <div class="pulse-kpi hero">
+            <div class="lbl">FUND NAV <span id="pk-nav-delta" style="color:var(--green);font-size:9px">—</span></div>
+            <div class="val" id="pk-nav">—</div>
+            <div class="sub" id="pk-nav-sub">net of facility liability</div>
+          </div>
+          <div class="pulse-kpi">
+            <div class="lbl">GOLD <span class="pill" id="pk-gold-pill">—</span></div>
+            <div class="val" id="pk-gold">—</div>
+            <div class="sub" id="pk-gold-sub">—</div>
+          </div>
+          <div class="pulse-kpi">
+            <div class="lbl">FACILITY <span class="pill" id="pk-fac-pill">—</span></div>
+            <div class="val" id="pk-fac">—</div>
+            <div class="sub" id="pk-fac-sub">drawn against gold</div>
+          </div>
+          <div class="pulse-kpi">
+            <div class="lbl">DEPLOYED <span class="pill" id="pk-dep-pill">—</span></div>
+            <div class="val" id="pk-dep">—</div>
+            <div class="sub" id="pk-dep-sub">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Primary action — DEPLOY TO DEAL -->
+      <div class="primary-action-bar" id="ops-primary">
+        <div class="pab-text">
+          <div class="pab-h" id="pab-h">—</div>
+          <div class="pab-sub" id="pab-sub">—</div>
+        </div>
+        <button class="pab-btn" id="btn-deploy-deal" disabled>DEPLOY TO DEAL  →</button>
+      </div>
+
+      <!-- Action queue -->
+      <div class="action-queue">
+        <div class="aq-head">
+          <span>ACTION QUEUE</span>
+          <span class="count" id="aq-refresh-time">—</span>
+        </div>
+        <div class="aq-list" id="aq-list">
+          <div class="aq-card info"><div class="aq-eyebrow">LOADING</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ VIEW: DEAL BOOK ═══ -->
+  <div class="view" id="view-deals">
+    <div class="deals-wrap">
+      <div class="deals-head">
+        <h2>The <em>book.</em></h2>
+        <div class="meta" id="deals-meta">— ACTIVE  ·  — REALIZED  ·  — DEPLOYED  ·  — AVAILABLE</div>
+      </div>
+      <div class="deals-list" id="deals-list">
+        <div class="deals-empty">No deals yet. Click DEPLOY TO DEAL on the Operations view to fund the first one.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ VIEW: MEMBERS (existing fund-band + stats + inquiries+detail) ═══ -->
+  <div class="view" id="view-members">
+
   <!-- B10: FUND OVERVIEW band — partner-only, activates on first wire cleared.
        USD-primary view (partners think in USD for fund-level decisions). KRW shown beneath. -->
   <div class="fund-band" id="fund-band" style="display:none">
@@ -811,49 +1143,58 @@ input,textarea,select{font-family:inherit;color:inherit}
       <div class="fund-band-eyebrow" id="fund-band-aum-growth" style="color:var(--green)"></div>
     </div>
     <div class="fund-band-grid">
+      <!-- GROUP 1: SIZE — KILO, NAV, AUM -->
       <div class="fund-band-cell">
-        <div class="fund-band-lbl">TOTAL KILOS MANAGED</div>
+        <div class="fund-band-lbl">KILO</div>
         <div class="fund-band-val" id="fb-kilo">—</div>
-        <div class="fund-band-sub">LBMA bar</div>
-        <div class="fund-band-sub" id="fb-kilo-sub">across cohort</div>
+        <div class="fund-band-sub" id="fb-kilo-sub">— · cohort</div>
       </div>
-      <div class="fund-band-cell">
-        <div class="fund-band-lbl">TOTAL NAV</div>
+      <div class="fund-band-cell cell-emphasis cell-hero">
+        <div class="fund-band-lbl">NAV</div>
         <div class="fund-band-val" id="fb-aum">—</div>
         <div class="fund-band-sub" id="fb-aum-krw">—</div>
-        <div class="fund-band-sub" id="fb-aum-sub">— members · — kg</div>
       </div>
-      <div class="fund-band-cell">
+      <div class="fund-band-cell group-end">
         <div class="fund-band-lbl">AUM</div>
         <div class="fund-band-val" id="fb-aum-gross">—</div>
-        <div class="fund-band-sub" id="fb-aum-gross-krw">—</div>
-        <div class="fund-band-sub" id="fb-aum-gross-sub">gross of loan obligations</div>
+        <div class="fund-band-sub" id="fb-aum-gross-sub">gross of loans</div>
       </div>
+      <!-- GROUP 2: DEPLOYMENT — GOLD, INVESTED -->
       <div class="fund-band-cell">
         <div class="fund-band-lbl">GOLD HELD</div>
         <div class="fund-band-val" id="fb-gold">—</div>
-        <div class="fund-band-sub" id="fb-gold-krw">—</div>
         <div class="fund-band-sub" id="fb-gold-sub">@ live spot</div>
       </div>
-      <div class="fund-band-cell">
+      <div class="fund-band-cell group-end">
         <div class="fund-band-lbl">INVESTED</div>
         <div class="fund-band-val" id="fb-invested">—</div>
-        <div class="fund-band-sub" id="fb-invested-krw">—</div>
-        <div class="fund-band-sub" id="fb-invested-sub">— deals funded</div>
+        <div class="fund-band-sub" id="fb-invested-sub">— deals</div>
       </div>
+      <!-- GROUP 3: LEVERAGE — CASH, APPROVED, DRAWN -->
       <div class="fund-band-cell">
-        <div class="fund-band-lbl">LTV CASH AVAILABLE</div>
+        <div class="fund-band-lbl">LTV CASH</div>
         <div class="fund-band-val" id="fb-cash">—</div>
-        <div class="fund-band-sub" id="fb-cash-krw">—</div>
-        <div class="fund-band-sub">drawn LTV − invested (deployable)</div>
+        <div class="fund-band-sub gloss">deployable</div>
       </div>
       <div class="fund-band-cell">
-        <div class="fund-band-lbl">FUND LTV</div>
+        <div class="fund-band-lbl">LTV APPROVED</div>
+        <div class="fund-band-val" id="fb-ltv-approved">—</div>
+        <div class="fund-band-sub gloss">avg ceiling</div>
+      </div>
+      <div class="fund-band-cell">
+        <div class="fund-band-lbl">LTV DRAWN</div>
         <div class="fund-band-val" id="fb-ltv">—</div>
-        <div class="fund-band-sub" id="fb-ltv-sub">drawn / gold value</div>
+        <div class="fund-band-sub gloss" id="fb-ltv-sub">utilization</div>
       </div>
     </div>
     <div class="fund-band-status" id="fb-status">—</div>
+    <div class="fund-band-debug-toggle">
+      <button type="button" id="btn-fund-debug" class="fund-debug-btn">▸ DEBUG · show calculation inputs</button>
+    </div>
+    <div class="fund-band-debug" id="fund-band-debug" style="display:none">
+      <div class="fund-debug-head">FUND-LEVEL CALCULATION INPUTS  ·  what's contributing to the numbers above</div>
+      <div id="fund-debug-body"></div>
+    </div>
   </div>
 
   <!-- stats -->
@@ -907,6 +1248,108 @@ input,textarea,select{font-family:inherit;color:inherit}
       </div>
       <div class="detail" id="detail" style="display:none"></div>
     </section>
+  </div>
+  </div><!-- /view-members -->
+</div>
+
+<!-- ═══ DEPLOY TO DEAL MODAL ═══ -->
+<div class="deploy-overlay" id="deploy-overlay">
+  <div class="deploy-modal">
+    <div class="modal-eyebrow">DEPLOY  ·  FUND-LEVEL ALLOCATION</div>
+    <h2>Deploy to <em>deal.</em></h2>
+    <div class="modal-sub">Capital deploys from the drawn LTV facility, pro-rated by kg ownership across all admitted members. Fund Cash Reserve is never tapped.</div>
+
+    <label>
+      <span class="field-lbl">DEAL  ·  pick a queued deal or enter a new one</span>
+      <select id="dep-queued-pick" style="margin-bottom:10px">
+        <option value="">— Enter new deal —</option>
+      </select>
+    </label>
+
+    <label>
+      <span class="field-lbl">DEAL NAME</span>
+      <input type="text" id="dep-name" placeholder="e.g. Singapore RE Bridge Loan" autocomplete="off">
+    </label>
+
+    <div class="deploy-row">
+      <label>
+        <span class="field-lbl">DEAL SIZE  ·  KRW</span>
+        <input type="number" id="dep-size" placeholder="0" min="0" step="1000000">
+      </label>
+      <label>
+        <span class="field-lbl">FUNDING SOURCE</span>
+        <select id="dep-source">
+          <option value="ltv" selected>Drawn LTV cash</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="deploy-row">
+      <label>
+        <span class="field-lbl">TERM  ·  MONTHS</span>
+        <input type="number" id="dep-term" placeholder="12" min="1" max="120">
+      </label>
+      <label>
+        <span class="field-lbl">TARGET IRR  ·  %</span>
+        <input type="number" id="dep-irr" placeholder="0.0" min="0" max="100" step="0.1">
+      </label>
+    </div>
+
+    <div class="deploy-preview" id="dep-preview">
+      <div class="preview-h">PRO-RATA PREVIEW  ·  enter deal size to compute</div>
+      <div id="dep-preview-body" style="color:var(--muted);font-style:italic">—</div>
+    </div>
+
+    <div class="deploy-actions">
+      <button class="btn-cancel" id="dep-cancel">CANCEL</button>
+      <button class="btn-confirm" id="dep-confirm" disabled>DEPLOY  →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUEUE A DEAL MODAL ═══ -->
+<div class="deploy-overlay" id="queue-overlay">
+  <div class="deploy-modal">
+    <div class="modal-eyebrow">QUEUE  ·  STAGE A DEAL FOR REVIEW</div>
+    <h2>Add a <em>queued deal.</em></h2>
+    <div class="modal-sub">Stage a deal you're considering. It appears in the deal book as QUEUED until you click DEPLOY. Queued deals are stored locally on this device.</div>
+
+    <label>
+      <span class="field-lbl">DEAL NAME</span>
+      <input type="text" id="q-name" placeholder="e.g. Singapore RE Bridge Loan" autocomplete="off">
+    </label>
+
+    <div class="deploy-row">
+      <label>
+        <span class="field-lbl">PROPOSED SIZE  ·  KRW</span>
+        <input type="number" id="q-size" placeholder="0" min="0" step="1000000">
+      </label>
+      <label>
+        <span class="field-lbl">COUNTERPARTY  ·  optional</span>
+        <input type="text" id="q-counterparty" placeholder="e.g. Acme Bridge Capital">
+      </label>
+    </div>
+
+    <div class="deploy-row">
+      <label>
+        <span class="field-lbl">TERM  ·  MONTHS</span>
+        <input type="number" id="q-term" placeholder="12" min="1" max="120">
+      </label>
+      <label>
+        <span class="field-lbl">TARGET IRR  ·  %</span>
+        <input type="number" id="q-irr" placeholder="0.0" min="0" max="100" step="0.1">
+      </label>
+    </div>
+
+    <label>
+      <span class="field-lbl">NOTES  ·  optional</span>
+      <textarea id="q-notes" rows="3" placeholder="Sourcing context, rationale, terms, etc." style="width:100%;padding:12px 14px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-family:var(--serifKr);font-size:13px;line-height:1.6;resize:vertical"></textarea>
+    </label>
+
+    <div class="deploy-actions">
+      <button class="btn-cancel" id="q-cancel">CANCEL</button>
+      <button class="btn-confirm" id="q-confirm">+ ADD TO QUEUE</button>
+    </div>
   </div>
 </div>
 
@@ -994,6 +1437,11 @@ function showApp() {
   var label = state.userId || (state.email ? state.email.split('@')[0].toUpperCase() : '—');
   $('partner-pill').textContent = label;
   $('partner-pill').title = state.email || '';
+  // Initialize nav PORTFOLIO/MEMO links as disabled — they activate only when
+  // a member is selected (selectLead → updateMemberNavLinks). Prevents the
+  // partner from clicking ↗ PORTFOLIO before picking someone and getting
+  // bounced to admin.
+  updateMemberNavLinks(null);
   load();
 }
 
@@ -1010,6 +1458,104 @@ function doExportNda() {
 
 $('btn-logout').addEventListener('click', doLogout);
 $('btn-refresh').addEventListener('click', doRefresh);
+
+// Fund debug panel toggle — shows raw inputs going into NAV/AUM/LTV math
+const btnFundDebug = $('btn-fund-debug');
+if (btnFundDebug) {
+  btnFundDebug.addEventListener('click', () => {
+    const panel = $('fund-band-debug');
+    const isOpen = panel && panel.style.display !== 'none';
+    if (panel) panel.style.display = isOpen ? 'none' : 'block';
+    btnFundDebug.textContent = isOpen
+      ? '▸ DEBUG · show calculation inputs'
+      : '▾ DEBUG · hide calculation inputs';
+    if (!isOpen) renderFundDebug();
+  });
+}
+
+function renderFundDebug() {
+  const body = document.getElementById('fund-debug-body');
+  if (!body) return;
+  const d = state._fundDebug;
+  if (!d) {
+    body.innerHTML = '<div class="muted" style="padding:14px 0">No fund-level data computed yet.</div>';
+    return;
+  }
+  const fmtKrwShort = (v) => {
+    if (!v) return '—';
+    if (v >= 100_000_000) return (v / 100_000_000).toFixed(2) + '억';
+    if (v >= 10_000) return (v / 10_000).toFixed(0) + '만';
+    return Math.round(v).toLocaleString();
+  };
+  const fmtPct = (v) => v != null ? v.toFixed(1) + '%' : '—';
+  const liveSpotKrw = fmtKrwShort(d.liveSpot) + '/kg';
+
+  let html = '';
+
+  // FULLY CONTRIBUTING — counted toward fund math via bars or ioi.kg
+  html += `<div style="font-size:9.5px;letter-spacing:0.26em;color:var(--gold);text-transform:uppercase;margin-bottom:8px">CONTRIBUTING TO FUND (${d.fullyAllocatedCount})</div>`;
+  if (d.fullyAllocated.length === 0) {
+    html += '<div class="muted" style="padding:8px 0;font-style:italic">No members fully allocated yet.</div>';
+  } else {
+    html += '<table class="fund-debug-table"><thead><tr>'
+      + '<th>MEMBER</th><th>kg</th><th>SETTLE SPOT</th><th>LIVE SPOT</th>'
+      + '<th>GOLD COST</th><th>GOLD NOW</th><th>Δ GOLD</th><th>APPROVED</th><th>DRAWN</th>'
+      + '</tr></thead><tbody>';
+    for (const m of d.fullyAllocated) {
+      const goldDelta = m.goldNow - m.goldCost;
+      const goldDeltaPct = m.goldCost > 0 ? (goldDelta / m.goldCost * 100) : 0;
+      const deltaCls = Math.abs(goldDeltaPct) < 0.05 ? 'muted' : goldDelta > 0 ? 'gold' : 'red';
+      const drawnPct = m.goldNow > 0 ? (m.drawnKrw / m.goldNow * 100) : 0;
+      html += `<tr>
+        <td>${(m.name || '').replace(/[<>&]/g,'')}</td>
+        <td>${m.kg.toFixed(2)}</td>
+        <td>${fmtKrwShort(m.settleSpot)}</td>
+        <td class="muted">${fmtKrwShort(m.liveSpot)}</td>
+        <td>${fmtKrwShort(m.goldCost)}</td>
+        <td>${fmtKrwShort(m.goldNow)}</td>
+        <td class="${deltaCls}">${goldDelta > 0 ? '+' : ''}${fmtPct(goldDeltaPct)}</td>
+        <td class="amber">${fmtPct(m.approvedPct)}</td>
+        <td>${m.drawnKrw > 0 ? fmtKrwShort(m.drawnKrw) + ' (' + fmtPct(drawnPct) + ')' : '—'}</td>
+      </tr>`;
+    }
+    html += '</tbody></table>';
+  }
+
+  // PENDING ALLOCATION — wire-cleared but excluded from math
+  if (d.pendingAllocationCount > 0) {
+    html += `<div class="fund-debug-section">
+      <div style="font-size:9.5px;letter-spacing:0.26em;color:#d4a857;text-transform:uppercase;margin-bottom:8px">MISSING DATA — excluded (${d.pendingAllocationCount})</div>
+      <div class="fund-debug-pending">`;
+    for (const m of d.pendingAllocation) {
+      html += `<div class="fund-debug-pending-row"><span>${(m.name || '').replace(/[<>&]/g,'')}</span><span class="reason">${m.reason}</span></div>`;
+    }
+    html += `</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);font-style:italic">These members have wired but their gold/spot data is not complete enough to include in calculations. Check the on-boarding tab on each member to populate.</div>
+    </div>`;
+  }
+
+  // Totals
+  html += `<div class="fund-debug-totals">
+    <div class="fund-debug-total-cell">
+      <div class="fund-debug-total-lbl">TOTAL KG</div>
+      <div class="fund-debug-total-val">${d.totalKg.toFixed(2)} kg</div>
+    </div>
+    <div class="fund-debug-total-cell">
+      <div class="fund-debug-total-lbl">GOLD COST → NOW</div>
+      <div class="fund-debug-total-val">${fmtKrwShort(d.goldCost)} → ${fmtKrwShort(d.goldNow)}</div>
+    </div>
+    <div class="fund-debug-total-cell">
+      <div class="fund-debug-total-lbl">APPROVED CEILING</div>
+      <div class="fund-debug-total-val">${fmtKrwShort(d.totalApprovedCeiling)}</div>
+    </div>
+    <div class="fund-debug-total-cell">
+      <div class="fund-debug-total-lbl">DRAWN</div>
+      <div class="fund-debug-total-val">${fmtKrwShort(d.totalDrawn)}</div>
+    </div>
+  </div>`;
+
+  body.innerHTML = html;
+}
 $('btn-export-nda').addEventListener('click', doExportNda);
 
 // ── Hamburger drawer (mobile) ─────────────────────────────────────────────
@@ -1131,43 +1677,116 @@ function renderFundBand() {
 
   let totalKg = 0, goldNow = 0, goldCost = 0;
   let investedCost = 0, investedMarked = 0;
-  let totalDrawn = 0, totalFundCash = 0;
+  let totalDrawn = 0, totalApprovedCeiling = 0, totalFundCash = 0;
   let totalDealsFunded = 0;
-  // CRITICAL: only roll up from members whose wire has actually cleared.
-  // Pre-wire leads (interested / NDA-uploaded / IOI-submitted) hold no gold and
-  // no contributed capital. Including them with hypothetical ioi.kg × submit-spot
-  // produces phantom NAV drift because submit-spot rarely matches live spot.
-  const admittedLeads = leads.filter((l) => l.wire && l.wire.cleared_at);
+  // INCLUSION RULE: wire-cleared member counts toward fund the moment their
+  // wire clears, using ioi.kg × krw_per_kg_at_settle as the cost basis.
+  // Bars (physical serial allocation) are recorded LATER when the dealer
+  // ships — could be days or weeks. The fund's economic exposure exists
+  // from wire-clearance, not from bar allocation.
+  //
+  // The original phantom -9.6% bug is solved by the settle-spot snapshot
+  // (taken in api/admin/update.js mark_cleared) — bars are NOT required
+  // for accurate cost basis.
+  //
+  // Fallback chain for cost basis when settle wasn't snapshotted:
+  //   krw_per_kg_at_settle → krw_per_kg_at_verify → krw_per_kg_at_submit → liveSpot
+  const admittedLeads = leads;  // already filtered to wire.cleared_at
+  const fullyContributing = [];
+  const pendingContributing = [];
   for (const l of admittedLeads) {
-    const kg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
-    const settleSpot = (l.ioi && l.ioi.krw_per_kg_at_settle) || (l.ioi && l.ioi.krw_per_kg_at_verify) || (l.ioi && l.ioi.krw_per_kg_at_submit) || liveSpot;
+    // kg: prefer bars sum if present, else fall back to ioi.kg (the commitment)
+    const barKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0);
+    const ioiKg = (l.ioi && l.ioi.kg) || 0;
+    const memberKg = barKg > 0 ? barKg : ioiKg;
+    if (memberKg > 0) {
+      fullyContributing.push(l);
+    } else {
+      pendingContributing.push(l);  // wire cleared but no kg recorded anywhere — actual data hole
+    }
+  }
+  for (const l of fullyContributing) {
+    const barKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0);
+    const ioiKg = (l.ioi && l.ioi.kg) || 0;
+    const kg = barKg > 0 ? barKg : ioiKg;
+    // Cost-basis spot: settle (preferred) → verify → submit → live (last resort)
+    const settleSpot = (l.ioi && l.ioi.krw_per_kg_at_settle)
+      || (l.ioi && l.ioi.krw_per_kg_at_verify)
+      || (l.ioi && l.ioi.krw_per_kg_at_submit)
+      || liveSpot;
+    const approvedPct = (l.ltv && l.ltv.approved_pct) || (l.ltv && l.ltv.ceiling_pct) || (l.ioi && l.ioi.ltv_pct) || 0;
     totalKg += kg;
     goldNow += kg * liveSpot;
     goldCost += kg * settleSpot;
-    totalFundCash += kg > 0 ? (Math.round((kg * settleSpot) / 0.80) - (kg * settleSpot)) : 0;
+    totalFundCash += Math.round((kg * settleSpot) / 0.80) - (kg * settleSpot);
     totalDrawn += (l.ltv && l.ltv.drawn_krw) || 0;
+    totalApprovedCeiling += (kg * liveSpot) * (approvedPct / 100);
     const positions = l.positions || [];
     investedCost += positions.reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
     investedMarked += positions.reduce((s, p) => s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0), 0);
     totalDealsFunded += positions.length;
   }
+  // Aliases for legacy code that uses the old variable names
+  const fullyAllocated = fullyContributing;
+  const pendingAllocation = pendingContributing;
+
+  // Stash debug payload for the optional debug panel
+  state._fundDebug = {
+    leadsTotal: state.leads ? state.leads.length : 0,
+    admittedCount: admittedLeads.length,
+    fullyAllocatedCount: fullyContributing.length,
+    pendingAllocationCount: pendingContributing.length,
+    fullyAllocated: fullyContributing.map((l) => {
+      const barKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0);
+      const ioiKg = (l.ioi && l.ioi.kg) || 0;
+      const kg = barKg > 0 ? barKg : ioiKg;
+      const settleSpot = (l.ioi && l.ioi.krw_per_kg_at_settle)
+        || (l.ioi && l.ioi.krw_per_kg_at_verify)
+        || (l.ioi && l.ioi.krw_per_kg_at_submit)
+        || liveSpot;
+      return {
+        id: l.id,
+        name: l.name || l.email || '?',
+        kg,
+        kgSource: barKg > 0 ? 'bars' : 'ioi.kg (pending bars)',
+        settleSpot,
+        liveSpot,
+        goldCost: kg * settleSpot,
+        goldNow: kg * liveSpot,
+        drawnKrw: (l.ltv && l.ltv.drawn_krw) || 0,
+        approvedPct: (l.ltv && l.ltv.approved_pct) || (l.ltv && l.ltv.ceiling_pct) || (l.ioi && l.ioi.ltv_pct) || 0,
+      };
+    }),
+    pendingAllocation: pendingContributing.map((l) => ({
+      id: l.id,
+      name: l.name || l.email || '?',
+      reason: 'wire cleared but no kg recorded — IOI commitment missing',
+    })),
+    liveSpot,
+    totalKg, goldNow, goldCost, totalDrawn, totalApprovedCeiling, totalFundCash,
+  };
 
   // NAV = net equity. Gold + FundCash + investment delta. Drawn LTV cancels:
   // the cash asset (drawn) and the loan liability (drawn) net to zero on the
   // balance sheet, so we can express NAV without modeling either explicitly.
-  // Investment gains/losses (marked - cost) are the only thing that moves NAV
-  // beyond gold appreciation.
   const navNow = goldNow + totalFundCash + (investedMarked - investedCost);
   const navCost = goldCost + totalFundCash;
   const navGrowthPct = navCost > 0 ? ((navNow - navCost) / navCost) * 100 : 0;
 
-  // AUM = gross assets under management (NOT subtracting loan liability).
-  // Gold + FundCash + investments at market + uninvested drawn cash.
-  // AUM - NAV = totalDrawn (the loan obligation).
+  // AUM = gross assets under management (does NOT subtract loan liability).
   const uninvestedDrawn = Math.max(0, totalDrawn - investedCost);
   const aumNow = goldNow + totalFundCash + investedMarked + uninvestedDrawn;
   const cashAvailable = Math.max(0, totalDrawn - investedMarked);
-  const fundLtvPct = goldNow > 0 ? (totalDrawn / goldNow) * 100 : 0;
+
+  // ── Two LTV metrics, side by side ──
+  // LTV APPROVED: weighted average ceiling. Sum of (gold × approved%) / sum of gold.
+  //   This reflects what's been APPROVED at IOI verification — a structural metric.
+  //   For a cohort all approved at 50%+, this should be 50%+.
+  // LTV DRAWN: actual draw against gold. drawn / gold.
+  //   This reflects what's been DEPLOYED into deals — a utilization metric.
+  //   Will be 0% until partners actually fund deals against the facility.
+  const fundLtvApprovedPct = goldNow > 0 ? (totalApprovedCeiling / goldNow) * 100 : 0;
+  const fundLtvDrawnPct = goldNow > 0 ? (totalDrawn / goldNow) * 100 : 0;
 
   // KRW → USD conversion helper
   const usd = (krw) => krw / usdKrw;
@@ -1179,46 +1798,53 @@ function renderFundBand() {
     return '$' + Math.round(v).toLocaleString();
   };
 
-  // USD-primary display, KRW shown as secondary line
-  // Total kilos managed across the cohort — admitted (wire-cleared) members only
+  // USD-primary display. Sublines simplified — debug panel has the full math.
+  // KILO — leads with cohort context
   $('fb-kilo').textContent = totalKg % 1 === 0 ? totalKg.toFixed(0) : totalKg.toFixed(1);
-  const memberCount = admittedLeads.length;
-  $('fb-kilo-sub').textContent = `${memberCount} member${memberCount === 1 ? '' : 's'} · cohort`;
+  const memberCount = fullyAllocated.length;
+  const pendingCount = pendingAllocation.length;
+  $('fb-kilo-sub').textContent = pendingCount > 0
+    ? `${memberCount} active · ${pendingCount} pending data`
+    : `${memberCount} member${memberCount === 1 ? '' : 's'} · cohort`;
 
-  // NAV — net equity (after notionally subtracting loan liability via drawn cancellation)
+  // NAV — hero metric, USD primary, KRW secondary
   $('fb-aum').textContent = fmtUsd(navNow);
-  $('fb-aum-krw').textContent = fmtKrw(navNow) + ' KRW';
-  $('fb-aum-sub').textContent = `${memberCount} member${memberCount === 1 ? '' : 's'} · ${totalKg.toFixed(1)} kg`;
+  if ($('fb-aum-krw')) $('fb-aum-krw').textContent = fmtKrw(navNow) + ' KRW';
 
-  // AUM — gross assets under management (sister metric to NAV)
+  // AUM — gross of loan obligations
   if ($('fb-aum-gross')) {
     $('fb-aum-gross').textContent = fmtUsd(aumNow);
-    $('fb-aum-gross-krw').textContent = fmtKrw(aumNow) + ' KRW';
-    if (totalDrawn > 0) {
-      $('fb-aum-gross-sub').textContent = `${fmtUsd(totalDrawn)} drawn LTV included`;
-    } else {
-      $('fb-aum-gross-sub').textContent = 'gross of loan obligations';
+    if ($('fb-aum-gross-sub')) {
+      $('fb-aum-gross-sub').textContent = totalDrawn > 0
+        ? `incl. ${fmtUsd(totalDrawn)} drawn`
+        : 'gross of loans';
     }
   }
 
+  // GOLD — value at live spot
   $('fb-gold').textContent = fmtUsd(goldNow);
-  $('fb-gold-krw').textContent = fmtKrw(goldNow) + ' KRW';
-  $('fb-gold-sub').textContent = `${totalKg.toFixed(2)} kg @ ${fmtUsd(liveSpot)}/kg`;
+  if ($('fb-gold-sub')) $('fb-gold-sub').textContent = totalKg > 0 ? `${totalKg.toFixed(1)} kg @ live spot` : '@ live spot';
 
+  // INVESTED — count of funded deals
   if (investedCost > 0) {
     $('fb-invested').textContent = fmtUsd(investedMarked);
-    $('fb-invested-krw').textContent = fmtKrw(investedMarked) + ' KRW';
   } else {
     $('fb-invested').textContent = '—';
-    $('fb-invested-krw').textContent = '';
   }
-  $('fb-invested-sub').textContent = `${totalDealsFunded} deal${totalDealsFunded === 1 ? '' : 's'} funded`;
+  if ($('fb-invested-sub')) $('fb-invested-sub').textContent = `${totalDealsFunded} deal${totalDealsFunded === 1 ? '' : 's'}`;
 
+  // LTV CASH — single line label (sub is gloss)
   $('fb-cash').textContent = fmtUsd(cashAvailable);
-  $('fb-cash-krw').textContent = fmtKrw(cashAvailable) + ' KRW';
 
-  $('fb-ltv').textContent = fundLtvPct.toFixed(1) + '%';
-  $('fb-ltv-sub').textContent = `${fmtUsd(totalDrawn)} drawn / ${fmtUsd(goldNow)} gold`;
+  // LTV APPROVED — weighted-average ceiling
+  if ($('fb-ltv-approved')) {
+    $('fb-ltv-approved').textContent = fundLtvApprovedPct.toFixed(1) + '%';
+  }
+  // LTV DRAWN — actual draw
+  $('fb-ltv').textContent = fundLtvDrawnPct.toFixed(1) + '%';
+  if ($('fb-ltv-sub')) $('fb-ltv-sub').textContent = totalApprovedCeiling > 0
+    ? `${(totalDrawn / totalApprovedCeiling * 100).toFixed(0)}% utilized`
+    : 'utilization';
 
   // NAV growth indicator on band header
   const aumGrowth = $('fund-band-aum-growth');
@@ -1244,16 +1870,40 @@ function renderFundBand() {
     status = `${deployedPct.toFixed(0)}% deployed · ${totalDealsFunded} deal${totalDealsFunded === 1 ? '' : 's'} funded`;
   }
   $('fb-status').textContent = status;
+
+  // R27: stash totals for OPS view + DEAL BOOK consumption
+  state._fundTotals = {
+    memberCount,
+    totalKg, goldNow, goldCost,
+    investedCost, investedMarked,
+    totalFundCash, totalDrawn, totalApprovedCeiling,
+    cashAvailable, navNow, aumNow,
+    totalDealsFunded,
+    fundLtvDrawnPct, navGrowthPct,
+    fullyAllocated, pendingAllocation,
+    usdKrw,
+    liveSpot,
+  };
+  // Render the other views from the same totals
+  if (typeof renderOpsView === 'function') renderOpsView();
+  if (typeof renderDealBook === 'function') renderDealBook();
+  if (typeof refreshModeBadges === 'function') refreshModeBadges();
 }
 
 function renderStats() {
   renderFundBand();
   const s = state.stats || {};
   const total = s.total || 0;
-  const new_ = s.new || 0;
-  const reviewing = s.reviewing || 0;
-  const approved = (s.approved || 0) + (s.sent || 0);
-  const declined = s.declined || 0;
+  // PIPELINE counts use the SAME derived UI-status logic as the inquiries
+  // filter chips. Backend's raw `lead.status` field doesn't have a 'reviewing'
+  // value — that state is derived from journey markers (NDA uploaded, IOI
+  // submitted but not verified, etc). Without this, PIPELINE chips and FILTER
+  // chips diverge — partner sees REVIEW=1 above and REVIEWING=6 below.
+  const counts = computeStatusCounts();
+  const new_ = counts.new || 0;
+  const reviewing = counts.reviewing || 0;
+  const approved = counts.approved || 0;
+  const declined = counts.declined || 0;
   const open = new_ + reviewing;
   const tiers = s.by_tier || {};
   const peak = Math.max(total, 100);  // bar fills relative to 100 (founding cohort target)
@@ -1402,7 +2052,7 @@ function renderList() {
     const ndaTag = ndaShortTag(l);
     const uiStatus = deriveUiStatus(l);
     return `
-      <div class="lead-row ${sel?'sel':''}" data-id="${esc(l.id)}">
+      <div class="lead-row ${sel?'sel':''}" data-id="${esc(l.id)}" title="${esc(l.name||'Unnamed')}${l.name_ko?' · '+esc(l.name_ko):''}">
         <span class="lead-status s-${esc(uiStatus)}" title="${esc(uiStatus.toUpperCase())}"></span>
         <div class="lead-mid">
           <div class="lead-name">${esc(l.name||'Unnamed')}${l.name_ko?`<span class="ko">${esc(l.name_ko)}</span>`:''}</div>
@@ -1443,6 +2093,13 @@ function relTime(ms) {
 }
 function selectLead(l) {
   state.selected = l;
+  // Default to the ON-BOARDING tab on every member click. The tab system
+  // persists per-lead in localStorage as `aurum:tab:${leadId}` — clearing
+  // that key for the newly-selected lead ensures the journey overview is
+  // the entry point. Persistence WITHIN a single member view (toggling
+  // tabs while reviewing them) still works — only the cross-member click
+  // resets it.
+  try { localStorage.removeItem(`aurum:tab:${l.id}`); } catch {}
   renderList();
   renderDetail();
   // mobile: switch to detail pane by toggling .has-sel on both panes.
@@ -1451,8 +2108,19 @@ function selectLead(l) {
   if (window.matchMedia('(max-width:960px)').matches) {
     $('pane-list').classList.add('has-sel');
     $('pane-detail').classList.add('has-sel');
-    // Scroll window to top so the back button is visible above the detail content
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.classList.add('mobile-member-selected');
+    // Scroll directly to the member's detail header (their name + KILO/CONTRIBUTED/NAV cards).
+    // Avoids landing on the fund banner first which buries the member context.
+    requestAnimationFrame(() => {
+      const detailEl = document.getElementById('detail-content') || document.getElementById('pane-detail');
+      if (detailEl) {
+        const rect = detailEl.getBoundingClientRect();
+        const top = window.scrollY + rect.top - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   }
   // update URL
   try { const u = new URL(location.href); u.searchParams.set('lead', l.id); history.replaceState({}, '', u); } catch {}
@@ -1462,20 +2130,39 @@ function selectLead(l) {
 
 // Updates the ↗ MEMO and ↗ PORTFOLIO links in nav + drawer to point at the selected member.
 // Called from selectLead and on initial deselect.
+// When no member is selected, the links are visually disabled (gray, low opacity)
+// and tap-blocked so partners don't click PORTFOLIO before selecting someone and
+// land on a confusing bounce-back. Hover/title makes it clear what's needed.
 function updateMemberNavLinks(lead) {
   const leadId = lead && lead.id ? lead.id : null;
-  const memoHref = leadId ? `/memo?lead=${encodeURIComponent(leadId)}` : '/memo';
-  const portHref = leadId ? `/portfolio?lead=${encodeURIComponent(leadId)}` : '/portfolio';
-  const memoTitle = leadId ? `View memo as ${lead.name || leadId}` : 'View Memo (select a member first)';
-  const portTitle = leadId ? `View portfolio as ${lead.name || leadId}` : 'View Portfolio (select a member first)';
-  ['nav-link-memo', 'drawer-link-memo'].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) { el.href = memoHref; el.title = memoTitle; }
-  });
-  ['nav-link-portfolio', 'drawer-link-portfolio'].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) { el.href = portHref; el.title = portTitle; }
-  });
+  const memoHref = leadId ? `/memo?lead=${encodeURIComponent(leadId)}` : '#';
+  const portHref = leadId ? `/portfolio?lead=${encodeURIComponent(leadId)}` : '#';
+  const memoTitle = leadId ? `View memo as ${lead.name || leadId}` : 'Select a member first to view their MEMO';
+  const portTitle = leadId ? `View portfolio as ${lead.name || leadId}` : 'Select a member first to view their PORTFOLIO';
+  const linkIds = [
+    ['nav-link-memo', 'drawer-link-memo', memoHref, memoTitle, 'MEMO'],
+    ['nav-link-portfolio', 'drawer-link-portfolio', portHref, portTitle, 'PORTFOLIO'],
+  ];
+  for (const [navId, drawerId, href, title, label] of linkIds) {
+    [navId, drawerId].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.href = href;
+      el.title = title;
+      if (leadId) {
+        el.classList.remove('nav-link-disabled');
+        el.removeAttribute('aria-disabled');
+        el.onclick = null;
+      } else {
+        el.classList.add('nav-link-disabled');
+        el.setAttribute('aria-disabled', 'true');
+        el.onclick = (e) => {
+          e.preventDefault();
+          toast(`SELECT A MEMBER FIRST · then click ↗ ${label}`, 'err');
+        };
+      }
+    });
+  }
 }
 
 // ── detail ───────────────────────────────────────────────────────────────
@@ -1739,9 +2426,12 @@ function renderDetail() {
   let supportingLine = '';
 
   if (l.wire && l.wire.cleared_at) {
-    // MEMBER — full card trio: KILO · CONTRIBUTED · CURRENT NAV
+    // MEMBER — full card quad: KILO · CONTRIBUTED · CURRENT NAV · LTV
+    const memberLtvApprovedPct = (l.ltv && (l.ltv.approved_pct || l.ltv.ceiling_pct)) || (l.ioi && l.ioi.ltv_pct) || 0;
+    const memberLtvDrawnKrw = (l.ltv && l.ltv.drawn_krw) || 0;
+    const memberLtvDrawnPct = goldNow > 0 ? (memberLtvDrawnKrw / goldNow) * 100 : 0;
     moneyCards = `
-      <div class="hdr-cards">
+      <div class="hdr-cards hdr-cards-quad">
         <div class="hdr-card">
           <div class="hdr-card-lbl">KILO</div>
           <div class="hdr-card-amt gold">${totalKg % 1 === 0 ? totalKg.toFixed(0) : totalKg.toFixed(2)}</div>
@@ -1757,9 +2447,14 @@ function renderDetail() {
           <div class="hdr-card-amt gold">${fmtKrw(navNow)}</div>
           <div class="hdr-card-sub">${fmtUsd(navNow)} · today vs ${fmtKrw(fullWireKrw)} wired</div>
         </div>
+        <div class="hdr-card">
+          <div class="hdr-card-lbl">LTV</div>
+          <div class="hdr-card-amt gold">${memberLtvApprovedPct.toFixed(0)}%</div>
+          <div class="hdr-card-sub">approved ceiling · ${memberLtvDrawnPct.toFixed(0)}% drawn</div>
+        </div>
       </div>
     `;
-    const ltvCeiling = (l.ltv && (l.ltv.approved_pct || l.ltv.ceiling_pct)) || 75;
+    const ltvCeiling = memberLtvApprovedPct;
     supportingLine = `
       <div class="hdr-meta">
         <span>Gold ${fmtKrw(goldNow)} (${fmtUsd(goldNow)}) ${growthSpan(goldGrowthPct)}</span>
@@ -1831,29 +2526,58 @@ function renderDetail() {
     `;
   }
 
-  // ── Resend dropdown — gated by lead state ──
+  // ── Resend dropdown — all options always visible. Each option is gated by
+  // the lead actually having the prerequisite state (no code → no web invite),
+  // and disabled options show a grayed style with a hint about why. Partner
+  // can always SEE everything, only enabled when the data supports it.
   const resendOptions = [];
-  if (l.code && !l.code_revoked && l.nda_state !== 'approved') {
-    resendOptions.push({ id: 'resend-nda-invite', label: 'Resend NDA invitation' });
-  }
-  if (l.nda_state === 'approved' && !(l.ioi && l.ioi.submitted_at)) {
-    resendOptions.push({ id: 'resend-ioi-link', label: 'Resend IOI form link' });
-  }
-  if (l.ioi_verified_at && !(l.wire && l.wire.cleared_at)) {
-    resendOptions.push({ id: 'resend-wire-instructions', label: 'Resend wire instructions' });
-  }
-  if (l.wire && l.wire.cleared_at) {
-    resendOptions.push({ id: 'resend-admission', label: 'Resend portfolio access' });
-  }
+  // 1. Web invite (Email C — original access code email). Available once code is issued.
+  resendOptions.push({
+    id: 'resend-nda-invite',
+    label: 'Resend web invite (access code)',
+    enabled: !!l.code && !l.code_revoked,
+    why: !l.code ? 'no code issued yet' : l.code_revoked ? 'code revoked' : null,
+  });
+  // 2. NDA upload reminder — for members whose code is issued but NDA isn't approved yet.
+  resendOptions.push({
+    id: 'resend-nda-reminder',
+    label: 'Resend NDA upload reminder',
+    enabled: !!l.code && !l.code_revoked && l.nda_state !== 'approved',
+    why: !l.code ? 'no code yet' : l.code_revoked ? 'code revoked' : l.nda_state === 'approved' ? 'NDA already approved' : null,
+  });
+  // 3. IOI form link — once NDA is approved.
+  resendOptions.push({
+    id: 'resend-ioi-link',
+    label: 'Resend IOI form link',
+    enabled: l.nda_state === 'approved' && !(l.ioi && l.ioi.submitted_at),
+    why: l.nda_state !== 'approved' ? 'NDA not yet approved' : (l.ioi && l.ioi.submitted_at) ? 'IOI already submitted' : null,
+  });
+  // 4. Wire instructions — once IOI verified.
+  resendOptions.push({
+    id: 'resend-wire-instructions',
+    label: 'Resend wire instructions',
+    enabled: !!l.ioi_verified_at && !(l.wire && l.wire.cleared_at),
+    why: !l.ioi_verified_at ? 'IOI not yet verified' : (l.wire && l.wire.cleared_at) ? 'wire already cleared' : null,
+  });
+  // 5. Portfolio access (admission email — Email F, with password setup link).
+  resendOptions.push({
+    id: 'resend-admission',
+    label: 'Resend portfolio access (password setup)',
+    enabled: !!(l.wire && l.wire.cleared_at),
+    why: !(l.wire && l.wire.cleared_at) ? 'wire not yet cleared' : null,
+  });
 
-  const resendDropdown = resendOptions.length > 0 ? `
+  const resendDropdown = `
     <div class="hdr-resend">
       <button class="hdr-resend-btn" id="hdr-resend-btn">⋯ RESEND</button>
       <div class="hdr-resend-menu" id="hdr-resend-menu" style="display:none">
-        ${resendOptions.map((o) => `<button class="hdr-resend-opt" data-action="${o.id}">${esc(o.label)}</button>`).join('')}
+        ${resendOptions.map((o) => o.enabled
+          ? `<button class="hdr-resend-opt" data-action="${o.id}">${esc(o.label)}</button>`
+          : `<button class="hdr-resend-opt hdr-resend-opt-disabled" disabled title="${esc(o.why || '')}">${esc(o.label)}<span class="hdr-resend-why">${esc(o.why || '')}</span></button>`
+        ).join('')}
       </div>
     </div>
-  ` : '';
+  `;
 
   // Triage pills — only show for early-stage leads (no code yet)
   const showTriagePills = !l.code;
@@ -1907,11 +2631,10 @@ function renderDetail() {
       ${l.note ? `<div class="note-block"><span class="lbl">NOTE FROM MEMBER</span>${esc(l.note)}</div>` : ''}
     </details>
 
-    <!-- Tab nav: 5-tab consolidation. Smart-default tab determined by lead state. -->
+    <!-- Tab nav: 4-tab consolidation. INVESTMENTS removed — deals are fund-level (deploy via OPS view). -->
     <div class="tab-nav" id="tab-nav-${esc(l.id)}">
       <button class="tab-btn" data-tab="prospects">ON-BOARDING</button>
       <button class="tab-btn" data-tab="custody">CUSTODY</button>
-      <button class="tab-btn" data-tab="investments">INVESTMENTS</button>
       <button class="tab-btn" data-tab="comms">DOCUMENTS</button>
       <button class="tab-btn" data-tab="audit">AUDIT</button>
     </div>
@@ -2013,15 +2736,15 @@ function renderDetail() {
     })}
 
     ${renderSection({
-      kind: 'positions', tab: 'investments',
+      kind: 'positions', tab: 'custody',
       defaultOpen: false,
-      titleEn: 'POSITIONS', titleKo: '포지션', lead: l,
-      extraTitle: '<span style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--goldD);margin-left:8px">PHASE 3</span>',
+      titleEn: "MEMBER'S SLICE OF FUND DEALS", titleKo: '펀드 거래 지분', lead: l,
+      extraTitle: '<span style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--goldD);margin-left:8px">PRO-RATA · READ-ONLY</span>',
       body: renderPositionsPanel(l),
     })}
 
     ${renderSection({
-      kind: 'capitalCalls', tab: 'investments',
+      kind: 'capitalCalls', tab: 'comms',
       defaultOpen: false,
       titleEn: 'CAPITAL CALLS', titleKo: '자본 청구', lead: l,
       body: renderCapitalCallsPanel(l),
@@ -2094,6 +2817,8 @@ function renderDetail() {
     // Remove has-sel from both panes — CSS reverts to "list visible, detail hidden"
     $('pane-list').classList.remove('has-sel');
     $('pane-detail').classList.remove('has-sel');
+    document.body.classList.remove('mobile-member-selected');
+    updateMemberNavLinks(null);  // disable nav PORTFOLIO/MEMO links
     try { const u = new URL(location.href); u.searchParams.delete('lead'); history.replaceState({}, '', u); } catch {}
     renderList();
     renderDetail();
@@ -2101,6 +2826,12 @@ function renderDetail() {
   });
 
   // ── Tab consolidation (A10: localStorage persistence) ─────────────────
+  // Default tab is ALWAYS ON-BOARDING (prospects) for every member click.
+  // selectLead() clears the per-lead tab key before rendering, so storedTab
+  // will be null on a fresh click — landing on ON-BOARDING. Mid-session
+  // toggling between tabs persists, so a partner reviewing one member can
+  // tab to CUSTODY, scroll, click a doc, return — and stay on CUSTODY.
+  // But clicking ANOTHER member resets to ON-BOARDING.
   const tabNav = d.querySelector('.tab-nav');
   if (tabNav) {
     const leadId = state.selected ? state.selected.id : null;
@@ -2108,10 +2839,7 @@ function renderDetail() {
     let storedTab = null;
     try { if (storedKey) storedTab = localStorage.getItem(storedKey); } catch {}
 
-    let defaultTab = 'prospects';
-    if (state.selected && state.selected.bars && state.selected.bars.length > 0) defaultTab = 'custody';
-    if (state.selected && state.selected.positions && state.selected.positions.length > 0) defaultTab = 'investments';
-    if (state.selected && state.selected.wire && state.selected.wire.cleared_at && (!state.selected.bars || state.selected.bars.length === 0)) defaultTab = 'custody';
+    const defaultTab = 'prospects';  // ON-BOARDING — consistent entry point
 
     const validTabs = Array.from(tabNav.querySelectorAll('.tab-btn')).map((b) => b.dataset.tab);
     const initialTab = storedTab && validTabs.includes(storedTab) ? storedTab : defaultTab;
@@ -2680,42 +3408,87 @@ function renderPositionSummary(l) {
     else if (marginHeadroomDropPct < 20) { marginColor = 'var(--gold)'; marginUrgency = ' · CAUTION'; }
   }
 
+  // ── Mirror FUND OVERVIEW math (per-member scope, same formulae) ──
+  // NAV — net equity (drawn cancels: cash asset + loan liability)
+  const navNow = equityNow;  // alias for clarity
+  // AUM — gross assets under management. Includes drawn cash that's not yet invested.
+  const uninvestedDrawn = Math.max(0, drawnKrw - investedCost);
+  const aumNow = goldNow + fundCashContribution + investedMarked + uninvestedDrawn;
+  // LTV cash — drawn LTV available to deploy (reserve excluded — it's idle)
+  const ltvCashAvailable = Math.max(0, drawnKrw - investedMarked);
+  // LTV APPROVED — the member's approved ceiling % (a structural figure)
+  const ltvApprovedPct = ltvCeilingPct;
+  // LTV DRAWN — actual draw vs gold (utilization figure, mirrors fund banner)
+  const ltvDrawnPct = goldNow > 0 ? (drawnKrw / goldNow) * 100 : 0;
+
   return `<div class="pos-sum">
     <div class="pos-sum-head">
       <div class="pos-sum-status">${esc(statusLine)}</div>
-      ${growthBadge(goldGrowthPct, 'spot vs cost')}
+      ${growthBadge(equityGrowthPct, 'NAV vs cost')}
     </div>
-    <div class="pos-sum-grid pos-sum-grid-5">
+    <div class="pos-sum-grid pos-sum-grid-fund">
+      <!-- ROW 1: KILO · NAV · GOLD HELD · INVESTED -->
+      <div class="pos-row">
+        <div class="pos-row-lbl">KILO</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt gold">${totalKg % 1 === 0 ? totalKg.toFixed(0) : totalKg.toFixed(2)}</div>
+          <div class="pos-row-sub">LBMA bar · Singapore Freeport</div>
+        </div>
+      </div>
+      <div class="pos-row pos-row-equity">
+        <div class="pos-row-lbl">NAV</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt gold">${fmtKrw(navNow)}</div>
+          <div class="pos-row-sub">net equity vs ${fmtKrw(equityCost)} wired</div>
+        </div>
+        <div class="pos-row-growth">${growthInline(equityGrowthPct)}</div>
+      </div>
       <div class="pos-row pos-row-primary">
         <div class="pos-row-lbl">GOLD HELD</div>
-        <div class="pos-row-val"><div class="pos-row-amt">${fmtKrw(goldNow)}</div><div class="pos-row-sub">${totalKg.toFixed(2)} kg @ ${fmtKrw(liveSpot)}/kg</div></div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt">${fmtKrw(goldNow)}</div>
+          <div class="pos-row-sub">${totalKg.toFixed(2)} kg @ ${fmtKrw(liveSpot)}/kg</div>
+        </div>
         <div class="pos-row-growth">${growthInline(goldGrowthPct)}</div>
       </div>
       <div class="pos-row">
         <div class="pos-row-lbl">INVESTED</div>
-        <div class="pos-row-val"><div class="pos-row-amt">${hasPositions ? fmtKrw(investedMarked) : '<span class="pos-muted">—</span>'}</div><div class="pos-row-sub">${hasPositions ? `cost ${fmtKrw(investedCost)} · ${positions.length} position${positions.length === 1 ? '' : 's'}` : 'no positions yet'}</div></div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt">${hasPositions ? fmtKrw(investedMarked) : '<span class="pos-muted">—</span>'}</div>
+          <div class="pos-row-sub">${hasPositions ? `cost ${fmtKrw(investedCost)} · ${positions.length} position${positions.length === 1 ? '' : 's'}` : 'no positions yet'}</div>
+        </div>
         <div class="pos-row-growth">${hasPositions ? growthInline(investedGrowthPct) : '<span class="pos-muted">—</span>'}</div>
       </div>
+      <!-- ROW 2: LTV CASH · LTV APPROVED · LTV DRAWN · AUM -->
       <div class="pos-row pos-row-ltv">
-        <div class="pos-row-lbl">LTV AVAILABLE</div>
+        <div class="pos-row-lbl">LTV CASH AVAILABLE</div>
         <div class="pos-row-val">
-          <div class="pos-row-amt">${fmtKrw(ltvDeployable)}</div>
-          <div class="pos-row-sub">${ltvCeilingPct}% ceiling on gold · ${ltvUtilizationPct.toFixed(0)}% drawn</div>
+          <div class="pos-row-amt">${fmtKrw(ltvCashAvailable)}</div>
+          <div class="pos-row-sub">deployable from LTV facility</div>
         </div>
-        <div class="pos-row-growth"><span class="pos-muted">drawn ${fmtKrw(drawnKrw)}</span></div>
+        <div class="pos-row-growth"><span class="pos-muted">${investedMarked > 0 ? fmtKrw(investedMarked) + ' invested' : 'unutilized'}</span></div>
       </div>
-      <div class="pos-row">
-        <div class="pos-row-lbl">FUND CASH</div>
+      <div class="pos-row pos-row-ltv">
+        <div class="pos-row-lbl">LTV APPROVED</div>
         <div class="pos-row-val">
-          <div class="pos-row-amt">${fmtKrw(fundCashUninvested)}</div>
-          <div class="pos-row-sub">20% of wire (defensive reserve)</div>
+          <div class="pos-row-amt">${ltvApprovedPct.toFixed(1)}%</div>
+          <div class="pos-row-sub">${fmtKrw(ltvCeilingKrw)} ceiling on gold</div>
         </div>
-        <div class="pos-row-growth"><span class="pos-muted">${investedCost > 0 ? fmtKrw(investedCost) + ' deployed' : 'idle'}</span></div>
+      </div>
+      <div class="pos-row pos-row-ltv">
+        <div class="pos-row-lbl">LTV DRAWN</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt">${ltvDrawnPct.toFixed(1)}%</div>
+          <div class="pos-row-sub">${fmtKrw(drawnKrw)} drawn / ${fmtKrw(goldNow)} gold</div>
+        </div>
+        <div class="pos-row-growth"><span class="pos-muted">${ltvUtilizationPct.toFixed(0)}% of ceiling</span></div>
       </div>
       <div class="pos-row pos-row-equity">
-        <div class="pos-row-lbl">EQUITY VALUE</div>
-        <div class="pos-row-val"><div class="pos-row-amt gold">${fmtKrw(equityNow)}</div><div class="pos-row-sub">vs wire ${fmtKrw(equityCost)}</div></div>
-        <div class="pos-row-growth">${growthInline(equityGrowthPct)}</div>
+        <div class="pos-row-lbl">AUM</div>
+        <div class="pos-row-val">
+          <div class="pos-row-amt gold">${fmtKrw(aumNow)}</div>
+          <div class="pos-row-sub">${drawnKrw > 0 ? fmtKrw(drawnKrw) + ' drawn LTV included' : 'gross of loan obligations'}</div>
+        </div>
       </div>
     </div>
     <div class="pos-sum-leverage">
@@ -2910,111 +3683,74 @@ function renderDocsPanel(l) {
 // ── Positions panel (Phase 3) — manage portfolio positions ────────────
 function renderPositionsPanel(l) {
   if (!l.wire || !l.wire.cleared_at) {
-    return `<div class="flow-panel f-empty">Positions activate after wire clears (Phase 3 — first deployments expected Q4 2026).</div>`;
+    return `<div class="flow-panel f-empty">Slice activates after wire clears. Member then participates pro-rata in every fund deal.</div>`;
   }
-  const positions = l.positions || [];
+  const positions = (l.positions || []).filter((p) => p.deal_id || p.deal_name);
+
+  // Compute member's pro-rata share of cohort
+  const memberKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
+  const cohortKg = (state.leads || []).reduce((s, x) => {
+    if (!x.wire || !x.wire.cleared_at) return s;
+    const k = (x.bars || []).reduce((a, b) => a + (b.kg || 0), 0) || (x.ioi && x.ioi.kg) || 0;
+    return s + k;
+  }, 0);
+  const sharePct = cohortKg > 0 ? (memberKg / cohortKg) * 100 : 0;
 
   let rows = '';
   if (positions.length) {
     rows = `<table style="width:100%;border-collapse:collapse;margin:12px 0">
       <thead>
         <tr style="border-bottom:1px solid var(--border)">
-          <th style="text-align:left;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Code</th>
-          <th style="text-align:left;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Tags</th>
-          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Committed</th>
-          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Drawn</th>
-          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Marked</th>
-          <th style="text-align:left;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Status</th>
-          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Action</th>
+          <th style="text-align:left;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">DEAL</th>
+          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">SHARE</th>
+          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">ALLOCATED</th>
+          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">MARKED</th>
+          <th style="text-align:right;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">Δ</th>
+          <th style="text-align:left;padding:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.24em;color:var(--goldD)">STATUS</th>
         </tr>
       </thead>
       <tbody>`;
     for (const p of positions) {
-      const tags = [p.sector, p.stage, p.type !== 'other' ? p.type : null].filter(Boolean).join(' · ');
+      const cost = p.invested_at_krw || p.committed_krw || 0;
+      const marked = p.marked_krw || cost;
+      const delta = cost > 0 ? ((marked - cost) / cost) * 100 : 0;
+      const deltaC = delta > 0.05 ? 'var(--green)' : delta < -0.05 ? 'var(--red)' : 'var(--muted)';
+      const deltaStr = delta > 0.05 ? `+${delta.toFixed(1)}%` : delta < -0.05 ? `${delta.toFixed(1)}%` : 'flat';
+      const sharePctText = p.share_pct ? `${Number(p.share_pct).toFixed(1)}%` : '—';
       rows += `<tr style="border-bottom:1px dashed var(--rule)">
-        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--goldB);letter-spacing:0.10em;font-weight:500">${esc(p.code)}</td>
-        <td style="padding:10px 8px;font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase">${esc(tags)}</td>
-        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--text);text-align:right">${fmtKrw(p.committed_krw)}</td>
-        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--text);text-align:right">${fmtKrw(p.drawn_krw)}</td>
-        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;text-align:right;${p.marked_krw > p.committed_krw ? 'color:var(--green)' : (p.marked_krw < p.committed_krw ? 'color:var(--red)' : 'color:var(--text)')}">${fmtKrw(p.marked_krw)}</td>
+        <td style="padding:10px 8px;font-family:var(--serif);font-size:14px;color:var(--text)">${esc(p.deal_name || p.code || 'Deal')}${p.term_months ? `<span style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.10em;margin-left:8px">${p.term_months}MO</span>` : ''}</td>
+        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--gold);text-align:right">${sharePctText}</td>
+        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--text);text-align:right">${fmtKrw(cost)}</td>
+        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;color:var(--text);text-align:right">${fmtKrw(marked)}</td>
+        <td style="padding:10px 8px;font-family:var(--mono);font-size:11px;text-align:right;color:${deltaC}">${deltaStr}</td>
         <td style="padding:10px 8px;font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase">${p.status === 'active' ? '<span style="color:var(--green)">ACTIVE</span>' : p.status === 'realized' ? '<span style="color:var(--gold)">REALIZED</span>' : '<span style="color:var(--red)">WRITTEN OFF</span>'}</td>
-        <td style="padding:10px 8px;text-align:right">
-          <button class="btn-tiny" data-action="position-update-prompt" data-pos-id="${esc(p.id)}" data-drawn="${p.drawn_krw}" data-marked="${p.marked_krw}">EDIT</button>
-          <button class="btn-tiny" data-action="position-remove" data-pos-id="${esc(p.id)}">REMOVE</button>
-        </td>
       </tr>`;
     }
     rows += `</tbody></table>`;
   } else {
-    rows = '<div class="empty" style="padding:24px;text-align:center;font-style:italic;color:var(--muted)">No positions deployed yet.</div>';
+    rows = '<div class="empty" style="padding:24px;text-align:center;font-style:italic;color:var(--muted)">No deals deployed yet. Use OPERATIONS → DEPLOY TO DEAL to fund the cohort.</div>';
   }
 
-  // Aggregates
-  const totalCommitted = positions.reduce((s, p) => s + (p.committed_krw || 0), 0);
-  const totalDrawn = positions.reduce((s, p) => s + (p.drawn_krw || 0), 0);
-  const totalMarked = positions.reduce((s, p) => s + (p.marked_krw || 0), 0);
+  // Aggregates: this member's allocated + marked across deals
+  const totalCost = positions.reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
+  const totalMarked = positions.reduce((s, p) => s + (p.marked_krw || p.invested_at_krw || p.committed_krw || 0), 0);
 
   const aggLine = positions.length ? `<div class="ioi-facts" style="margin:12px 0">
-    <div class="ioi-fact"><div class="lbl">Committed</div><div class="val gold">${fmtKrw(totalCommitted)}</div></div>
-    <div class="ioi-fact"><div class="lbl">Drawn</div><div class="val">${fmtKrw(totalDrawn)}</div></div>
+    <div class="ioi-fact"><div class="lbl">Member's allocated</div><div class="val gold">${fmtKrw(totalCost)}</div></div>
     <div class="ioi-fact"><div class="lbl">Marked</div><div class="val">${fmtKrw(totalMarked)}</div></div>
+    <div class="ioi-fact"><div class="lbl">Cohort share</div><div class="val">${sharePct.toFixed(1)}%</div></div>
   </div>` : '';
-
-  // Add-position form
-  const form = `<div style="margin-top:14px;padding:14px;background:rgba(255,255,255,0.02);border:1px solid var(--border)">
-    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.28em;color:var(--goldD);margin-bottom:10px;text-transform:uppercase">Deploy new position</div>
-    <div style="display:grid;grid-template-columns:0.7fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Code</div>
-        <input id="pos-code" type="text" placeholder="E3" maxlength="16" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:0.10em;text-transform:uppercase">
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Sector</div>
-        <input id="pos-sector" type="text" placeholder="AI · FinTech · ..." style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--serifKr);font-size:13px">
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Stage</div>
-        <input id="pos-stage" type="text" placeholder="Series D · ..." style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--serifKr);font-size:13px">
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Type</div>
-        <select id="pos-type" style="padding:8px 10px;background:#0f0d0a;border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:11px">
-          <option value="venture">VENTURE</option>
-          <option value="equity">EQUITY</option>
-          <option value="private_credit">PRIVATE CREDIT</option>
-          <option value="real_estate">REAL ESTATE</option>
-          <option value="other">OTHER</option>
-        </select>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end">
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Committed (KRW)</div>
-        <input id="pos-committed" type="number" step="1000000" placeholder="100000000" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Drawn (KRW)</div>
-        <input id="pos-drawn" type="number" step="1000000" placeholder="0" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.20em;color:var(--muted);margin-bottom:4px">Marked (KRW)</div>
-        <input id="pos-marked" type="number" step="1000000" placeholder="0" style="width:100%;padding:8px 10px;background:rgba(0,0,0,0.30);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px">
-      </div>
-      <button class="btn-big" data-action="position-add">DEPLOY  →</button>
-    </div>
-  </div>`;
 
   return `<div class="flow-panel ${positions.length ? 'f-active' : 'f-pending'}">
     <div class="flow-row">
       <span class="flow-pip"></span>
       <div class="flow-body">
-        <div class="flow-head">${positions.length} ACTIVE POSITION${positions.length === 1 ? '' : 'S'}</div>
-        <div class="flow-msg">${positions.length ? `${fmtKrw(totalDrawn)} deployed across ${positions.length} ${positions.length === 1 ? 'position' : 'positions'}` : 'Phase 3 — first deployments Q4 2026'}</div>
+        <div class="flow-head">${positions.length} DEAL${positions.length === 1 ? '' : 'S'} · ${memberKg.toFixed(1)} kg / ${cohortKg.toFixed(1)} kg = ${sharePct.toFixed(1)}% OF COHORT</div>
+        <div class="flow-msg">Deals are deployed at fund level. Member's slice is auto-pro-rated by kg ownership.</div>
       </div>
     </div>
     ${aggLine}
     ${rows}
-    ${form}
   </div>`;
 }
 
@@ -3399,13 +4135,23 @@ async function doAction(action, btn) {
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
   else if (action === 'resend-nda-invite') {
-    if (!confirm('Re-send the NDA invitation email to the member?')) return;
+    if (!confirm('Re-send the web invite (access code) email to the member?')) return;
     try {
       const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'nda_invite' });
       state.selected = j.lead;
       upsertLead(j.lead);
       renderDetail();
-      toast(j.mail && j.mail.sent ? 'NDA INVITE RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
+      toast(j.mail && j.mail.sent ? 'WEB INVITE RESENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
+    } catch (e) { toast('FAILED · ' + e.message, 'err'); }
+  }
+  else if (action === 'resend-nda-reminder') {
+    if (!confirm('Send a reminder to upload the signed NDA?')) return;
+    try {
+      const j = await api('POST', '/api/admin/update', { id: l.id, action: 'resend_email', kind: 'nda_reminder' });
+      state.selected = j.lead;
+      upsertLead(j.lead);
+      renderDetail();
+      toast(j.mail && j.mail.sent ? 'NDA REMINDER SENT' : 'EMAIL FAILED · ' + (j.mail?.reason || '?'), j.mail && j.mail.sent ? 'ok' : 'err');
     } catch (e) { toast('FAILED · ' + e.message, 'err'); }
   }
   else if (action === 'resend-ioi-link') {
@@ -3722,8 +4468,796 @@ $('modal-copy').addEventListener('click', async () => {
 // ── poll ─────────────────────────────────────────────────────────────────
 setInterval(() => { if ($('app').classList.contains('show')) load(); }, 60_000);
 
+// ═══════════════════════════════════════════════════════════════════════════
+// R27: MODE TABS · OPERATIONS · DEAL BOOK · DEPLOY MODAL
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Mode switching — three view containers, one active at a time.
+function setMode(mode) {
+  const valid = ['ops', 'members', 'deals'];
+  if (!valid.includes(mode)) mode = 'ops';
+  document.querySelectorAll('.mode-tab').forEach((t) => {
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+  document.querySelectorAll('.view').forEach((v) => {
+    v.classList.toggle('view-active', v.id === `view-${mode}`);
+  });
+  state._currentMode = mode;
+  // Persist for next session
+  try { localStorage.setItem('aurum-mode', mode); } catch {}
+}
+
+// Wire mode tabs
+document.querySelectorAll('.mode-tab').forEach((t) => {
+  t.addEventListener('click', () => setMode(t.dataset.mode));
+});
+
+// Restore last mode on app boot — happens after checkSession sees it logged in
+function restoreMode() {
+  let mode = 'ops';
+  try { mode = localStorage.getItem('aurum-mode') || 'ops'; } catch {}
+  // If a member is selected via URL, force MEMBERS so the partner sees the detail
+  try {
+    const lid = new URL(location.href).searchParams.get('lead');
+    if (lid) mode = 'members';
+  } catch {}
+  // Seed two example queued deals on very first load (only if user has never
+  // touched the queue). After the first deploy or remove, this guard is
+  // tripped permanently.
+  try {
+    const seeded = localStorage.getItem('aurum-deals-seeded');
+    const existingQueue = loadQueuedDeals();
+    if (!seeded && existingQueue.length === 0) {
+      addQueuedDeal({
+        name: 'Singapore RE Bridge Loan',
+        proposed_krw: 250_000_000,
+        term_months: 9,
+        target_irr: 14,
+        counterparty: 'Marina Bridge Capital Pte Ltd',
+        notes: '6-month senior secured bridge to a developer refinancing a CBD office tranche. Asset value 2.4× facility, LTV 42%. Standard recourse + completion covenants.',
+        funding_source: 'ltv',
+      });
+      addQueuedDeal({
+        name: 'KR Trade Finance Pool',
+        proposed_krw: 95_000_000,
+        term_months: 12,
+        target_irr: 11,
+        counterparty: 'Hanyang Receivables Fund III',
+        notes: 'Diversified short-duration receivables pool — KR exporters into JP, TW, VN. Underwriter has 14yr track record, no realized losses since 2018. Senior tranche participation.',
+        funding_source: 'ltv',
+      });
+      localStorage.setItem('aurum-deals-seeded', '1');
+    }
+  } catch {}
+  setMode(mode);
+}
+
+// Update mode-tab badges (members count, deals count)
+function refreshModeBadges() {
+  const memberBadge = $('mode-badge-members');
+  const dealBadge = $('mode-badge-deals');
+  if (memberBadge) {
+    const totalLeads = state.leads ? state.leads.length : 0;
+    memberBadge.textContent = totalLeads;
+  }
+  if (dealBadge) {
+    const deals = collectFundDeals();
+    dealBadge.textContent = deals.length;
+  }
+}
+
+// ─── Fund-level deals collection ─────────────────────────────────────────
+// Today positions live on individual leads. We group them by name across all
+// leads to reconstruct fund-level deals. New deploy_to_deal action (api/admin/update.js)
+// writes the same shape, so this works for both backfilled + new deals.
+// Queued deals — partner-staged proposals not yet deployed. Persisted to
+// localStorage so the partner's working list survives reloads. Becomes a
+// fund-level deal once DEPLOY TO DEAL fires.
+const QUEUED_DEALS_KEY = 'aurum-queued-deals';
+function loadQueuedDeals() {
+  try {
+    const raw = localStorage.getItem(QUEUED_DEALS_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch { return []; }
+}
+function saveQueuedDeals(deals) {
+  try { localStorage.setItem(QUEUED_DEALS_KEY, JSON.stringify(deals)); } catch {}
+}
+function addQueuedDeal(deal) {
+  const list = loadQueuedDeals();
+  list.push({
+    id: 'q_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    ...deal,
+    status: 'queued',
+    queued_at: Date.now(),
+  });
+  saveQueuedDeals(list);
+}
+function removeQueuedDeal(id) {
+  const list = loadQueuedDeals().filter((d) => d.id !== id);
+  saveQueuedDeals(list);
+}
+
+function collectFundDeals() {
+  const leads = state.leads || [];
+  const deals = new Map();
+  // Active + realized — reconstructed from per-member positions
+  for (const l of leads) {
+    if (!l.positions) continue;
+    for (const p of l.positions) {
+      const name = p.deal_name || p.name || 'Unnamed deal';
+      const key = (p.deal_id || name).toLowerCase().replace(/\s+/g, '_');
+      if (!deals.has(key)) {
+        deals.set(key, {
+          id: p.deal_id || key,
+          name,
+          status: p.status || 'active',
+          term_months: p.term_months || null,
+          target_irr: p.target_irr || null,
+          source: p.funding_source || 'ltv',
+          funded_at: p.funded_at || p.invested_at || null,
+          totalCost: 0,
+          totalMarked: 0,
+          memberShares: [],
+          queued: false,
+        });
+      }
+      const d = deals.get(key);
+      const cost = p.invested_at_krw || p.committed_krw || 0;
+      const marked = p.marked_krw || cost;
+      d.totalCost += cost;
+      d.totalMarked += marked;
+      d.memberShares.push({
+        leadId: l.id,
+        name: l.name || l.email || '?',
+        kg: (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0,
+        cost,
+        marked,
+      });
+    }
+  }
+  // Queued — partner-staged proposals
+  for (const q of loadQueuedDeals()) {
+    deals.set(q.id, {
+      id: q.id,
+      name: q.name,
+      status: 'queued',
+      term_months: q.term_months || null,
+      target_irr: q.target_irr || null,
+      source: q.funding_source || 'ltv',
+      funded_at: null,
+      proposed_krw: q.proposed_krw || 0,
+      counterparty: q.counterparty || null,
+      notes: q.notes || null,
+      totalCost: 0,
+      totalMarked: 0,
+      memberShares: [],
+      queued: true,
+    });
+  }
+  return Array.from(deals.values());
+}
+
+// ─── OPS VIEW renderer ────────────────────────────────────────────────────
+function renderOpsView() {
+  const t = state._fundTotals;
+  if (!t) return;
+  const usdKrw = t.usdKrw || 1440;
+  const toUsd = (krw) => krw / usdKrw;
+  const fmtUsdShort = (krw) => {
+    const u = toUsd(krw);
+    if (u >= 1_000_000) return '$' + (u / 1_000_000).toFixed(2) + 'M';
+    if (u >= 1_000) return '$' + (u / 1_000).toFixed(0) + 'K';
+    if (u <= 0) return '$0';
+    return '$' + Math.round(u);
+  };
+
+  // Status string — narrative based on fund state
+  let statusH = '<em>Awaiting first member.</em>';
+  let statusDetail = 'No admitted members yet. Approve IOIs and mark wires cleared to begin.';
+  if (t.memberCount > 0) {
+    if (t.cashAvailable > 1_000_000) {
+      statusH = `<em>Capital ready.</em>  ${fmtUsdShort(t.cashAvailable)} available to deploy.`;
+    } else if (t.investedCost > 0) {
+      const deployedPct = (t.investedMarked / Math.max(1, t.investedMarked + t.cashAvailable)) * 100;
+      statusH = `<em>${deployedPct.toFixed(0)}% deployed.</em>  ${t.totalDealsFunded} deal${t.totalDealsFunded === 1 ? '' : 's'} live.`;
+    } else {
+      statusH = `<em>Capital staged.</em>  Facility open, ready for first deployment.`;
+    }
+    const interestRate = 0.0485;
+    const dailyInterestKrw = t.totalDrawn * interestRate / 365;
+    const dailyInterestUsd = dailyInterestKrw / usdKrw;
+    const interestStr = dailyInterestUsd >= 1 ? `$${Math.round(dailyInterestUsd)}` : `$${dailyInterestUsd.toFixed(2)}`;
+    statusDetail = `${t.memberCount} admitted member${t.memberCount === 1 ? '' : 's'}  ·  ${t.totalKg.toFixed(1)} kg vaulted  ·  Facility drawn ${t.fundLtvDrawnPct.toFixed(1)}%  <span style="color:var(--dim);margin:0 8px">·</span>  Bank interest ~${(interestRate * 100).toFixed(2)}% on drawn balance (${interestStr} today)`;
+  }
+  $('pulse-status').innerHTML = statusH;
+  $('pulse-detail').innerHTML = statusDetail;
+
+  // KPIs — 5 cells
+  $('pk-kilo').textContent = t.totalKg.toFixed(1);
+  $('pk-kilo-sub').textContent = `${t.memberCount} member${t.memberCount === 1 ? '' : 's'}, ${t.fullyAllocated ? t.fullyAllocated.length : 0} contributing`;
+  setPill('pk-kilo-pill', t.totalKg > 0 ? 'VAULTED' : 'PENDING', t.totalKg > 0 ? 'active' : 'idle');
+
+  $('pk-nav').textContent = fmtUsdShort(t.navNow);
+  $('pk-nav-sub').textContent = 'net of facility liability';
+  const navDeltaEl = $('pk-nav-delta');
+  if (t.navGrowthPct > 0.05) {
+    navDeltaEl.textContent = `↑ ${t.navGrowthPct.toFixed(1)}%`; navDeltaEl.style.color = 'var(--green)';
+  } else if (t.navGrowthPct < -0.05) {
+    navDeltaEl.textContent = `↓ ${Math.abs(t.navGrowthPct).toFixed(1)}%`; navDeltaEl.style.color = 'var(--red)';
+  } else {
+    navDeltaEl.textContent = t.memberCount > 0 ? 'flat' : '—'; navDeltaEl.style.color = 'var(--muted)';
+  }
+
+  $('pk-gold').textContent = fmtUsdShort(t.goldNow);
+  $('pk-gold-sub').textContent = `${t.totalKg.toFixed(1)} kg @ live spot`;
+  setPill('pk-gold-pill', t.totalKg > 0 ? '@ LIVE' : '—', t.totalKg > 0 ? 'active' : 'idle');
+
+  $('pk-fac').textContent = fmtUsdShort(t.totalDrawn);
+  const drawnPct = t.totalApprovedCeiling > 0 ? (t.totalDrawn / t.totalApprovedCeiling * 100) : 0;
+  $('pk-fac-sub').textContent = `${drawnPct.toFixed(0)}% of ceiling drawn`;
+  setPill('pk-fac-pill', t.totalDrawn > 0 ? 'OPEN' : 'CLOSED', t.totalDrawn > 0 ? 'active' : 'idle');
+
+  $('pk-dep').textContent = fmtUsdShort(t.investedMarked);
+  $('pk-dep-sub').textContent = `${fmtUsdShort(t.cashAvailable)} idle ready to deploy`;
+  setPill('pk-dep-pill', t.totalDealsFunded > 0 ? `${t.totalDealsFunded} ACTIVE` : 'NONE', t.totalDealsFunded > 0 ? 'deployed' : 'idle');
+
+  // Primary action bar — DEPLOY TO DEAL
+  const pabH = $('pab-h'), pabSub = $('pab-sub'), pabBtn = $('btn-deploy-deal');
+  if (t.cashAvailable >= 1_000_000) {
+    pabH.innerHTML = `${fmtUsdShort(t.cashAvailable)} idle in facility, accruing <em>4.85% interest</em>.`;
+    pabSub.textContent = 'Deploy to a deal — pro-rates across all admitted members by kg ownership.';
+    pabBtn.disabled = false;
+  } else if (t.memberCount === 0) {
+    pabH.innerHTML = `<em>No capital staged.</em>`;
+    pabSub.textContent = 'No admitted members yet. Mark wires cleared to begin building the facility.';
+    pabBtn.disabled = true;
+  } else {
+    pabH.innerHTML = `<em>Fully deployed.</em>`;
+    pabSub.textContent = 'Drawn capital is allocated. Deploy more after a deal is realized or new wires clear.';
+    pabBtn.disabled = true;
+  }
+
+  // Action queue — derive from leads state
+  renderActionQueue();
+  $('aq-refresh-time').textContent = `${(new Date()).toLocaleTimeString('en-CA', {hour: '2-digit', minute: '2-digit'})}`;
+}
+
+function setPill(id, text, kind) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'pill' + (kind ? ` ${kind}` : '');
+}
+
+// Action queue — surface 3 most-needed actions based on lead state
+function renderActionQueue() {
+  const leads = state.leads || [];
+  const cards = [];
+
+  // Card: wires received but not cleared
+  const wiresPending = leads.filter((l) =>
+    l.wire && l.wire.wired_at && !l.wire.cleared_at && (!l.ioi || l.ioi.submitted_at));
+  if (wiresPending.length > 0) {
+    const names = wiresPending.slice(0, 3).map((l) => l.name || l.email || '?').join(', ');
+    cards.push({
+      cls: 'urgent',
+      eyebrow: 'WIRE TO REVIEW',
+      h: `${wiresPending.length} wire${wiresPending.length === 1 ? '' : 's'} received <em>awaiting confirmation</em>`,
+      meta: `${names}${wiresPending.length > 3 ? ` + ${wiresPending.length - 3} more` : ''}<br>Pending bank reconciliation`,
+      action: 'REVIEW WIRES  →',
+      onclick: () => { setMode('members'); selectFirst(wiresPending); },
+    });
+  }
+
+  // Card: IOIs submitted but not verified
+  const iois = leads.filter((l) => l.ioi && l.ioi.submitted_at && !l.ioi_verified_at);
+  if (iois.length > 0) {
+    cards.push({
+      cls: '',
+      eyebrow: 'IOI TO VERIFY',
+      h: `${iois.length} indication${iois.length === 1 ? '' : 's'} <em>awaiting verification</em>`,
+      meta: `${iois.slice(0, 3).map((l) => l.name || l.email || '?').join(', ')}${iois.length > 3 ? ` + ${iois.length - 3} more` : ''}<br>Set approved LTV % and issue wire instructions`,
+      action: 'VERIFY IOIs  →',
+      onclick: () => { setMode('members'); selectFirst(iois); },
+    });
+  }
+
+  // Card: NDAs uploaded but not approved
+  const ndas = leads.filter((l) => l.nda_state === 'uploaded');
+  if (ndas.length > 0) {
+    cards.push({
+      cls: '',
+      eyebrow: 'NDA TO REVIEW',
+      h: `${ndas.length} NDA${ndas.length === 1 ? '' : 's'} <em>uploaded</em>`,
+      meta: `${ndas.slice(0, 3).map((l) => l.name || l.email || '?').join(', ')}${ndas.length > 3 ? ` + ${ndas.length - 3} more` : ''}<br>Review and countersign to open materials`,
+      action: 'REVIEW NDAs  →',
+      onclick: () => { setMode('members'); selectFirst(ndas); },
+    });
+  }
+
+  // Card: New inquiries needing review
+  const news = leads.filter((l) => l.status === 'new' || (!l.code && !l.nda_state));
+  if (news.length > 0) {
+    cards.push({
+      cls: '',
+      eyebrow: 'INQUIRIES PENDING',
+      h: `${news.length} new inquir${news.length === 1 ? 'y' : 'ies'}`,
+      meta: `${news.slice(0, 3).map((l) => l.name || l.email || '?').join(', ')}${news.length > 3 ? ` + ${news.length - 3} more` : ''}<br>Approve to issue access code`,
+      action: 'REVIEW INQUIRIES  →',
+      onclick: () => { setMode('members'); selectFirst(news); },
+    });
+  }
+
+  // Card: Deal capacity available
+  const t = state._fundTotals;
+  if (t && t.cashAvailable >= 1_000_000) {
+    const usdKrw = t.usdKrw || 1440;
+    const u = t.cashAvailable / usdKrw;
+    const cap = u >= 1_000_000 ? '$' + (u / 1_000_000).toFixed(2) + 'M' : '$' + (u / 1_000).toFixed(0) + 'K';
+    cards.push({
+      cls: 'info',
+      eyebrow: 'CAPITAL READY',
+      h: `${cap} <em>available to deploy</em>`,
+      meta: `Drawn LTV cash sitting idle in facility<br>Currently accruing ~4.85% bank interest`,
+      action: 'DEPLOY  →',
+      onclick: openDeployModal,
+    });
+  }
+
+  // Render — show top 3
+  const list = $('aq-list');
+  if (!list) return;
+  if (cards.length === 0) {
+    list.innerHTML = `<div class="aq-card info"><div class="aq-eyebrow">QUEUE CLEAR</div><div class="aq-h"><em>Nothing pressing.</em></div><div class="aq-meta">No actions need attention right now.</div></div>`;
+    return;
+  }
+  list.innerHTML = cards.slice(0, 3).map((c, i) => `
+    <div class="aq-card ${c.cls}" data-aq-i="${i}">
+      <div class="aq-eyebrow">${esc(c.eyebrow)}</div>
+      <div class="aq-h">${c.h}</div>
+      <div class="aq-meta">${c.meta}</div>
+      <button class="aq-action" data-aq-act="${i}">${esc(c.action)}</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('[data-aq-act]').forEach((btn) => {
+    const idx = Number(btn.getAttribute('data-aq-act'));
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = cards[idx];
+      if (card && card.onclick) card.onclick();
+    });
+  });
+}
+
+function selectFirst(leads) {
+  if (!leads || leads.length === 0) return;
+  const found = state.leads.find((l) => l.id === leads[0].id);
+  if (found && typeof selectLead === 'function') selectLead(found);
+}
+
+// ─── DEAL BOOK renderer ───────────────────────────────────────────────────
+function renderDealBook() {
+  const list = $('deals-list');
+  const meta = $('deals-meta');
+  if (!list || !meta) return;
+  const deals = collectFundDeals();
+  const t = state._fundTotals;
+  const usdKrw = t && t.usdKrw ? t.usdKrw : 1440;
+  const fmtUsd = (krw) => {
+    const u = krw / usdKrw;
+    if (u >= 1_000_000) return '$' + (u / 1_000_000).toFixed(2) + 'M';
+    if (u >= 1_000) return '$' + (u / 1_000).toFixed(0) + 'K';
+    if (u <= 0) return '$0';
+    return '$' + Math.round(u);
+  };
+
+  const active = deals.filter((d) => d.status === 'active' || (!d.status && !d.queued)).length;
+  const realized = deals.filter((d) => d.status === 'realized').length;
+  const queued = deals.filter((d) => d.status === 'queued').length;
+  const totalDeployed = deals.reduce((s, d) => s + d.totalCost, 0);
+  const cashAvailable = t ? t.cashAvailable : 0;
+  meta.innerHTML = `
+    ${active} ACTIVE  <span class="sep">·</span>  ${queued} QUEUED  <span class="sep">·</span>  ${realized} REALIZED
+    <span class="sep">·</span>  ${fmtUsd(totalDeployed)} DEPLOYED  <span class="sep">·</span>  ${fmtUsd(cashAvailable)} AVAILABLE
+  `;
+
+  // Sort: active, queued, realized
+  const order = { active: 0, queued: 1, realized: 2 };
+  deals.sort((a, b) => (order[a.status] ?? 3) - (order[b.status] ?? 3));
+
+  let html = '';
+  if (deals.length === 0) {
+    html = `<div class="deals-empty">No deals yet. Click <strong style="color:var(--gold)">+ ADD DEAL</strong> below to queue one.</div>`;
+  } else {
+    html = deals.map((d, i) => {
+      const num = String(i + 1).padStart(2, '0');
+      if (d.queued) {
+        // Queued deal row — different shape (no MTM, has DEPLOY button + REMOVE)
+        const proposed = d.proposed_krw || 0;
+        const metaParts = ['QUEUED · NOT YET FUNDED'];
+        if (d.term_months) metaParts.push(`${d.term_months} mo term`);
+        if (d.target_irr) metaParts.push(`target IRR ${d.target_irr}%`);
+        if (d.counterparty) metaParts.push(`counterparty: ${d.counterparty}`);
+        return `
+          <div class="deal-row" data-deal-i="${i}">
+            <div class="deal-num">${num}</div>
+            <div class="deal-info">
+              <div class="deal-name">${esc(d.name)}</div>
+              <div class="deal-meta">${metaParts.map(esc).join('<span class="sep">·</span>')}</div>
+            </div>
+            <div class="deal-amount">${proposed > 0 ? fmtUsd(proposed) : '—'}<div class="sub">PROPOSED</div></div>
+            <div class="deal-amount" style="color:var(--muted)">—<div class="sub">MTM</div></div>
+            <div class="deal-status queued">QUEUED</div>
+          </div>
+          <div class="deal-expanded" data-deal-exp="${i}">
+            <h3>
+              <span>QUEUED DEAL  ·  ready for deployment</span>
+              <span class="deal-status-controls">
+                <button data-queued-deploy="${esc(d.id)}">⚡ DEPLOY THIS DEAL</button>
+                <button data-queued-remove="${esc(d.id)}">REMOVE FROM QUEUE</button>
+              </span>
+            </h3>
+            ${d.notes ? `<div style="font-family:var(--serifKr);font-size:13px;color:var(--sub);line-height:1.7;padding:10px 14px;background:var(--card);border-left:2px solid var(--gold);margin-bottom:14px">${esc(d.notes)}</div>` : ''}
+            <div style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.04em">
+              When you click DEPLOY, this deal opens in the deployment form pre-filled. The system pro-rates the proposed amount across all admitted members by kg ownership, debits drawn LTV cash, and writes a position record on each member.
+            </div>
+          </div>
+        `;
+      }
+      // Active / realized deal row
+      const fmtDate = d.funded_at ? new Date(d.funded_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}).toUpperCase() : 'NOT YET FUNDED';
+      const metaParts = [`FUNDED ${fmtDate}`];
+      if (d.term_months) metaParts.push(`${d.term_months} mo term`);
+      if (d.target_irr) metaParts.push(`target IRR ${d.target_irr}%`);
+      if (d.source) metaParts.push(`from ${d.source === 'ltv' ? 'drawn LTV' : 'reserve'}`);
+      const deltaPct = d.totalCost > 0 ? ((d.totalMarked - d.totalCost) / d.totalCost) * 100 : 0;
+      const deltaStr = deltaPct > 0.05 ? `+${deltaPct.toFixed(1)}%` : deltaPct < -0.05 ? `${deltaPct.toFixed(1)}%` : 'flat';
+      const deltaColor = deltaPct > 0.05 ? 'var(--green)' : deltaPct < -0.05 ? 'var(--red)' : 'var(--muted)';
+      const totalKg = d.memberShares.reduce((s, m) => s + m.kg, 0);
+      const memberRows = d.memberShares.map((m) => {
+        const pct = totalKg > 0 ? (m.kg / totalKg) * 100 : 0;
+        const mDelta = m.cost > 0 ? ((m.marked - m.cost) / m.cost) * 100 : 0;
+        const mDeltaStr = mDelta > 0.05 ? `+${mDelta.toFixed(1)}%` : mDelta < -0.05 ? `${mDelta.toFixed(1)}%` : 'flat';
+        const mDeltaC = mDelta > 0.05 ? 'var(--green)' : mDelta < -0.05 ? 'var(--red)' : 'var(--muted)';
+        return `<tr>
+          <td class="member-name">${esc(m.name)}</td>
+          <td>${m.kg.toFixed(1)} / ${totalKg.toFixed(1)}</td>
+          <td class="pct">${pct.toFixed(1)}%</td>
+          <td>${fmtUsd(m.cost)}</td>
+          <td>${fmtUsd(m.marked)}</td>
+          <td style="color:${mDeltaC}">${mDeltaStr}</td>
+        </tr>`;
+      }).join('');
+      return `
+        <div class="deal-row" data-deal-i="${i}">
+          <div class="deal-num">${num}</div>
+          <div class="deal-info">
+            <div class="deal-name">${esc(d.name)}</div>
+            <div class="deal-meta">${metaParts.map(esc).join('<span class="sep">·</span>')}</div>
+          </div>
+          <div class="deal-amount">${fmtUsd(d.totalCost)}<div class="sub">DEPLOYED</div></div>
+          <div class="deal-amount" style="color:${deltaColor}">${deltaStr}<div class="sub">MTM</div></div>
+          <div class="deal-status ${esc(d.status || 'active')}">${esc((d.status || 'active').toUpperCase())}</div>
+        </div>
+        <div class="deal-expanded" data-deal-exp="${i}">
+          <h3>
+            <span>PRO-RATA ALLOCATION  ·  by kg ownership</span>
+          </h3>
+          <table class="member-share-table">
+            <thead><tr>
+              <th>MEMBER</th><th>KG / TOTAL</th><th class="pct">SHARE</th><th>ALLOCATED</th><th>MARKED</th><th>Δ</th>
+            </tr></thead>
+            <tbody>${memberRows}</tbody>
+          </table>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ADD DEAL row at the bottom — partner queues a new deal proposal
+  html += `
+    <div style="margin-top:18px;padding:24px;border:1px dashed var(--border);text-align:center">
+      <button class="pab-btn" id="btn-queue-deal" style="background:transparent;color:var(--gold);border:1px solid var(--gold);padding:12px 20px">+ QUEUE A DEAL</button>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.16em;color:var(--muted);margin-top:10px">stage a deal for review · DEPLOY when ready</div>
+    </div>
+  `;
+
+  list.innerHTML = html;
+
+  // Wire row click to toggle expanded
+  list.querySelectorAll('[data-deal-i]').forEach((row) => {
+    row.addEventListener('click', () => {
+      const wasExpanded = row.classList.contains('expanded');
+      list.querySelectorAll('[data-deal-i]').forEach((r) => r.classList.remove('expanded'));
+      if (!wasExpanded) row.classList.add('expanded');
+    });
+  });
+
+  // Wire queued-deal action buttons
+  list.querySelectorAll('[data-queued-deploy]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-queued-deploy');
+      openDeployModalForQueued(id);
+    });
+  });
+  list.querySelectorAll('[data-queued-remove]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-queued-remove');
+      if (confirm('Remove this queued deal?')) {
+        removeQueuedDeal(id);
+        renderDealBook();
+        if (typeof renderOpsView === 'function') renderOpsView();
+        toast('Deal removed from queue', 'ok');
+      }
+    });
+  });
+
+  // Wire ADD DEAL button
+  const addBtn = $('btn-queue-deal');
+  if (addBtn) addBtn.addEventListener('click', openQueueDealModal);
+}
+
+// ─── DEPLOY MODAL ─────────────────────────────────────────────────────────
+function openDeployModal() {
+  const t = state._fundTotals;
+  if (!t || t.cashAvailable < 1) {
+    toast('No drawn LTV cash available to deploy', 'err');
+    return;
+  }
+  // Populate queued-pick dropdown
+  populateQueuedPick();
+  // Reset form
+  $('dep-queued-pick').value = '';
+  $('dep-name').value = '';
+  $('dep-size').value = '';
+  $('dep-term').value = '';
+  $('dep-irr').value = '';
+  $('dep-source').value = 'ltv';
+  state._consumingQueuedId = null;
+  updateDeployPreview();
+  $('deploy-overlay').classList.add('show');
+  setTimeout(() => $('dep-name').focus(), 100);
+}
+
+// Open the deploy modal pre-filled with a specific queued deal
+function openDeployModalForQueued(queuedId) {
+  const t = state._fundTotals;
+  if (!t || t.cashAvailable < 1) {
+    toast('No drawn LTV cash available to deploy', 'err');
+    return;
+  }
+  const queued = loadQueuedDeals().find((q) => q.id === queuedId);
+  if (!queued) { toast('Queued deal not found', 'err'); return; }
+  populateQueuedPick();
+  $('dep-queued-pick').value = queuedId;
+  $('dep-name').value = queued.name || '';
+  $('dep-size').value = queued.proposed_krw || '';
+  $('dep-term').value = queued.term_months || '';
+  $('dep-irr').value = queued.target_irr || '';
+  $('dep-source').value = 'ltv';
+  state._consumingQueuedId = queuedId;
+  updateDeployPreview();
+  $('deploy-overlay').classList.add('show');
+}
+
+function populateQueuedPick() {
+  const select = $('dep-queued-pick');
+  if (!select) return;
+  const queued = loadQueuedDeals();
+  const opts = ['<option value="">— Enter new deal —</option>'];
+  for (const q of queued) {
+    const proposedTxt = q.proposed_krw ? ` · ${formatKrwShort(q.proposed_krw)}` : '';
+    opts.push(`<option value="${esc(q.id)}">${esc(q.name)}${esc(proposedTxt)}</option>`);
+  }
+  select.innerHTML = opts.join('');
+}
+
+function closeDeployModal() {
+  $('deploy-overlay').classList.remove('show');
+  state._consumingQueuedId = null;
+}
+
+function updateDeployPreview() {
+  const sizeKrw = Number($('dep-size').value || 0);
+  const t = state._fundTotals;
+  const body = $('dep-preview-body');
+  const confirmBtn = $('dep-confirm');
+  if (!t || sizeKrw <= 0) {
+    body.innerHTML = `<span style="color:var(--muted);font-style:italic">Enter deal size to compute pro-rata allocation</span>`;
+    confirmBtn.disabled = true;
+    return;
+  }
+  if (sizeKrw > t.cashAvailable) {
+    body.innerHTML = `<span style="color:var(--red)">⚠ Deal size ${formatKrwShort(sizeKrw)} exceeds available drawn cash (${formatKrwShort(t.cashAvailable)})</span>`;
+    confirmBtn.disabled = true;
+    return;
+  }
+  const fund = t.fullyAllocated || [];
+  if (fund.length === 0) {
+    body.innerHTML = `<span style="color:var(--red)">⚠ No admitted members in cohort. Cannot deploy.</span>`;
+    confirmBtn.disabled = true;
+    return;
+  }
+  const totalKg = fund.reduce((s, l) => s + ((l.bars || []).reduce((b, x) => b + (x.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0), 0);
+  if (totalKg <= 0) {
+    body.innerHTML = `<span style="color:var(--red)">⚠ No kg ownership in cohort. Cannot pro-rate.</span>`;
+    confirmBtn.disabled = true;
+    return;
+  }
+  const rows = fund.map((l) => {
+    const kg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0) || (l.ioi && l.ioi.kg) || 0;
+    const share = kg / totalKg;
+    const alloc = Math.round(sizeKrw * share);
+    return `<tr>
+      <td>${esc(l.name || l.email || '?')}</td>
+      <td style="text-align:right;color:var(--sub)">${kg.toFixed(1)} kg · ${(share * 100).toFixed(1)}%</td>
+      <td>${formatKrwShort(alloc)}</td>
+    </tr>`;
+  }).join('');
+  body.innerHTML = `
+    <table>
+      <tr style="border-bottom:1px solid var(--rule)"><td colspan="3" style="padding:4px 0 8px;color:var(--goldD);letter-spacing:0.20em;font-size:9px">${fund.length} MEMBERS  ·  ${totalKg.toFixed(1)} KG TOTAL</td></tr>
+      ${rows}
+      <tr style="border-top:1px solid var(--rule)"><td colspan="2" style="padding:8px 0 0;color:var(--gold)">TOTAL DEPLOYMENT</td><td style="padding:8px 0 0;color:var(--gold);text-align:right">${formatKrwShort(sizeKrw)}</td></tr>
+    </table>
+  `;
+  confirmBtn.disabled = false;
+}
+
+function formatKrwShort(krw) {
+  if (typeof formatKRW === 'function') {
+    return formatKRW(krw, 'man');
+  }
+  // Inline fallback (matches admin fmtKRW pattern)
+  if (krw >= 100_000_000) {
+    const eok = krw / 100_000_000;
+    if (eok >= 100) return Math.round(eok) + '억';
+    return eok.toFixed(2).replace(/\.?0+$/, '') + '억';
+  }
+  if (krw >= 10_000) {
+    const man = krw / 10_000;
+    return Math.round(man).toLocaleString() + '만';
+  }
+  return Math.round(krw).toLocaleString();
+}
+
+// fmtKRW exists in main script (named differently). We use formatKrwShort.
+
+async function confirmDeploy() {
+  const name = String($('dep-name').value || '').trim();
+  const size = Number($('dep-size').value || 0);
+  const term = Number($('dep-term').value || 0) || null;
+  const irr = Number($('dep-irr').value || 0) || null;
+  const source = $('dep-source').value || 'ltv';
+  if (!name) { toast('Deal name required', 'err'); return; }
+  if (size <= 0) { toast('Deal size must be > 0', 'err'); return; }
+  $('dep-confirm').disabled = true;
+  $('dep-confirm').textContent = 'DEPLOYING…';
+  try {
+    await api('POST', '/api/admin/update', {
+      action: 'deploy_to_deal',
+      deal_name: name,
+      total_krw: size,
+      funding_source: source,
+      term_months: term,
+      target_irr: irr,
+    });
+    // If this came from a queued deal, remove from queue
+    if (state._consumingQueuedId) {
+      removeQueuedDeal(state._consumingQueuedId);
+      state._consumingQueuedId = null;
+    }
+    toast('Deal deployed · pro-rated across cohort', 'ok');
+    closeDeployModal();
+    await load();          // refreshes leads + triggers renderFundBand → renderDealBook → renderOpsView
+    setMode('deals');      // jump to deal book to see the new deal
+  } catch (e) {
+    toast('DEPLOY FAILED · ' + e.message, 'err');
+    $('dep-confirm').disabled = false;
+    $('dep-confirm').textContent = 'DEPLOY  →';
+  }
+}
+
+// ─── QUEUE A DEAL MODAL ───────────────────────────────────────────────────
+function openQueueDealModal() {
+  $('q-name').value = '';
+  $('q-size').value = '';
+  $('q-counterparty').value = '';
+  $('q-term').value = '';
+  $('q-irr').value = '';
+  $('q-notes').value = '';
+  $('queue-overlay').classList.add('show');
+  setTimeout(() => $('q-name').focus(), 100);
+}
+function closeQueueDealModal() { $('queue-overlay').classList.remove('show'); }
+function confirmQueueDeal() {
+  const name = String($('q-name').value || '').trim();
+  if (!name) { toast('Deal name required', 'err'); return; }
+  const proposed = Number($('q-size').value || 0);
+  const term = Number($('q-term').value || 0) || null;
+  const irr = Number($('q-irr').value || 0) || null;
+  const counterparty = String($('q-counterparty').value || '').trim() || null;
+  const notes = String($('q-notes').value || '').trim() || null;
+  addQueuedDeal({
+    name,
+    proposed_krw: proposed > 0 ? proposed : 0,
+    term_months: term,
+    target_irr: irr,
+    counterparty,
+    notes,
+    funding_source: 'ltv',
+  });
+  toast('Deal queued · ready to deploy when needed', 'ok');
+  closeQueueDealModal();
+  renderDealBook();
+  if (typeof renderOpsView === 'function') renderOpsView();
+  if (typeof refreshModeBadges === 'function') refreshModeBadges();
+}
+
+// Wire deploy modal events
+(function wireDeployModal() {
+  const overlay = $('deploy-overlay');
+  if (!overlay) return;
+  $('btn-deploy-deal').addEventListener('click', openDeployModal);
+  $('dep-cancel').addEventListener('click', closeDeployModal);
+  $('dep-confirm').addEventListener('click', confirmDeploy);
+  $('dep-size').addEventListener('input', updateDeployPreview);
+  // Auto-fill from queued pick
+  $('dep-queued-pick').addEventListener('change', (e) => {
+    const id = e.target.value;
+    if (!id) {
+      state._consumingQueuedId = null;
+      return;
+    }
+    const queued = loadQueuedDeals().find((q) => q.id === id);
+    if (!queued) return;
+    $('dep-name').value = queued.name || '';
+    $('dep-size').value = queued.proposed_krw || '';
+    $('dep-term').value = queued.term_months || '';
+    $('dep-irr').value = queued.target_irr || '';
+    state._consumingQueuedId = id;
+    updateDeployPreview();
+  });
+  // Close on overlay click (not modal click)
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeDeployModal(); });
+  // Esc to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closeDeployModal();
+  });
+})();
+
+// Wire queue-deal modal
+(function wireQueueModal() {
+  const overlay = $('queue-overlay');
+  if (!overlay) return;
+  $('q-cancel').addEventListener('click', closeQueueDealModal);
+  $('q-confirm').addEventListener('click', confirmQueueDeal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeQueueDealModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('show')) closeQueueDealModal();
+  });
+})();
+
+// Initialize mode on first paint after data loads
+(function initMode() {
+  // Wait for app to actually be visible (after checkSession)
+  const obs = new MutationObserver(() => {
+    if ($('app') && $('app').classList.contains('show')) {
+      restoreMode();
+      obs.disconnect();
+    }
+  });
+  obs.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+})();
+
 // ── init ─────────────────────────────────────────────────────────────────
 checkSession();
+
 
 // keyboard: r to refresh, esc to deselect
 document.addEventListener('keydown', (e) => {
@@ -3732,6 +5266,10 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'r' || e.key === 'R') { load(); toast('REFRESHED','ok'); }
   if (e.key === 'Escape' && state.selected) {
     state.selected = null;
+    $('pane-list').classList.remove('has-sel');
+    $('pane-detail').classList.remove('has-sel');
+    document.body.classList.remove('mobile-member-selected');
+    updateMemberNavLinks(null);  // disable nav PORTFOLIO/MEMO links
     try { const u = new URL(location.href); u.searchParams.delete('lead'); history.replaceState({}, '', u); } catch {}
     renderList(); renderDetail();
   }

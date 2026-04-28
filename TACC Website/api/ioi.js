@@ -410,11 +410,19 @@ async function opPortfolio(req, res) {
   if (adminSession && adminSession.sub === 'admin') {
     const leadIdParam = String(getQuery(req).lead || '').trim();
     if (!leadIdParam) {
-      // Admin without a lead specified — surface a clear error
       return ok(res, { ok: false, reason: 'admin-no-lead', message: 'Admin viewers must specify ?lead=' });
     }
-    lead = await getLead(leadIdParam);
-    if (!lead) return ok(res, { ok: false, reason: 'no-lead' });
+    // Defensive lead lookup — capture exception detail for debugging
+    try {
+      lead = await getLead(leadIdParam);
+    } catch (e) {
+      console.error('[opPortfolio] getLead threw for admin', leadIdParam, e);
+      return ok(res, { ok: false, reason: 'lookup-failed', message: 'Storage lookup failed: ' + (e.message || 'unknown') });
+    }
+    if (!lead) {
+      console.warn('[opPortfolio] admin lead not found', leadIdParam);
+      return ok(res, { ok: false, reason: 'no-lead', message: 'Lead ' + leadIdParam + ' not found in storage' });
+    }
     viewerKind = 'admin';
     viewerId = adminSession.email || adminSession.id || 'admin';
   } else {
@@ -424,7 +432,12 @@ async function opPortfolio(req, res) {
     if (!session || session.sub !== 'member' || !session.leadId) {
       return ok(res, { ok: false, reason: 'no-session' });
     }
-    lead = await getLead(session.leadId);
+    try {
+      lead = await getLead(session.leadId);
+    } catch (e) {
+      console.error('[opPortfolio] getLead threw for member', e);
+      return ok(res, { ok: false, reason: 'lookup-failed' });
+    }
     if (!lead) return ok(res, { ok: false, reason: 'no-lead' });
     viewerId = lead.email || lead.code || 'member';
   }

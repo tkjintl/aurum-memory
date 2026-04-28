@@ -388,22 +388,43 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9;back
 
   // ---------- SUBMIT IOI button — fetch IOI code from cookie context ----------
   // /api/ioi?op=context reads the aurum_access cookie and returns the lead's
-  // ioi_code (and whether they've already submitted).  We update the button
-  // href to /ioi?c=<code> so the member never has to type the code.
-  // If they've ALREADY submitted, we hide the SUBMIT IOI button and show the
-  // VIEW PORTFOLIO button instead — the portfolio is now their primary surface.
+  // ioi_code (and whether they've already submitted via has_ioi).  We update
+  // the button to either point to the IOI form (with code pre-filled) OR swap
+  // to a "VIEW PORTFOLIO" CTA when the IOI is already submitted.
   var ioiBtn = document.getElementById('ioiBtn');
   var ioiBtnNote = document.getElementById('ioiBtnNote');
   if(ioiBtn){
     fetch('/api/ioi?op=context', { credentials:'same-origin', cache:'no-store' })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(j){
-        if(j && j.ok && j.ioi_code){
-          // Pre-fill the IOI code so the member doesn't have to type it
+        if(!j || !j.ok) return;
+        if(j.has_ioi){
+          // IOI already submitted — swap CTA to portfolio
+          ioiBtn.setAttribute('href', '/portfolio');
+          var enLabel = ioiBtn.querySelector('[data-lang="en"]');
+          var koLabel = ioiBtn.querySelector('[data-lang="ko"]');
+          if(enLabel) enLabel.textContent = 'VIEW PORTFOLIO';
+          if(koLabel) koLabel.textContent = '포트폴리오 보기';
+          // Update headline + lede above the button
+          var ctaSection = document.getElementById('ioiCta');
+          if(ctaSection){
+            var eyebrowEn = ctaSection.querySelector('.ioi-cta-eyebrow [data-lang="en"]');
+            var eyebrowKo = ctaSection.querySelector('.ioi-cta-eyebrow [data-lang="ko"]');
+            if(eyebrowEn) eyebrowEn.textContent = 'COMMITMENT INDICATED';
+            if(eyebrowKo) eyebrowKo.textContent = '의향 표명 완료';
+            var headEn = ctaSection.querySelector('.ioi-cta-h [data-lang="en"]');
+            var headKo = ctaSection.querySelector('.ioi-cta-h [data-lang="ko"]');
+            if(headEn) headEn.innerHTML = 'Your <em>portfolio</em> is next.';
+            if(headKo) headKo.innerHTML = '<em>포트폴리오</em>로 이동합니다.';
+            var ledeEn = ctaSection.querySelector('.ioi-cta-lede [data-lang="en"]');
+            var ledeKo = ctaSection.querySelector('.ioi-cta-lede [data-lang="ko"]');
+            if(ledeEn) ledeEn.textContent = 'Your indication has been received. Track wire status, settlement, and positions in your portfolio.';
+            if(ledeKo) ledeKo.textContent = '의향서가 접수되었습니다. 송금 상태, 정산 및 포지션은 포트폴리오에서 확인하실 수 있습니다.';
+          }
+        } else if(j.ioi_code){
+          // Not yet submitted — pre-fill the IOI code so the member doesn't have to type it
           ioiBtn.setAttribute('href', '/ioi?c=' + encodeURIComponent(j.ioi_code));
         }
-        // Note: even if member has already submitted, button still goes to /ioi
-        // (the page itself handles the "already submitted" view).
       })
       .catch(function(){});
   }

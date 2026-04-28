@@ -2104,6 +2104,50 @@ html.lang-en [data-lang="ko"] { display: none; }
   letter-spacing: 0.06em;
 }
 
+/* Coming 2H 2026 — quiet badge sitting between tagline + CTA. Bilingual.
+   The pulsing dot signals it's not yet live; muted gold so it doesn't
+   compete with the wordmark. */
+.landing-coming {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 7px 14px;
+  border: 1px solid rgba(197,165,114,0.30);
+  background: rgba(197,165,114,0.04);
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+.landing-coming .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(197,165,114,0.55);
+  animation: comingPulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.landing-coming .text {
+  font-size: 9.5px;
+  letter-spacing: 0.32em;
+  color: var(--goldB);
+  font-weight: 500;
+}
+@keyframes comingPulse {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 6px rgba(197,165,114,0.40); }
+  50%      { opacity: 1;   box-shadow: 0 0 12px rgba(197,165,114,0.70); }
+}
+@media (max-width: 480px) {
+  .landing-coming {
+    gap: 8px;
+    padding: 6px 11px;
+  }
+  .landing-coming .text {
+    font-size: 8.5px;
+    letter-spacing: 0.28em;
+  }
+}
+
 .landing-arrow {
   font-family: var(--serif);
   font-style: italic;
@@ -2179,7 +2223,8 @@ html.lang-en [data-lang="ko"] { display: none; }
 .landing-door .landing-wordmark { animation-delay: 0.55s; }
 .landing-door .landing-rule     { animation-delay: 0.85s; }
 .landing-door .landing-tag      { animation-delay: 1.10s; }
-.landing-door .landing-cta      { animation-delay: 1.40s; }
+.landing-door .landing-coming   { animation-delay: 1.30s; }
+.landing-door .landing-cta      { animation-delay: 1.55s; }
 .landing-meta {
   opacity: 0;
   animation: landingFadeIn 1s var(--ease-out) forwards;
@@ -2795,6 +2840,10 @@ html.lang-en [data-lang="ko"] { display: none; }
     </div>
     <div class="landing-rule"></div>
     <div class="landing-tag">A Singapore <em>private fund vehicle</em>. By introduction.</div>
+    <div class="landing-coming">
+      <span class="dot"></span>
+      <span class="text">COMING 2H 2026</span>
+    </div>
     <a href="/interest" class="landing-cta">
       <span>INQUIRE</span>
       <span class="arrow">→</span>

@@ -26,7 +26,7 @@
   --goldGlow: rgba(197,165,114,0.30);
 }
 
-@page { size: Letter; margin: 0; }
+@page { size: Letter; margin: 0; background: #0a0a0a; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -537,8 +537,7 @@ html, body {
   <h1 class="cover-title">Common <em>questions.</em></h1>
   <p class="cover-lede">
     Plain-language answers to the questions members commonly raise.
-    Read alongside the AURUM Century Club Package and — once invited — the Private Placement Memorandum.<br><br>
-    <span style="font-size:13px;color:var(--textDim);font-style:italic;">This document is informational and is not legal, tax, or investment advice. Korean residents should engage qualified Korean tax / FX counsel prior to subscription.</span>
+    Read alongside the AURUM Century Club Package and — once invited — the Private Placement Memorandum.
   </p>
 
   <div class="cover-quick">
@@ -554,14 +553,18 @@ html, body {
     </div>
     <div class="cell">
       <div class="k">TERM</div>
-      <div class="v"><em>5–7</em> yr</div>
-      <div class="s">LP-consent for extension</div>
+      <div class="v"><em>5+2×1</em> yr</div>
+      <div class="s">base + Member-consent extensions</div>
     </div>
     <div class="cell">
       <div class="k">CLOSE</div>
       <div class="v">Q3 <em>'26</em></div>
       <div class="s">inaugural close</div>
     </div>
+  </div>
+
+  <div style="margin: 14px 0 0; padding: 10px 14px; border-left: 1px solid var(--gold); font-family: var(--serif); font-size: 10.5px; line-height: 1.55; color: var(--textDim); max-width: 6in;">
+    <span style="font-family: var(--mono); font-size: 7.5px; letter-spacing: 0.26em; color: var(--gold); text-transform: uppercase;">Distribution notice  ·  </span>This document is provided in the context of a non-disclosure agreement with the recipient. Distribution to ROK residents is contemplated solely on a reverse-solicitation basis or through a Korean-licensed distributor. This is not a public offer in any jurisdiction. Recipients are responsible for forwarding this material only to their own qualified tax, legal, and compliance advisors under the same confidentiality framework.
   </div>
 
   <div class="foot">
@@ -712,7 +715,7 @@ html, body {
     </div>
     <div class="qa-a">
       <p>
-        <em>Yes — under conditions to be specified in the LP agreement.</em>
+        <em>Yes — under conditions set out in the Fund Agreement and PPM §7.4.</em>
         The 20% Fund-level cash reserve is a <em>working buffer,</em> not unlimited capital.
         After the reserve is deployed — whether to pay down loan principal during a gold
         drawdown, or to acquire additional gold at distressed prices — it is replenished
@@ -721,16 +724,16 @@ html, body {
       <p>
         Members participate pro-rata in any trough-acquired gold, so the call is
         structured as a further investment, not as a loss recovery.
-        <strong>The cap on aggregate capital-call exposure per Member, the notice period,
-        and the maximum frequency will be specified in the LP agreement, which is in
-        preparation.</strong>
+        <strong>The aggregate Capital Calls a Member may be subject to during the Term will not exceed 100% of the Member's original Commitment</strong>
+        (per the Fund Agreement and PPM §7.4); notice period, maximum frequency,
+        and cure period are governed by the Fund Agreement.
         Members should expect the possibility of capital calls during material
-        gold-market drawdowns and review the finalized LP agreement before subscription
-        to confirm the limits applicable to capital calls.
+        gold-market drawdowns and size their initial Commitment with that contingent
+        capital exposure in mind.
       </p>
       <p>
         For full mechanism and reserve deployment thresholds, see the Structural Memo §6
-        (Drawdown protection).
+        (Drawdown protection) and PPM §7 (Cash Reserve and Capital Call mechanism).
       </p>
     </div>
   </div>
@@ -765,10 +768,10 @@ html, body {
     <div class="qa-a">
       <p>
         At a Singapore Freeport bullion custodian. Your bars are <em>LBMA-grade,
-        serial-identified, allocated and segregated</em> in your name. Storage is
-        insured under the custodian's standard insurance programme. The custody is independent of Aurum's operational entities —
-        in an Aurum insolvency, your bars are not affected and you retain direct claim on
-        them.
+        serial-identified, allocated and segregated</em> in your name under the VCC's
+        custody arrangements. Storage is insured under the custodian's standard insurance programme. The custody is independent of Aurum's operational entities — assets of the Fund are statutorily segregated under VCC Act §29.
+        In an insolvency proceeding, Members retain a claim on allocated bars subject to the terms of the custody agreement and applicable Singapore insolvency law.
+        See PPM §14 (Custody, insurance, and segregation) for full terms.
       </p>
     </div>
   </div>
@@ -780,9 +783,7 @@ html, body {
     </div>
     <div class="qa-a">
       <p>
-        The minimum is <em>1 kg of LBMA-grade physical gold</em> at first close —
-        approximately $150K USD at gold spot near $4,720/oz. Members may subscribe at higher
-        commitment levels; LTV access scales with commitment.
+        The minimum is <em>1 kg of LBMA-grade physical gold</em> at first close — approximately US$150K at gold spot near $4,720/oz. The 1-kilogram floor satisfies the Singapore Securities and Futures Act §305(2) restricted-scheme minimum (S$200,000 per subscription). Members may subscribe at higher commitment levels; LTV access scales with commitment per the Fund Agreement.
       </p>
       <p>
         The Founding 100 is a <em>single-tier cohort</em> — 100 seats, by invitation. Each
@@ -830,10 +831,11 @@ html, body {
         from the execution price.
       </p>
       <p>
-        The fund retains a <em>3% procurement buffer</em> from the member's wire. This covers
-        spot movement during the execution window, bar storage setup, insurance attachment, and
-        execution costs. Any portion of the buffer not applied to these costs is credited to the
-        member's fund cash position and compounds within the fund.
+        The fund's <em>effective procurement cost</em> at execution includes the LBMA spot price,
+        dealer spread, bar storage setup, insurance attachment, and bullion execution costs. The
+        member's effective per-kg cost slightly exceeds LBMA spot — standard for physical bullion
+        procurement. Annual position statements reflect the member's actual cost basis, reconciled
+        at the fund level and reviewed by the independent fund auditor.
       </p>
 
       <div class="procurement-flow">
@@ -896,6 +898,15 @@ html, body {
       </div>
 
       <p>
+        <strong>Wire deployment:</strong> Approximately <em>80% of the member's wire</em>
+        funds immediate gold procurement (the bar entering allocated custody); the remaining
+        <em>20% sits in the Fund-level cash reserve</em> (the defensive buffer described in
+        Q&nbsp;V and Q&nbsp;VI, applied to loan-principal paydown when LTV climbs and to distressed
+        gold buying at deep drawdowns). Deal-level deployment into pre-IPO equity and private
+        credit is funded by the credit facility drawn against the gold collateral, not from the
+        member's wire.
+      </p>
+      <p>
         Practical note: members are advised to coordinate wire timing with their designated
         Korean foreign exchange bank, which may require advance notice for outbound capital
         transactions. Detailed sequencing and pricing reference are set in the subscription
@@ -931,10 +942,9 @@ html, body {
     </div>
     <div class="qa-a">
       <p>
-        The fund term is <em>5–7 years.</em> Aurum cannot unilaterally extend — extensions
-        beyond the base term require LP consent. Your LP interest is illiquid during the
-        term, though secondary market exits may be considered case by case. You should commit
-        only capital you can hold for the full term.
+        The fund term is <em>five (5) years from First Close, with up to two (2) one-year extensions</em>, exercisable by the Manager subject to Member consent thresholds set out in the Fund Agreement. Aurum cannot unilaterally extend beyond the base term without Member consent.
+        Your LP interest is illiquid during the Term, though limited secondary transfers may be considered case-by-case under PPM §10.4.
+        You should commit only capital you can hold for the full Term including extensions (up to seven years).
       </p>
     </div>
   </div>
@@ -946,17 +956,20 @@ html, body {
     </div>
     <div class="qa-a">
       <p>
-        Target net IRR is approximately <em>15% in the base case,</em> with upside ranges of
-        18–25% depending on deal mix. <strong>These are targets reflecting the Manager's
-        modeled outcomes based on stated assumptions for gold appreciation, credit-sleeve
-        yield, and equity-sleeve outcomes; they are not guarantees, and the structure is a
-        newly launched fund vehicle for which prior performance is not indicative.</strong>
+        Target net IRR is approximately <em>15% over the Term,</em> reflecting the Manager's modeled outcomes based on stated assumptions for gold appreciation, credit-sleeve yield, and equity-sleeve outcomes.
+        <strong>This is a target, not a guarantee, and the structure is a newly launched fund vehicle for which prior performance of comparable structures is not indicative of future results.</strong>
       </p>
       <p>
         Principal risks: gold price decline reducing LTV headroom, private credit defaults,
         pre-IPO liquidity delays, SORA rate movements compressing spread, and operational
         risk in early fund life. These are detailed in the Risk Framework section of the
         Structural Memo and in full in the PPM.
+      </p>
+      <p>
+        Korean tax treatment of gain on exit — including any embedded gold price
+        appreciation reflected in fund value — depends on Korean tax law applicable at the
+        time of disposition and on member circumstances. <strong>Engage qualified Korean tax
+        counsel before subscription</strong> to confirm expected treatment.
       </p>
     </div>
   </div>

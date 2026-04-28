@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -162,49 +162,10 @@ select.field-input option[disabled]{color:var(--muted)}
 @keyframes fadeOut{to{opacity:0;transform:translateY(-12px)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}.confirm-stamp .pulse::before{animation:none}}
 
-/* ═══ I18N · BILINGUAL TOGGLE ═══ */
-/* Default: Korean visible, English hidden */
-[data-lang="en"] { display: none; }
-html.lang-en [data-lang="en"] { display: revert; }
-html.lang-en [data-lang="ko"] { display: none; }
-/* legacy .ko hiding removed */
-
-.lang-toggle {
-  display: inline-flex; align-items: center;
-  gap: 2px;
-  padding: 5px 8px;
-  border: 1px solid var(--goldBorder);
-  background: rgba(0,0,0,0.30);
-  margin-right: 12px;
-}
-.lang-toggle button {
-  background: transparent; border: 0; cursor: pointer;
-  font-family: var(--mono); font-weight: 500;
-  font-size: 9.5px; letter-spacing: 0.20em;
-  color: var(--goldDeep);
-  padding: 4px 8px;
-  transition: color 0.2s;
-}
-.lang-toggle button:hover { color: var(--gold); }
-.lang-toggle button.active { color: var(--goldB); }
-.lang-toggle .sep { color: var(--goldDeep); font-family: var(--mono); font-size: 9px; }
-@media (max-width: 460px) {
-  .lang-toggle { padding: 4px 6px; margin-right: 8px; }
-  .lang-toggle button { padding: 3px 5px; font-size: 9px; letter-spacing: 0.15em; }
-}
-/* nav row needs to allow toggle + cta */
-.nav-right { display: inline-flex; align-items: center; }
-
-
 /* ═══ v9 OVERRIDES — form legibility ═══ */
 
 /* Lang toggle right corner */
-.nav .lang-toggle {
-  margin-left: auto;
-  margin-right: 12px;
-}
-
-/* Bigger field labels and inputs */
+.nav /* Bigger field labels and inputs */
 .field-label,
 .field-label-en,
 .field-label-ko {
@@ -253,52 +214,9 @@ select.field-input {
   .lockup-text .program { font-size: 6.5px; letter-spacing: 0.20em; }
   .lockup .seal { width: 28px; height: 28px; }
   .lockup .seal em { font-size: 14px; }
-  .nav .lang-toggle {
-    padding: 3px 5px;
-    margin-right: 6px;
-    margin-left: auto;
-  }
-  .nav .lang-toggle button { font-size: 8.5px; padding: 2px 4px; letter-spacing: 0.10em; }
-  .nav-cta { font-size: 8px; padding: 6px 9px; letter-spacing: 0.20em; }
+  .nav .nav .nav-cta { font-size: 8px; padding: 6px 9px; letter-spacing: 0.20em; }
   .nav-cta .arrow { font-size: 9px; margin-left: 3px; }
 }
-
-
-/* ═══ v9c · KOREAN TYPOGRAPHY FIX ═══ */
-/* word-break: keep-all is the canonical CJK rule — prevents breaking
-   words like 있었습니다 → 있었습/니다 by keeping the verb intact */
-
-[data-lang="ko"],
-[data-lang="ko"] *,
-.ko,
-.word-ko,
-.divider-eyebrow .ko,
-.landing-tag,
-.landing-meta {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-break: strict;
-}
-
-/* Lift the max-width on Korean H2 — was forcing breaks at wrong spots */
-[data-lang="ko"].sec-h,
-[data-lang="ko"].hero-h,
-[data-lang="ko"].ctas-h,
-[data-lang="ko"].confirm-h,
-[data-lang="ko"].deal-name,
-[data-lang="ko"].force-h,
-[data-lang="ko"].job-h {
-  max-width: none;
-}
-
-/* Korean-mode body copy — improve line height for comfortable reading */
-[data-lang="ko"].sec-lede,
-[data-lang="ko"].force-body,
-[data-lang="ko"].job-body,
-[data-lang="ko"] p:not(.deal-tag) {
-  line-height: 1.7;
-}
-
 </style>
 </head>
 <body>
@@ -310,93 +228,93 @@ select.field-input {
       <span class="program">CENTURY CLUB</span>
     </div>
   </a>
-  <div class="lang-toggle" role="group" aria-label="Language"><button type="button" data-lang-btn="ko" class="active">한</button><span class="sep">/</span><button type="button" data-lang-btn="en">EN</button></div><a href="index.html" class="nav-back"><span class="arrow">&larr;</span> <span data-lang="en">BACK</span><span data-lang="ko">돌아가기</span></a>
+  <a href="index.html" class="nav-back"><span class="arrow">&larr;</span> BACK</a>
 </nav>
 <main class="page">
   <div class="page-inner">
     <header class="head" id="head">
       <div class="head-eyebrow">
-        <span data-lang="en">INQUIRE</span>
-        <span class="ko">문의</span>
+        INQUIRE
+        
       </div>
-      <h1 data-lang="en">Begin the <em>inquiry.</em></h1><h1 data-lang="ko">문의를 <em>시작합니다.</em></h1>
-      <p data-lang="en">A short form to register your inquiry with the partners. On verification, you will receive an invitation to schedule next steps including review of the confidentiality agreement.</p><p data-lang="ko">파트너에게 문의를 등록하는 짧은 양식입니다. 확인 후 비밀유지 계약 검토를 포함한 다음 단계 안내를 받으시게 됩니다.</p>
+      <h1>Begin the <em>inquiry.</em></h1>
+      <p>A short form to register your inquiry with the partners. On verification, you will receive an invitation to schedule next steps including review of the confidentiality agreement.</p>
     </header>
     <form class="form" id="form" autocomplete="on" novalidate>
       <div class="field-group">
-        <label class="field-label" for="name"><span data-lang="en">FULL NAME</span><span data-lang="ko">성명</span><span class="req">·</span></label>
-        <input type="text" id="name" name="name" class="field-input" required placeholder="신분증에 기재된 대로" autocomplete="name" data-ph-en="As it appears on identification" data-ph-ko="신분증에 기재된 대로">
-        <div class="field-err" data-err="name"><span data-lang="en">Required.</span><span data-lang="ko">필수 항목입니다.</span></div>
+        <label class="field-label" for="name">FULL NAME<span class="req">·</span></label>
+        <input type="text" id="name" name="name" class="field-input" required placeholder="As it appears on identification" autocomplete="name">
+        <div class="field-err" data-err="name">Required.</div>
       </div>
       <div class="field-group">
-        <label class="field-label" for="email"><span data-lang="en">EMAIL</span><span data-lang="ko">이메일</span><span class="req">·</span></label>
-        <input type="email" id="email" name="email" class="field-input" required placeholder="you@domain.com" autocomplete="email" data-ph-en="you@domain.com" data-ph-ko="you@domain.com">
-        <div class="field-err" data-err="email"><span data-lang="en">A valid email is required.</span><span data-lang="ko">유효한 이메일을 입력해 주세요.</span></div>
+        <label class="field-label" for="email">EMAIL<span class="req">·</span></label>
+        <input type="email" id="email" name="email" class="field-input" required placeholder="you@domain.com" autocomplete="email">
+        <div class="field-err" data-err="email">A valid email is required.</div>
       </div>
       <div class="field-group">
-        <label class="field-label" for="country"><span data-lang="en">COUNTRY OF RESIDENCE</span><span data-lang="ko">거주 국가</span><span class="req">·</span></label>
+        <label class="field-label" for="country">COUNTRY OF RESIDENCE<span class="req">·</span></label>
         <select id="country" name="country" class="field-input" required>
-          <option value="" disabled selected data-lang-en="— Select —" data-lang-ko="— 선택 —">— 선택 —</option>
-          <option value="KR" data-lang-en="South Korea" data-lang-ko="대한민국">대한민국</option>
-          <option value="SG" data-lang-en="Singapore" data-lang-ko="싱가포르">싱가포르</option>
-          <option value="HK" data-lang-en="Hong Kong SAR" data-lang-ko="홍콩">홍콩</option>
-          <option value="JP" data-lang-en="Japan" data-lang-ko="일본">일본</option>
-          <option value="US" data-lang-en="United States" data-lang-ko="미국">미국</option>
-          <option value="GB" data-lang-en="United Kingdom" data-lang-ko="영국">영국</option>
-          <option value="AU" data-lang-en="Australia" data-lang-ko="호주">호주</option>
-          <option value="CA" data-lang-en="Canada" data-lang-ko="캐나다">캐나다</option>
-          <option value="CH" data-lang-en="Switzerland" data-lang-ko="스위스">스위스</option>
-          <option value="AE" data-lang-en="United Arab Emirates" data-lang-ko="아랍에미리트">아랍에미리트</option>
-          <option value="OTHER" data-lang-en="Other" data-lang-ko="기타">기타</option>
+          <option value="" disabled selected>— Select —</option>
+          <option value="KR">South Korea</option>
+          <option value="SG">Singapore</option>
+          <option value="HK">Hong Kong SAR</option>
+          <option value="JP">Japan</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="AU">Australia</option>
+          <option value="CA">Canada</option>
+          <option value="CH">Switzerland</option>
+          <option value="AE">United Arab Emirates</option>
+          <option value="OTHER">Other</option>
         </select>
-        <div class="field-err" data-err="country"><span data-lang="en">Required.</span><span data-lang="ko">필수 항목입니다.</span></div>
+        <div class="field-err" data-err="country">Required.</div>
       </div>
       <div class="field-group">
-        <label class="field-label" for="hear_about"><span data-lang="en">HOW DID YOU HEAR ABOUT US?</span><span data-lang="ko">어떻게 알게 되셨습니까?</span><span class="req">·</span></label>
+        <label class="field-label" for="hear_about">HOW DID YOU HEAR ABOUT US?<span class="req">·</span></label>
         <select id="hear_about" name="hear_about" class="field-input" required>
-          <option value="" disabled selected data-lang-en="— Select —" data-lang-ko="— 선택 —">— 선택 —</option>
-          <option value="member" data-lang-en="Through an existing member of the fund" data-lang-ko="펀드의 기존 멤버를 통해">펀드의 기존 멤버를 통해</option>
-          <option value="advisor" data-lang-en="Through a financial advisor or family office" data-lang-ko="재무 자문 또는 패밀리 오피스를 통해">재무 자문 또는 패밀리 오피스를 통해</option>
-          <option value="partner" data-lang-en="Through a partner of Aurum" data-lang-ko="Aurum의 파트너를 통해">Aurum의 파트너를 통해</option>
-          <option value="personal" data-lang-en="Through a personal connection" data-lang-ko="개인적 연결을 통해">개인적 연결을 통해</option>
-          <option value="community" data-lang-en="Through a long-standing relationship in the HNW community" data-lang-ko="자산가 커뮤니티 내 오랜 관계를 통해">자산가 커뮤니티 내 오랜 관계를 통해</option>
+          <option value="" disabled selected>— Select —</option>
+          <option value="member">Through an existing member of the fund</option>
+          <option value="advisor">Through a financial advisor or family office</option>
+          <option value="partner">Through a partner of Aurum</option>
+          <option value="personal">Through a personal connection</option>
+          <option value="community">Through a long-standing relationship in the HNW community</option>
         </select>
-        <div class="field-err" data-err="hear_about"><span data-lang="en">Please select an option.</span><span data-lang="ko">옵션을 선택해 주세요.</span></div>
+        <div class="field-err" data-err="hear_about">Please select an option.</div>
       </div>
       <div class="field-group">
-        <label class="field-label" for="note"><span data-lang="en">A BRIEF NOTE</span><span data-lang="ko">간단한 메모</span><span class="opt"><span data-lang="en">OPTIONAL</span><span data-lang="ko">선택</span></span></label>
-        <textarea id="note" name="note" class="field-input" rows="3" placeholder="파트너들에게 전하고 싶은 내용" data-ph-en="Anything you'd like the partners to know" data-ph-ko="파트너들에게 전하고 싶은 내용"></textarea>
+        <label class="field-label" for="note">A BRIEF NOTE<span class="opt">OPTIONAL</span></label>
+        <textarea id="note" name="note" class="field-input" rows="3" placeholder="Anything you'd like the partners to know"></textarea>
       </div>
       <label class="nda">
         <input type="checkbox" name="reverse_solicitation_ack" value="1" required>
         <span class="nda-box"></span>
-        <span class="nda-text" data-lang="en"><em>I confirm</em> I am initiating this inquiry of my own accord. Aurum has not solicited my participation. I learned of the Fund through private channels and acknowledge this inquiry is confidential.</span><span class="nda-text" data-lang="ko"><em>본 문의를 자발적으로 시작</em>함을 확인합니다. Aurum은 본인의 참여를 권유하지 않았습니다. 본인은 비공개 채널을 통해 본 펀드를 알게 되었으며, 본 문의가 기밀임을 인지합니다.</span>
+        <span class="nda-text"><em>I confirm</em> I am initiating this inquiry of my own accord. Aurum has not solicited my participation. I learned of the Fund through private channels and acknowledge this inquiry is confidential.</span>
       </label>
-      <div class="field-err" data-err="reverse_solicitation_ack" style="margin-top:-24px;"><span data-lang="en">Please acknowledge to continue.</span><span data-lang="ko">진행하시려면 동의해 주세요.</span></div>
+      <div class="field-err" data-err="reverse_solicitation_ack" style="margin-top:-24px;">Please acknowledge to continue.</div>
       <div class="submit-row">
         <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="label"><span data-lang="en">SUBMIT INQUIRY</span><span data-lang="ko">문의 제출</span></span>
+          <span class="label">SUBMIT INQUIRY</span>
           <span class="arrow">&rarr;</span>
         </button>
-        <div class="submit-foot" data-lang="en">QUALIFIED&nbsp;&nbsp;·&nbsp;&nbsp;BY&nbsp;INVITATION&nbsp;·&nbsp;&nbsp;PARTNER REVIEW</div><div class="submit-foot" data-lang="ko">적격&nbsp;&nbsp;·&nbsp;&nbsp;초청제&nbsp;·&nbsp;&nbsp;파트너 검토</div>
+        <div class="submit-foot">QUALIFIED&nbsp;&nbsp;·&nbsp;&nbsp;BY&nbsp;INVITATION&nbsp;·&nbsp;&nbsp;PARTNER REVIEW</div>
       </div>
     </form>
     <div class="confirm" id="confirm">
       <div class="confirm-seal"><em>Au</em></div>
-      <div class="confirm-eyebrow"><span data-lang="en">RECEIVED</span><span class="ko">접수 완료</span></div>
-      <h1 data-lang="en">Thank you<span id="confirm-name"></span>.</h1><h1 data-lang="ko">감사합니다<span id="confirm-name-ko"></span>.</h1>
-      <p class="confirm-body" data-lang="en">Your inquiry has been received. A member of the team will <em>reach out in due course</em> from a private address. On verification, next steps will be communicated, including review of the confidentiality agreement.</p><p class="confirm-body" data-lang="ko">문의가 접수되었습니다. 팀의 담당자가 <em>적절한 시점에</em> 비공개 주소로 연락드립니다. 확인 후 비밀유지 계약 검토를 포함한 다음 단계가 안내됩니다.</p>
+      <div class="confirm-eyebrow">RECEIVED</div>
+      <h1>Thank you<span id="confirm-name"></span>.</h1>
+      <p class="confirm-body">Your inquiry has been received. A member of the team will <em>reach out in due course</em> from a private address. On verification, next steps will be communicated, including review of the confidentiality agreement.</p>
       <div class="confirm-stamp">
-        <span><span data-lang="en">REFERENCE</span><span data-lang="ko">참조</span></span>
+        <span>REFERENCE</span>
         <span class="sep">·</span>
         <span>MMXXVI</span>
       </div>
-      <div><a href="index.html" class="confirm-back"><span>&larr;</span> <span data-lang="en">RETURN HOME</span><span data-lang="ko">처음으로</span></a></div>
+      <div><a href="index.html" class="confirm-back"><span>&larr;</span> RETURN HOME</a></div>
     </div>
   </div>
 </main>
 <footer class="foot">
-  <span data-lang="en">CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span data-lang="ko">기밀  ·  적격 투자자 전용</span>
+  CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY
   <span class="sep">·</span>
   TACC PTE LTD · MMXXVI
 </footer>
@@ -404,8 +322,8 @@ select.field-input {
 <div class="foot-members">
   <a href="/members" class="foot-members-link">
     <span class="dot"></span>
-    <span data-lang="en">MEMBER LOG-IN</span>
-    <span data-lang="ko">멤버 로그인</span>
+    MEMBER LOG-IN
+    
     <span class="arr">→</span>
   </a>
 </div>
@@ -463,9 +381,7 @@ select.field-input {
       form.style.display='none';
       if(firstName){
         confirmName.textContent=', '+firstName;
-        var confirmNameKo=document.getElementById('confirm-name-ko');
-        if(confirmNameKo)confirmNameKo.textContent=', '+firstName+'님';
-      }
+        }
       confirm_.classList.add('show');
       window.scrollTo({top:0,behavior:'smooth'});
     },500);
@@ -507,46 +423,7 @@ select.field-input {
   }
 })();
 
-// ═══ I18N · LANGUAGE TOGGLE ═══
-(function () {
-  const STORAGE_KEY = 'aurum-lang';
-
-  function applyLang(lang) {
-    const html = document.documentElement;
-    html.classList.toggle('lang-ko', lang === 'ko');
-    html.classList.toggle('lang-en', lang === 'en');
-    html.lang = lang;
-    // swap placeholders
-    document.querySelectorAll('[data-ph-en]').forEach(el => {
-      el.placeholder = lang === 'en' ? el.dataset.phEn : el.dataset.phKo;
-    });
-    // swap aria-labels & titles
-    document.querySelectorAll('[data-aria-en]').forEach(el => {
-      el.setAttribute('aria-label', lang === 'en' ? el.dataset.ariaEn : el.dataset.ariaKo);
-    });
-    // swap option text content (for select dropdowns)
-    document.querySelectorAll('option[data-lang-en]').forEach(el => {
-      el.textContent = lang === 'en' ? el.dataset.langEn : el.dataset.langKo;
-    });
-    // toggle button state
-    document.querySelectorAll('.lang-toggle button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.langBtn === lang);
-    });
-    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
-  }
-
-  // Wire up clicks
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.lang-toggle button');
-    if (!btn) return;
-    applyLang(btn.dataset.langBtn);
-  });
-
-  // Initialize from storage (default = en)
-  let initial = 'ko';
-  try { initial = localStorage.getItem(STORAGE_KEY) || 'en'; } catch (e) {}
-  applyLang(initial);
-})();
+// (i18n removed — public site is English-only)
 
 </script>
 </body>

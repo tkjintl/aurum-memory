@@ -10,7 +10,7 @@
 
 import { ok, bad, unauthorized, notFound, methodNotAllowed, readBody, getCookie } from '../_lib/http.js';
 import { verifyToken, signToken } from '../_lib/auth.js';
-import { getLead, saveLead, unbindCode } from '../_lib/storage.js';
+import { getLead, saveLead, unbindCode, listLeads } from '../_lib/storage.js';
 import { sendRaw, buildWireInstructionsEmail, buildAdmissionEmail, buildQuarterlyStatementEmail, buildWireReminderEmail, buildCapitalCallEmail, partnerBcc} from '../_lib/email.js';
 import { getKrwPerKg } from '../_lib/krw.js';
 import { putPrivate, isConfigured as blobConfigured } from '../_lib/blob.js';
@@ -41,6 +41,8 @@ const VALID_ACTIONS = new Set([
   'send_wire_reminder',
   // Resend any prior email (NDA invite / IOI reminder / wire instructions / admission)
   'resend_email',
+  // R27: fund-level action — pro-rates a deployment across all admitted members
+  'deploy_to_deal',
 ]);
 
 // Wire reference: AURUM-W-{LEAD_ID_SUFFIX}-{YYYYMMDD}
@@ -59,6 +61,111 @@ export default async function handler(req, res) {
 
   let body;
   try { body = await readBody(req); } catch { return bad(res, 'invalid body'); }
+
+  // R27: deploy_to_deal — fund-level action. Pro-rates a deployment across all
+  // admitted members by kg ownership. Writes a position record on each member
+  // referencing the same deal_id so the dashboard can reconstruct fund-level
+  // deals from per-member positions.
+  if (body.action === 'deploy_to_deal') {
+    const dealName = String(body.deal_name || '').trim().slice(0, 200);
+    const totalKrw = Math.max(0, Math.round(Number(body.total_krw) || 0));
+    const fundingSource = ['ltv', 'reserve', 'mixed'].includes(body.funding_source) ? body.funding_source : 'ltv';
+    const termMonths = body.term_months ? Math.max(1, Math.min(120, Math.round(Number(body.term_months)))) : null;
+    const targetIrr = body.target_irr ? Math.max(0, Math.min(100, Number(body.target_irr))) : null;
+    if (!dealName) return bad(res, 'deal_name required');
+    if (totalKrw <= 0) return bad(res, 'total_krw must be > 0');
+    // Enforce: only LTV cash deploys. Reserve is the gold buffer, never tapped.
+    if (fundingSource === 'reserve') return bad(res, 'reserve is the gold buffer · cannot be deployed');
+
+    const allLeads = await listLeads(500);
+    // Admitted = wire cleared
+    const admitted = allLeads.filter((l) => l.wire && l.wire.cleared_at);
+    if (admitted.length === 0) return bad(res, 'no admitted members in cohort');
+
+    // Compute each member's kg (bars sum, fall back to ioi.kg)
+    const shares = admitted.map((l) => {
+      const barKg = (l.bars || []).reduce((s, b) => s + (b.kg || 0), 0);
+      const ioiKg = (l.ioi && l.ioi.kg) || 0;
+      const kg = barKg > 0 ? barKg : ioiKg;
+      return { lead: l, kg };
+    }).filter((s) => s.kg > 0);
+
+    if (shares.length === 0) return bad(res, 'no kg ownership in cohort · cannot pro-rate');
+
+    const totalKg = shares.reduce((s, x) => s + x.kg, 0);
+
+    // Validate available drawn LTV cash across the cohort
+    let totalDrawn = 0;
+    let totalInvested = 0;
+    for (const l of admitted) {
+      totalDrawn += (l.ltv && l.ltv.drawn_krw) || 0;
+      totalInvested += (l.positions || []).reduce((s, p) => s + (p.invested_at_krw || p.committed_krw || 0), 0);
+    }
+    const availableDrawn = Math.max(0, totalDrawn - totalInvested);
+    if (totalKrw > availableDrawn) {
+      return bad(res, `deal size ${totalKrw.toLocaleString()} KRW exceeds available drawn cash ${availableDrawn.toLocaleString()}`);
+    }
+
+    // Mint a deal id — shared across all members' position records for this deal
+    const now = Date.now();
+    const dealId = 'deal_' + now.toString(36) + Math.random().toString(36).slice(2, 6);
+    const actor = (verifyToken(getCookie(req, 'aurum_admin')) || {}).email || 'admin';
+
+    // Pro-rate and write to each member
+    const allocations = [];
+    for (const s of shares) {
+      const sharePct = s.kg / totalKg;
+      const allocKrw = Math.round(totalKrw * sharePct);
+      s.lead.positions = s.lead.positions || [];
+      s.lead.audit = s.lead.audit || [];
+      const posId = 'pos_' + now.toString(36) + Math.random().toString(36).slice(2, 6);
+      s.lead.positions.push({
+        id: posId,
+        deal_id: dealId,
+        deal_name: dealName,
+        share_pct: Number((sharePct * 100).toFixed(4)),
+        invested_at_krw: allocKrw,
+        committed_krw: allocKrw,
+        marked_krw: allocKrw,
+        funding_source: fundingSource,
+        term_months: termMonths,
+        target_irr: targetIrr,
+        status: 'active',
+        funded_at: now,
+        deployed_at: now,
+        invested_at: now,
+      });
+      s.lead.audit.push({
+        at: now,
+        actor,
+        action: 'deal_pro_rata_allocation',
+        deal_id: dealId,
+        deal_name: dealName,
+        share_pct: Number((sharePct * 100).toFixed(2)),
+        allocated_krw: allocKrw,
+      });
+      await saveLead(s.lead);
+      allocations.push({
+        lead_id: s.lead.id,
+        name: s.lead.name || s.lead.email,
+        kg: s.kg,
+        share_pct: Number((sharePct * 100).toFixed(2)),
+        allocated_krw: allocKrw,
+      });
+    }
+
+    return ok(res, {
+      ok: true,
+      deal_id: dealId,
+      deal_name: dealName,
+      total_krw: totalKrw,
+      member_count: shares.length,
+      total_kg: totalKg,
+      funding_source: fundingSource,
+      allocations,
+    });
+  }
+
   if (!body.id) return bad(res, 'missing id');
 
   const lead = await getLead(body.id);
@@ -538,8 +645,24 @@ export default async function handler(req, res) {
             replyTo: process.env.REPLY_TO || undefined,
             bcc: partnerBcc(),
           });
+        } else if (kind === 'nda_reminder') {
+          // Reminder to a member who has an invitation code but hasn't uploaded their NDA yet
+          if (!lead.code) return bad(res, 'no invitation code on lead');
+          if (lead.nda_state === 'approved') return bad(res, 'NDA already approved');
+          const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
+          const ndaUrl = `${siteUrl}/code?c=${encodeURIComponent(lead.code)}`;
+          mailResult = await sendRaw({
+            to: lead.email,
+            subject: 'Reminder · Please upload your signed NDA · NDA 업로드 안내',
+            text: `When you're ready, please upload your signed NDA at ${ndaUrl}\n\nThe materials open immediately upon NDA approval.\n\n— Aurum Partners`,
+            html: `<p>When you're ready, please upload your signed NDA:</p><p><a href="${ndaUrl}" style="display:inline-block;padding:10px 18px;background:#C5A572;color:#0a0a0a;text-decoration:none;font-family:monospace;letter-spacing:0.18em">UPLOAD NDA →</a></p><p style="color:#888">The materials open immediately upon NDA approval.</p><p>— Aurum Partners</p>`,
+            replyTo: process.env.REPLY_TO || undefined,
+            bcc: partnerBcc(),
+          });
         } else if (kind === 'ioi_reminder') {
           if (lead.nda_state !== 'approved') return bad(res, 'NDA not yet approved');
+          // Don't pester verified-IOI members with a "fill out IOI" reminder
+          if (lead.ioi && lead.ioi.submitted_at) return bad(res, 'IOI already submitted');
           const siteUrl = process.env.SITE_URL || 'https://www.theaurumcc.com';
           const ioiUrl = lead.ioi_code ? `${siteUrl}/ioi?c=${encodeURIComponent(lead.ioi_code)}` : `${siteUrl}/ioi`;
           mailResult = await sendRaw({

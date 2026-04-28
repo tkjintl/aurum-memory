@@ -84,19 +84,38 @@ export default async function handler(req, res) {
     return r.end();
   }
 
-  // ── Special case: id=access (used by /main only). Admin cookie alone is
-  //    sufficient — partners need to preview the program without a member
-  //    context. No ?lead= required. Falls through to standard auth otherwise.
-  if (id === 'access') {
+  // ════════════════════════════════════════════════════════════════════════
+  //  Admin pass-through for ping endpoints (id=access, id=session, id=memo).
+  //  These are HEAD calls used by the gated pages to verify cookie + get
+  //  identity headers for the watermark. An admin cookie alone is enough —
+  //  no ?lead= required. If ?lead= is supplied, we look up the lead so the
+  //  watermark can show "admin viewing X". If the lookup fails, we still
+  //  return 200 (the partner is authenticated; lead lookup failure is not
+  //  an auth failure).
+  // ════════════════════════════════════════════════════════════════════════
+  if (id === 'access' || id === 'session' || id === 'memo') {
     const adminTok0 = getCookie(req, 'aurum_admin');
     const adminSess0 = verifyToken(adminTok0);
     if (adminSess0 && adminSess0.sub === 'admin') {
+      // Optional lead lookup for watermark context
+      const leadIdParam0 = String(getQuery(req).lead || '').trim();
+      let pingLead = null;
+      if (leadIdParam0) {
+        try { pingLead = await getLead(leadIdParam0); } catch {}
+      }
+      const adminEmail = adminSess0.email || adminSess0.id || 'admin';
       res.statusCode = 200;
       res.setHeader('Cache-Control', 'private, no-store');
       res.setHeader('X-Viewer-Kind', 'admin');
-      res.setHeader('X-Member-Email', (adminSess0.email || adminSess0.id || 'admin') + ' (admin preview)');
+      // Watermark: partner identity + (if available) which member they're viewing
+      const watermark = pingLead
+        ? `${adminEmail} (admin viewing ${pingLead.email || pingLead.code || pingLead.id})`
+        : `${adminEmail} (admin preview)`;
+      res.setHeader('X-Member-Email', watermark);
+      if (pingLead && pingLead.code) res.setHeader('X-Member-Code', pingLead.code);
+      if (pingLead && pingLead.nda_state) res.setHeader('X-Nda-State', pingLead.nda_state);
       res.setHeader('Content-Type', 'application/json');
-      return res.end('{"ok":true,"viewer":"admin"}');
+      return res.end(JSON.stringify({ ok: true, viewer: 'admin', leadFound: !!pingLead }));
     }
     // No admin cookie — fall through to member auth below
   }
