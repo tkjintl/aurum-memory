@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AURUM FUNDS · Private Placement Memorandum · vF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #1a1612;
+  --textDim: #5a5550;
+  --gold: #9a7838;
+  --goldD: #6a5630;
+  --goldDeep: #4a3d1e;
+  --border: rgba(154,120,56,0.18);
+  --borderS: rgba(154,120,56,0.10);
+  --borderM: rgba(154,120,56,0.28);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+@page { size: Letter; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 11.5px; line-height: 1.55;
+  font-weight: 400;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.page {
+  width: 8.5in; height: 11in; background: var(--bg);
+  padding: 0.7in 0.85in 0.6in;
+  display: flex; flex-direction: column;
+  position: relative; page-break-after: always;
+  page-break-inside: avoid; overflow: hidden;
+}
+.page:last-child { page-break-after: auto; }
+
+/* ─── HEADER ─── */
+.head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 14px; border-bottom: 1px solid var(--borderS);
+  margin-bottom: 24px;
+  font-family: var(--mono); font-size: 8.5px;
+  letter-spacing: 0.26em; color: var(--goldD);
+  text-transform: uppercase;
+}
+.head .lockup { display: flex; align-items: center; gap: 10px; }
+.head .au {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  border: 1px solid var(--gold);
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  color: var(--gold); font-size: 12px; letter-spacing: -0.04em;
+}
+.head .word {
+  font-family: var(--sans); font-weight: 600; font-size: 10px;
+  color: var(--text); letter-spacing: 0.34em;
+}
+
+/* ─── FOOTER ─── */
+.foot {
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--borderS);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 7.5px;
+  color: var(--goldDeep); letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+/* ─── COVER ─── */
+.cover {
+  flex: 1;
+  display: flex; flex-direction: column;
+}
+.cover-mark {
+  margin-top: 0.5in;
+  display: flex; align-items: center; gap: 14px;
+}
+.cover-mark .au {
+  width: 42px; height: 42px;
+  border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  color: var(--gold); font-size: 20px;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+}
+.cover-mark .wm {
+  font-family: var(--sans); font-weight: 600;
+  font-size: 18px; color: var(--text); letter-spacing: 0.34em;
+  line-height: 1;
+  display: flex; flex-direction: column;
+}
+.cover-mark .wm .sub {
+  display: block; margin-top: 6px;
+  font-family: var(--mono); font-weight: 400;
+  font-size: 11px;
+  color: var(--goldD); letter-spacing: 0.36em;
+}
+.cover-divide {
+  margin-top: 1.4in;
+  border-top: 1px solid var(--borderM);
+  padding-top: 22px;
+}
+.cover-eyebrow {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--goldD); letter-spacing: 0.30em;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.cover-title {
+  font-family: var(--sans); font-weight: 500;
+  font-size: 28px; color: var(--text);
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cover-sub {
+  font-family: var(--sans); font-weight: 400;
+  font-size: 13px; color: var(--textDim);
+  line-height: 1.5;
+  max-width: 5.5in;
+}
+.cover-block {
+  margin-top: 0.6in;
+  border-top: 1px solid var(--borderS);
+  padding-top: 18px;
+  font-family: var(--sans); font-size: 11px;
+  color: var(--textDim); line-height: 1.55;
+  max-width: 5.8in;
+}
+.cover-block .lbl {
+  font-family: var(--mono); font-size: 8px;
+  color: var(--goldD); letter-spacing: 0.26em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.cover-meta {
+  margin-top: auto;
+  border-top: 1px solid var(--borderS);
+  padding-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  font-family: var(--mono); font-size: 8.5px;
+  color: var(--goldD); letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.cover-meta .label {
+  color: var(--goldDeep); margin-bottom: 4px;
+  font-size: 7.5px;
+}
+.cover-meta .v { color: var(--text); font-weight: 500; }
+
+/* ─── SECTION HEADINGS ─── */
+h1.sec {
+  font-family: var(--sans); font-weight: 500;
+  font-size: 16px; color: var(--text);
+  letter-spacing: 0.04em;
+  margin-top: 0; margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--borderM);
+}
+h1.sec .num {
+  display: inline-block;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--gold); letter-spacing: 0.10em;
+  margin-right: 12px;
+  min-width: 22px;
+}
+h1.sec + p { margin-top: 0; }
+
+h2.sub {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 9.5px; letter-spacing: 0.26em;
+  color: var(--gold); text-transform: uppercase;
+  margin-top: 22px; margin-bottom: 10px;
+}
+h2.sub:first-of-type { margin-top: 14px; }
+
+h3.subsub {
+  font-family: var(--sans); font-weight: 600;
+  font-size: 11px; color: var(--text);
+  letter-spacing: 0.04em;
+  margin-top: 14px; margin-bottom: 6px;
+}
+
+p {
+  font-family: var(--sans); font-weight: 400;
+  font-size: 11px; line-height: 1.6;
+  color: var(--text); margin-bottom: 10px;
+}
+p.lede {
+  color: var(--textDim);
+  margin-bottom: 18px;
+}
+p.disc {
+  font-family: var(--sans); font-style: italic;
+  font-size: 10px; color: var(--textDim);
+  margin-bottom: 10px; line-height: 1.55;
+}
+
+em {
+  font-family: var(--serif); font-style: italic;
+  font-weight: 400; color: var(--gold);
+}
+
+strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Part divider */
+.part-divider {
+  flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 1in 0;
+}
+.part-divider .part-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--goldD); letter-spacing: 0.36em;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.part-divider .part-title {
+  font-family: var(--sans); font-weight: 500;
+  font-size: 32px; color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+  max-width: 5.6in;
+}
+.part-divider .part-title em {
+  font-family: var(--serif); font-style: italic;
+  color: var(--gold);
+}
+.part-divider .part-sub {
+  font-family: var(--sans); font-weight: 400;
+  font-size: 13px; color: var(--textDim);
+  line-height: 1.55;
+  max-width: 5.4in;
+}
+.part-divider .part-rule {
+  width: 88px; height: 1px;
+  background: var(--gold); opacity: 0.55;
+  margin: 24px 0;
+}
+
+/* TABLES */
+.tbl {
+  width: 100%; border-collapse: collapse;
+  margin: 8px 0 14px; font-size: 10.5px;
+}
+.tbl th {
+  text-align: left;
+  font-family: var(--mono); font-weight: 500;
+  font-size: 8px; letter-spacing: 0.22em;
+  color: var(--goldD); text-transform: uppercase;
+  padding: 7px 10px;
+  border-top: 1px solid var(--borderM);
+  border-bottom: 1px solid var(--borderM);
+  vertical-align: top;
+}
+.tbl td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--borderS);
+  vertical-align: top; line-height: 1.45;
+  font-family: var(--sans); font-size: 10.5px;
+}
+.tbl td.k {
+  color: var(--text); width: 30%;
+  font-weight: 500;
+}
+.tbl td.v { color: var(--textDim); }
+.tbl td .small {
+  font-size: 8.5px;
+  color: var(--goldDeep);
+  display: block;
+  margin-top: 3px;
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+}
+.tbl-numeric td {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.tbl-numeric td.k { font-family: var(--sans); font-size: 10.5px; letter-spacing: normal; }
+.tbl-numeric td.right { text-align: right; }
+.tbl tr.total td { 
+  border-top: 1px solid var(--borderM);
+  font-weight: 600; color: var(--gold);
+}
+
+/* Numbered lists */
+ol.numlist {
+  list-style: none;
+  counter-reset: it;
+  padding-left: 0;
+  margin: 8px 0 14px;
+}
+ol.numlist li {
+  counter-increment: it;
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 8px;
+  font-family: var(--sans); font-size: 11px;
+  line-height: 1.55;
+  color: var(--text);
+}
+ol.numlist li::before {
+  content: counter(it, lower-roman) ".";
+  position: absolute; left: 0; top: 0;
+  font-family: var(--mono); font-size: 9.5px;
+  color: var(--gold); font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  min-width: 26px;
+}
+
+/* Lettered lists (a) (b) (c) */
+ol.letlist {
+  list-style: none;
+  counter-reset: alpha;
+  padding-left: 0;
+  margin: 8px 0 14px;
+}
+ol.letlist li {
+  counter-increment: alpha;
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 8px;
+  font-family: var(--sans); font-size: 11px;
+  line-height: 1.55;
+  color: var(--text);
+}
+ol.letlist li::before {
+  content: "(" counter(alpha, lower-alpha) ")";
+  position: absolute; left: 0; top: 0;
+  font-family: var(--sans); font-size: 11px;
+  color: var(--gold); font-weight: 500;
+  min-width: 26px;
+}
+
+/* Definition list */
+.deflist {
+  margin: 8px 0 14px;
+  font-size: 10.5px;
+  line-height: 1.6;
+}
+.deflist .term {
+  font-family: var(--sans); font-weight: 600;
+  color: var(--text);
+}
+.deflist .term em {
+  font-family: var(--serif); font-style: italic;
+  color: var(--gold); font-weight: 500;
+}
+.deflist .def {
+  display: block;
+  margin: 4px 0 10px 0;
+  color: var(--textDim);
+  padding-left: 16px;
+  border-left: 1px solid var(--borderS);
+}
+
+/* Risk factor block */
+.risk {
+  padding: 10px 14px 8px 14px;
+  margin-bottom: 10px;
+  border-left: 2px solid var(--borderM);
+  background: rgba(154,120,56,0.04);
+  page-break-inside: avoid;
+}
+.risk .rcode {
+  font-family: var(--mono); font-weight: 600;
+  font-size: 9px; letter-spacing: 0.20em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.risk .rtitle {
+  font-family: var(--sans); font-weight: 600;
+  font-size: 11px; color: var(--text);
+  margin-bottom: 4px;
+}
+.risk p {
+  font-size: 10.5px;
+  margin-bottom: 0;
+  color: var(--textDim);
+}
+.risk-cat {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 10px; letter-spacing: 0.26em;
+  color: var(--gold); text-transform: uppercase;
+  margin-top: 18px; margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--borderM);
+}
+
+/* Notice / disclosure block */
+.notice-block {
+  margin: 10px 0;
+  padding: 12px 16px;
+  border-left: 1px solid var(--gold);
+  background: rgba(154,120,56,0.04);
+  font-family: var(--sans); font-size: 10.5px;
+  color: var(--textDim);
+  line-height: 1.55;
+}
+.notice-block .lbl {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 8px; letter-spacing: 0.26em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Worked-example callout */
+.example-box {
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid var(--borderM);
+  background: rgba(154,120,56,0.05);
+}
+.example-box .ex-head {
+  font-family: var(--mono); font-weight: 500;
+  font-size: 8.5px; letter-spacing: 0.24em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--borderS);
+}
+
+/* Two-col facts */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0;
+  border-top: 1px solid var(--borderM);
+}
+.summary-grid .k {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--borderS);
+  font-family: var(--sans); font-weight: 500;
+  font-size: 10.5px;
+  color: var(--text);
+}
+.summary-grid .v {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--borderS);
+  font-family: var(--sans); font-size: 10.5px;
+  color: var(--textDim);
+  line-height: 1.5;
+}
+.summary-grid .v em {
+  color: var(--gold);
+}
+
+/* Page break utility */
+.pb { page-break-before: always; }
+
+/* End marker */
+.end-marker {
+  margin: 24px 0 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--borderM);
+  text-align: center;
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.32em;
+  color: var(--goldD);
+  text-transform: uppercase;
+}
+
+
+/* ─── DENSE TABLES (TOC, glance, schedules) — tighter spacing for fit ─── */
+.tbl-dense th, .tbl-dense td {
+  padding: 5px 8px !important;
+  font-size: 9.5px !important;
+  line-height: 1.35 !important;
+}
+.summary-grid-dense .k, .summary-grid-dense .v {
+  padding: 6px 8px !important;
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+}
+
+</style>
+</head>
+<body>
+<!-- ═══════════ PAGE 1 · COVER ═══════════ -->
+<section class="page">
+  <div class="cover-mark">
+    <div class="au"><em>Au</em></div>
+    <div class="wm">AURUM<span class="sub">CENTURY CLUB</span></div>
+  </div>
+  <div style="margin-top: 0.85in;">
+    <div class="cover-eyebrow">Private Placement Memorandum  ·  MMXXVI  ·  Folio 003</div>
+    <h1 class="cover-title">Aurum Funds<br/>— <em>Private Placement Memorandum</em></h1>
+    <div style="width:48px;height:1px;background:var(--gold);opacity:0.45;margin:18px 0;"></div>
+    <p class="cover-sub">A sub-fund of an umbrella Singapore Variable Capital Company. Singapore-domiciled vehicle converting Korean private capital, collateralised by allocated physical gold, into curated US private market exposure.</p>
+  </div>
+  <div class="cover-block">
+    <div class="lbl">Notice</div>
+    This Memorandum is delivered in confidence to qualified prospective investors and their professional advisors. It is qualified in its entirety by the Fund Agreement, the subscription documents, and the side letters entered into by the Manager with prospective investors. In the event of any conflict, those documents prevail. <em>Distribution to Korean residents is contemplated solely on a reverse-solicitation basis or through a Korean-licensed distributor; this Memorandum is not a public offer in any jurisdiction.</em>
+  </div>
+  <div class="cover-meta">
+    <div><div class="label">Manager</div><div class="v">TACC Pte Ltd · Singapore</div></div>
+    <div><div class="label">Status</div><div class="v">Restricted Scheme · SFA §305</div></div>
+    <div><div class="label">Date</div><div class="v">[●] 2026</div></div>
+  </div>
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--borderS);display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px;letter-spacing:0.24em;color:var(--goldDeep);text-transform:uppercase;">
+    <span>Distribution restricted</span><span>NDA-gated</span><span>Counsel of record</span>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY  ·  FOR DISCUSSION ONLY  ·  NOT AN OFFER OR SOLICITATION</span><span>01</span></div>
+</section>
+
+<!-- ═══════════ PAGE 2 · HOW TO READ ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>PREFACE  ·  HOW TO READ</span>
+  </div>
+  <h1 class="sec"><span class="num">§</span>How to read this Memorandum</h1>
+  <p>This Memorandum describes <em>Aurum Funds</em> (the "<strong>Fund</strong>"), a sub-fund of an umbrella Singapore Variable Capital Company (the "<strong>Umbrella VCC</strong>" or the "<strong>VCC</strong>") to be incorporated by TACC Pte Ltd (the "<strong>Manager</strong>") prior to the Fund's first close.</p>
+  <p>This Memorandum has three substantive Parts:</p>
+  <ol class="numlist">
+    <li><strong>Part I — The structure and the offering.</strong> Who the Manager is, what the Fund does, how the structure works, and the principal commercial terms. Drafted to be read by prospective Members alongside their counsel.</li>
+    <li><strong>Part II — Definitive disclosures.</strong> The legal, tax, regulatory, and risk factor disclosures necessary for an informed investment decision. Drafted for counsel review.</li>
+    <li><strong>Part III — Schedules.</strong> Operational documents required to subscribe.</li>
+  </ol>
+  <p>This Memorandum is qualified in its entirety by reference to the constitutional documents of the Umbrella VCC and the Fund, the limited partnership agreement or shareholders' agreement (as applicable) governing the Fund (the "<strong>Fund Agreement</strong>"), the subscription documents, and any side letters entered into by the Manager with prospective investors. <strong>In the event of any conflict between this Memorandum and any of the foregoing documents, the foregoing documents prevail.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>02</span></div>
+</section>
+
+<!-- ═══════════ PAGE 3 · IMPORTANT NOTICES (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>IMPORTANT NOTICES  ·  1 / 3</span>
+  </div>
+  <h1 class="sec"><span class="num">§</span>Important Notices</h1>
+  <h2 class="sub">Distribution restriction</h2>
+  <p>This Memorandum is being delivered to the recipient on a confidential basis solely for the purpose of evaluating an investment in interests in the Fund (the "<strong>Interests</strong>"). This Memorandum may not be reproduced, distributed, or forwarded, in whole or in part, to any person other than the recipient's professional advisors retained for the purpose of evaluating the investment, without the prior written consent of the Manager. Any reproduction or distribution of this Memorandum, in whole or in part, or the disclosure of its contents, without the prior written consent of the Manager, is strictly prohibited.</p>
+  <h2 class="sub">Singapore — restricted scheme</h2>
+  <p>This Memorandum has not been registered as a prospectus with the Monetary Authority of Singapore (the "<strong>MAS</strong>"). Accordingly, this Memorandum and any other document or material in connection with the offer, sale, or invitation for subscription or purchase of the Interests may not be circulated or distributed, nor may the Interests be offered or sold, or be made the subject of an invitation for subscription or purchase, whether directly or indirectly, to persons in Singapore other than:</p>
+  <ol class="numlist">
+    <li>to an institutional investor (as defined under Section 4A of the Securities and Futures Act 2001 of Singapore (the "<strong>SFA</strong>")) under Section 304 of the SFA;</li>
+    <li>to a relevant person (as defined under Section 305(5) of the SFA) pursuant to Section 305(1), or any person pursuant to an offer referred to in Section 305(2) of the SFA, and in accordance with the conditions specified in Section 305 of the SFA; or</li>
+    <li>otherwise pursuant to, and in accordance with, the conditions of any other applicable provision of the SFA.</li>
+  </ol>
+  <p>The Fund is a <em>restricted scheme</em> under the Sixth Schedule to the Securities and Futures (Offers of Investments) (Collective Investment Schemes) Regulations 2005 (the "<strong>CIS Regulations</strong>"). The Fund is not authorised under Section 286 of the SFA or recognised under Section 287 of the SFA, and the Interests are not allowed to be offered to the retail public in Singapore. This Memorandum is not a prospectus as defined in the SFA. Accordingly, statutory liability under the SFA in relation to the content of prospectuses does not apply, and <strong>the MAS assumes no responsibility for the contents of this Memorandum</strong>.</p>
+  <p>The Interests are capital markets products other than prescribed capital markets products (as defined in the Securities and Futures (Capital Markets Products) Regulations 2018 of Singapore) and Specified Investment Products (as defined in MAS Notice SFA 04-N12 and MAS Notice FAA-N16).</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>03</span></div>
+</section>
+
+<!-- ═══════════ PAGE 4 · IMPORTANT NOTICES (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>IMPORTANT NOTICES  ·  2 / 3</span>
+  </div>
+  <h2 class="sub">Section 305 transfer restrictions</h2>
+  <p>Where the Interests are subscribed or purchased under Section 305 by a relevant person which is:</p>
+  <ol class="letlist">
+    <li>a corporation (which is not an accredited investor) the sole business of which is to hold investments and the entire share capital of which is owned by one or more individuals, each of whom is an accredited investor; or</li>
+    <li>a trust (where the trustee is not an accredited investor) whose sole purpose is to hold investments and each beneficiary of the trust is an accredited investor,</li>
+  </ol>
+  <p>securities or securities-based derivatives contracts of that corporation or the beneficiaries' rights and interest in that trust shall not be transferred within six months after that corporation or that trust has acquired the Interests pursuant to an offer made under Section 305 of the SFA, except as permitted under Section 305A(5) of the SFA or Regulation 36A of the CIS Regulations.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>04</span></div>
+</section>
+
+<!-- ═══════════ PAGE 4B · IMPORTANT NOTICES (3/3) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>IMPORTANT NOTICES  ·  3 / 3</span>
+  </div>
+
+  <h2 class="sub">Korea — restricted distribution; reverse solicitation</h2>
+  <p>This Memorandum is not, and is not intended to be, a public offer of the Interests in the Republic of Korea (the "<strong>ROK</strong>"). The Fund is not registered with the Korean Financial Services Commission (the "<strong>FSC</strong>") or the Korea Financial Investment Association under the Financial Investment Services and Capital Markets Act of the Republic of Korea (the "<strong>FSCMA</strong>"). <strong>The Manager has not undertaken, and does not undertake, any general solicitation, advertising, or public marketing in the ROK in connection with the Fund.</strong></p>
+  <p>Distribution of this Memorandum to ROK residents is contemplated solely on a reverse-solicitation basis where each prospect has initiated contact with the Manager prior to the receipt of substantive offering materials, or, where the Manager engages a Korean-licensed distributor, through that distributor in compliance with applicable FSCMA requirements. Korean residents should obtain advice from qualified Korean tax and foreign exchange counsel and shall remain responsible for compliance with all Korean laws applicable to the subscription, holding, and disposition of the Interests, including but not limited to the Foreign Exchange Transactions Act ("<strong>FETA</strong>"), the Law for the Coordination of International Tax Affairs ("<strong>LCITA</strong>"), and the rules of the Korea Financial Intelligence Unit ("<strong>KoFIU</strong>").</p>
+  <h2 class="sub">United States</h2>
+  <p>The Interests have not been and will not be registered under the United States Securities Act of 1933, as amended (the "<strong>Securities Act</strong>"), or under any state securities laws. The Interests are being offered and sold outside the United States in reliance upon Regulation S under the Securities Act, and the Fund and the Umbrella VCC are not, and will not be, registered as investment companies under the Investment Company Act of 1940. <strong>The Interests may not be offered or sold within the United States or to, or for the account or benefit of, any "U.S. person" except pursuant to an exemption from registration. Any representation to the contrary is a criminal offense.</strong></p>
+  <h2 class="sub">Forward-looking statements</h2>
+  <p>This Memorandum contains forward-looking statements regarding the Fund's investment objective, investment strategy, capital structure, return targets, and operational mechanics. <strong>No representation or warranty is made as to the accuracy of any forward-looking statement.</strong> The Fund is a newly formed investment vehicle. The Manager has been newly established to manage the Fund. <strong>Past performance of unrelated investments managed by the Manager's principals or by other third parties is not indicative of future results of the Fund.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>05</span></div>
+</section>
+
+<!-- ═══════════ PAGE 5 · TABLE OF CONTENTS ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>TABLE OF CONTENTS</span>
+  </div>
+  <h1 class="sec"><span class="num">§</span>Table of Contents</h1>
+  <table class="tbl tbl-dense" style="font-size: 10px;">
+    <tr><th style="width: 8%">§</th><th>Section</th><th style="width: 10%; text-align: right;">Page</th></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);"></td><td class="v"><strong>Definitions</strong></td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">07</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);"></td><td class="v"><strong>PART I — THE STRUCTURE AND THE OFFERING</strong></td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">10</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">1</td><td class="v">The Fund at a glance</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">11</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">2</td><td class="v">The Manager</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">12</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">3</td><td class="v">Structure of the VCC and the Fund</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">13</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">4</td><td class="v">Investment objective and strategy</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">14</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">5</td><td class="v">The gold collateral mechanism</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">16</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">6</td><td class="v">The Credit Facility</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">17</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">7</td><td class="v">The Cash Reserve and Capital Call mechanism</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">19</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">8</td><td class="v">Subscription, procurement, and pricing</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">21</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">9</td><td class="v">Fees, carried interest, and the Distribution Waterfall</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">24</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">10</td><td class="v">Term, liquidity, and transfers</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">26</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">11</td><td class="v">Service providers and reporting</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">27</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);"></td><td class="v"><strong>PART II — DEFINITIVE DISCLOSURES</strong></td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">28</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">12</td><td class="v">Korean regulatory and tax framework</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">29</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">13</td><td class="v">Singapore regulatory and tax framework</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">31</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">14</td><td class="v">Custody, insurance, and segregation</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">33</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">15</td><td class="v">Risk Factors</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">34</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">16</td><td class="v">Conflicts of Interest</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">41</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">17</td><td class="v">Anti-Money Laundering and Sanctions</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">42</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">18</td><td class="v">Confidentiality and information use</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">44</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">19</td><td class="v">Side letters and most-favoured-nation</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">45</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">20</td><td class="v">Selling restrictions and important jurisdictional notices</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">46</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);">21</td><td class="v">Governing law, dispute resolution, amendment</td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">47</td></tr>
+    <tr><td class="k" style="font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--gold);"></td><td class="v"><strong>PART III — SCHEDULES</strong></td><td class="v" style="text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:0.10em;color:var(--goldD);">48</td></tr>
+  </table>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>06</span></div>
+</section>
+
+<!-- ═══════════ PAGE 6 · DEFINITIONS (1/3) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>DEFINITIONS  ·  1 / 3</span>
+  </div>
+  <h1 class="sec"><span class="num">§</span>Definitions</h1>
+  <p class="lede">In this Memorandum, the following terms have the meanings set out below. Other capitalized terms not defined here are defined in the body of this Memorandum or in the Fund Agreement.</p>
+  <div class="deflist">
+    <div class="term">"<em>Accredited Investor</em>"</div>
+    <div class="def">has the meaning given in Section 4A(1)(a) of the SFA.</div>
+    <div class="term">"<em>ACRA</em>"</div>
+    <div class="def">means the Accounting and Corporate Regulatory Authority of Singapore.</div>
+    <div class="term">"<em>Administrator</em>"</div>
+    <div class="def">means the independent fund administrator engaged by the Umbrella VCC in respect of the Fund, as identified to Members at First Close.</div>
+    <div class="term">"<em>Aurum Funds, Fund</em>"</div>
+    <div class="def">means the sub-fund of the Umbrella VCC described in this Memorandum.</div>
+    <div class="term">"<em>Auditor</em>"</div>
+    <div class="def">means the independent fund auditor engaged by the Umbrella VCC in respect of the Fund, as identified to Members at First Close.</div>
+    <div class="term">"<em>Bar</em>"</div>
+    <div class="def">means a bar of LBMA-grade physical gold (1 kilogram per bar, 999.9 fineness, refined by an LBMA-accredited refiner) acquired by the Fund and allocated to the Fund's collateral pool.</div>
+    <div class="term">"<em>Business Day</em>"</div>
+    <div class="def">means a day (other than a Saturday, Sunday, or public holiday) on which commercial banks are open for general business in Singapore and, where the context so requires, in Seoul.</div>
+    <div class="term">"<em>Capital Call</em>"</div>
+    <div class="def">means a notice issued by the Manager to Members requiring the contribution of additional capital under §7 and the Fund Agreement.</div>
+    <div class="term">"<em>Cash Reserve</em>"</div>
+    <div class="def">means the Fund-level cash reserve described in §7.</div>
+    <div class="term">"<em>CIS Regulations</em>"</div>
+    <div class="def">means the Securities and Futures (Offers of Investments) (Collective Investment Schemes) Regulations 2005 of Singapore.</div>
+    <div class="term">"<em>Closing, First Close</em>"</div>
+    <div class="def">means the first date on which the Manager admits Members to the Fund and accepts subscription proceeds, as more particularly defined in the Fund Agreement.</div>
+    <div class="term">"<em>Commitment</em>"</div>
+    <div class="def">means, in respect of a Member, the amount that such Member has committed to contribute to the Fund, expressed in kilograms of LBMA-grade physical gold and the equivalent United States dollar amount calculated at the relevant LBMA spot price.</div>
+    <div class="term">"<em>Credit Facility</em>"</div>
+    <div class="def">means the secured credit facility provided to the Fund by a Singapore institutional bank, as described in §6.</div>
+    <div class="term">"<em>Custodian</em>"</div>
+    <div class="def">means the bullion custodian engaged by the Fund at the Singapore Freeport, as identified to Members at First Close.</div>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>07</span></div>
+</section>
+
+<!-- ═══════════ PAGE 7 · DEFINITIONS (2/3) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>DEFINITIONS  ·  2 / 3</span>
+  </div>
+  <div class="deflist">
+    <div class="term">"<em>Default Ladder</em>"</div>
+    <div class="def">means the default consequences applicable to a Member who fails to fund a Capital Call within the cure period, as set out in the Fund Agreement.</div>
+    <div class="term">"<em>Distribution Waterfall</em>"</div>
+    <div class="def">means the order of distributions described in §9.</div>
+    <div class="term">"<em>FETA</em>"</div>
+    <div class="def">means the Foreign Exchange Transactions Act of the Republic of Korea, as amended.</div>
+    <div class="term">"<em>FSC</em>"</div>
+    <div class="def">means the Financial Services Commission of the Republic of Korea.</div>
+    <div class="term">"<em>FSCMA</em>"</div>
+    <div class="def">means the Financial Investment Services and Capital Markets Act of the Republic of Korea, as amended.</div>
+    <div class="term">"<em>Fund Agreement</em>"</div>
+    <div class="def">means the constitutional and operating documents of the Fund, including the constitution of the Umbrella VCC, the supplemental constitutive instrument applicable to the Fund as a sub-fund, and the shareholders' agreement governing the Fund (as applicable), each as may be amended from time to time.</div>
+    <div class="term">"<em>GP Commitment</em>"</div>
+    <div class="def">means the commitment of the Manager (or an affiliate of the Manager) to contribute capital to the Fund alongside Members on the terms set out in §9.</div>
+    <div class="term">"<em>Hurdle Rate</em>"</div>
+    <div class="def">means the preferred return rate of <strong>eight percent (8%) per annum</strong>, compounded annually, on Members' contributed capital, as more particularly defined in the Fund Agreement.</div>
+    <div class="term">"<em>Indication of Interest, IOI</em>"</div>
+    <div class="def">means the indication of interest submitted by a prospective Member following review of this Memorandum and execution of the relevant non-disclosure agreement, on the terms described in §8.</div>
+    <div class="term">"<em>Interest</em>"</div>
+    <div class="def">means an interest in the Fund held by a Member.</div>
+    <div class="term">"<em>Investment Period</em>"</div>
+    <div class="def">means the period commencing at First Close during which the Fund may make new investments — three (3) years from First Close, subject to extension as set out in the Fund Agreement.</div>
+    <div class="term">"<em>KoFIU</em>"</div>
+    <div class="def">means the Korea Financial Intelligence Unit.</div>
+    <div class="term">"<em>LBMA</em>"</div>
+    <div class="def">means the London Bullion Market Association.</div>
+    <div class="term">"<em>LCITA</em>"</div>
+    <div class="def">means the Law for the Coordination of International Tax Affairs of the Republic of Korea, as amended.</div>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>08</span></div>
+</section>
+
+<!-- ═══════════ PAGE 8 · DEFINITIONS (3/3) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>DEFINITIONS  ·  3 / 3</span>
+  </div>
+  <div class="deflist">
+    <div class="term">"<em>LTV, Loan-to-Value</em>"</div>
+    <div class="def">means, as of any date of determination, the ratio expressed as a percentage of (i) the aggregate outstanding principal balance of the Credit Facility drawn by the Fund as of such date to (ii) the prevailing market value of the Bars held in the Fund's collateral pool at the LBMA fixing reference applicable on such date.</div>
+    <div class="term">"<em>Manager</em>"</div>
+    <div class="def">means TACC Pte Ltd, a private company limited by shares incorporated under the laws of Singapore.</div>
+    <div class="term">"<em>Margin Threshold</em>"</div>
+    <div class="def">means the loan-to-value ratio of <strong>eighty percent (80%)</strong> at which the Credit Facility provider may issue a margin call.</div>
+    <div class="term">"<em>MAS</em>"</div>
+    <div class="def">means the Monetary Authority of Singapore.</div>
+    <div class="term">"<em>Member</em>"</div>
+    <div class="def">means a person admitted to the Fund as the holder of one or more Interests on the terms of the Fund Agreement and this Memorandum.</div>
+    <div class="term">"<em>Memorandum</em>"</div>
+    <div class="def">means this Private Placement Memorandum.</div>
+    <div class="term">"<em>NAV, Net Asset Value</em>"</div>
+    <div class="def">means, as of any date of determination, the net asset value of the Fund (or, where the context requires, of an Interest) calculated by the Administrator in accordance with the Fund Agreement and the valuation policy adopted by the Manager.</div>
+    <div class="term">"<em>NTS</em>"</div>
+    <div class="def">means the National Tax Service of the Republic of Korea.</div>
+    <div class="term">"<em>Procurement Buffer</em>"</div>
+    <div class="def">means the buffer described in §8 retained by the Fund to cover spot movement during the execution window, dealer spread, bar storage setup, insurance attachment, and bullion execution costs.</div>
+    <div class="term">"<em>ROK</em>"</div>
+    <div class="def">means the Republic of Korea.</div>
+    <div class="term">"<em>SFA</em>"</div>
+    <div class="def">means the Securities and Futures Act 2001 of Singapore, as amended.</div>
+    <div class="term">"<em>SIAC</em>"</div>
+    <div class="def">means the Singapore International Arbitration Centre.</div>
+    <div class="term">"<em>Term</em>"</div>
+    <div class="def">means five (5) years from First Close, with up to two (2) one-year extensions exercisable by the Manager subject to Member consent thresholds set out in the Fund Agreement.</div>
+    <div class="term">"<em>Umbrella VCC, VCC</em>"</div>
+    <div class="def">means the umbrella variable capital company to be incorporated under the VCC Act, of which the Fund will be a sub-fund, as identified to Members at First Close.</div>
+    <div class="term">"<em>VCC Act</em>"</div>
+    <div class="def">means the Variable Capital Companies Act 2018 of Singapore.</div>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>09</span></div>
+</section>
+
+<!-- ═══════════ PAGE 9 · PART I DIVIDER ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>PART I</span>
+  </div>
+  <div class="part-divider">
+    <div class="part-num">Part I</div>
+    <h1 class="part-title">The structure and the<br/><em>offering.</em></h1>
+    <div class="part-rule"></div>
+    <p class="part-sub">Who the Manager is, what the Fund does, how the structure works, and the principal commercial terms. Drafted to be read by prospective Members alongside their counsel.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>10</span></div>
+</section>
+
+<!-- ═══════════ PAGE 10 · §1 FUND AT A GLANCE ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 1  ·  AT A GLANCE</span>
+  </div>
+  <h1 class="sec"><span class="num">1.</span>The Fund at a glance</h1>
+  <div class="summary-grid summary-grid-dense">
+    <div class="k">What the Fund is</div><div class="v">A Singapore VCC sub-fund that holds physically-allocated LBMA-grade gold contributed by Members and deploys a credit facility secured by that gold into US private market positions.</div>
+    <div class="k">What the Fund seeks</div><div class="v">A target net IRR of approximately fifteen percent (15%) per annum on Member capital over the Term. <strong>Forward-looking; not a guarantee.</strong> The Fund is a newly formed vehicle. Past performance of unrelated investments is not indicative of future results.</div>
+    <div class="k">Who can invest</div><div class="v">Accredited Investors and other "relevant persons" as defined in Section 305(5) of the SFA, and qualified non-Singapore investors who initiate contact with the Manager unsolicited.</div>
+    <div class="k">Minimum subscription</div><div class="v">One (1) kg of LBMA-grade physical gold per Member; not less than S$200,000 per transaction (SFA §305(2) compliance).</div>
+    <div class="k">Cohort</div><div class="v">Target of approximately one hundred (100) Members at First Close.</div>
+    <div class="k">Term</div><div class="v">Five (5) years from First Close, with up to two (2) one-year extensions exercisable by the Manager subject to Member consent thresholds.</div>
+    <div class="k">Investment Period</div><div class="v">Three (3) years from First Close, subject to extension.</div>
+    <div class="k">LTV ceiling</div><div class="v">Up to seventy-five percent (75%) of the prevailing LBMA value of the gold collateral pool, per LP agreement parameters and sized to Member commitment level.</div>
+    <div class="k">Bank margin threshold</div><div class="v">Eighty percent (80%) LTV.</div>
+    <div class="k">Cash Reserve</div><div class="v">Twenty percent (20%) of the Fund's NAV, sourced from Credit Facility draw allocation.</div>
+    <div class="k">Capital Calls</div><div class="v">Aggregate Capital Calls during the Term shall not exceed <strong>100% of a Member's original Commitment</strong>.</div>
+    <div class="k">Hurdle / Carry / Catch-up</div><div class="v">8% Hurdle Rate, compounded annually; 100% catch-up to the Manager; 20% carried interest thereafter.</div>
+    <div class="k">Management fee</div><div class="v">2% per annum of committed capital during the Investment Period; 2% of net invested capital thereafter.</div>
+    <div class="k">GP Commitment</div><div class="v">Manager (or affiliate) commits alongside Members; amount confirmed at First Close.</div>
+    <div class="k">Custody</div><div class="v">Singapore Freeport bullion custodian. Each Bar segregated and serial-allocated. Insured under the Custodian's standard insurance programme.</div>
+    <div class="k">Credit Facility</div><div class="v">Secured credit facility from a Singapore institutional bank, SORA-linked floating rate.</div>
+    <div class="k">Liquidity</div><div class="v">Closed-end. Interests not redeemable at the Member's option. Transfers restricted.</div>
+    <div class="k">Currency</div><div class="v">United States dollars.</div>
+    <div class="k">Reporting</div><div class="v">Quarterly position statements via the Manager's portal; annual K-1-equivalent statement; annual audited financial statements.</div>
+    <div class="k">Governing law</div><div class="v">Republic of Singapore.</div>
+    <div class="k">Dispute resolution</div><div class="v">SIAC arbitration, three arbitrators, seated in Singapore, English language.</div>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>11</span></div>
+</section>
+
+<!-- ═══════════ PAGE 11 · §2 THE MANAGER ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 2  ·  THE MANAGER</span>
+  </div>
+  <h1 class="sec"><span class="num">2.</span>The Manager</h1>
+  <h2 class="sub">2.1 TACC Pte Ltd</h2>
+  <p>TACC Pte Ltd is a private company limited by shares incorporated under the laws of Singapore for the purpose of managing the Umbrella VCC and the Fund. The Manager will at all times comply with the regulatory requirements applicable to managing a Singapore-domiciled sub-fund offered as a restricted scheme under Section 305 of the SFA, <strong>either by holding a capital markets services licence under Section 86 of the SFA in respect of fund management activities or by qualifying for an applicable exemption under Section 99 of the SFA</strong>, in each case as more particularly described in §13. The regulatory licensing status of the Manager will be confirmed to Members at First Close.</p>
+  <h2 class="sub">2.2 Investment team</h2>
+  <p>The investment team comprises the Manager's principals, who together hold experience in US private market sourcing and execution, Korean cross-border capital placement, and structured fund operations. Biographies of the principals are set out in <strong>Schedule A</strong>.</p>
+  <h2 class="sub">2.3 Investment Committee</h2>
+  <p>Investment decisions of the Fund are made by an Investment Committee constituted by the Manager. The Investment Committee operates under written procedures including a conflicts-of-interest policy, a single-position concentration limit, an investment-thesis approval process, and a documented decision record. The composition and operating rules of the Investment Committee are set out in the Fund Agreement.</p>
+  <h2 class="sub">2.4 Key Persons</h2>
+  <p>The continued involvement of certain principals of the Manager (the "<strong>Key Persons</strong>") is material to the management of the Fund. The Fund Agreement contains provisions governing the consequences of a Key Person event, including suspension of the Investment Period and Member rights upon the occurrence of such event.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>12</span></div>
+</section>
+
+<!-- ═══════════ PAGE 12 · §3 STRUCTURE ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 3  ·  STRUCTURE</span>
+  </div>
+  <h1 class="sec"><span class="num">3.</span>Structure of the VCC and the Fund</h1>
+  <h2 class="sub">3.1 Sub-fund structure</h2>
+  <p>The Fund is structured as a sub-fund of the Umbrella VCC. Pursuant to Section 29 of the VCC Act, the assets and liabilities of each sub-fund of an umbrella VCC are statutorily segregated from those of every other sub-fund. Accordingly:</p>
+  <ol class="letlist">
+    <li>the assets of the Fund will not be available to discharge the liabilities of any other sub-fund of the Umbrella VCC;</li>
+    <li>the liabilities of the Fund are confined to the assets of the Fund; and</li>
+    <li>on the winding up of the Fund, the assets of the Fund shall be applied solely to the satisfaction of the claims of creditors of, and Members in, the Fund.</li>
+  </ol>
+  <p>Although the Fund is not a separate legal entity from the Umbrella VCC, the Fund holds its own assets, incurs its own liabilities, and operates as a discrete investment programme. The Manager and the Umbrella VCC maintain separate accounting records, financial statements, and bank accounts for the Fund. The Administrator calculates a separate NAV for the Fund, and the Auditor delivers separate audited financial statements.</p>
+  <h2 class="sub">3.2 Pre-incorporation status; conditional subscription</h2>
+  <p>As of the date of this Memorandum, <strong>the Umbrella VCC has not yet been incorporated and the Fund has not yet been established as a sub-fund</strong>. The Manager intends to procure the incorporation of the Umbrella VCC and the registration of the Fund as a sub-fund prior to First Close. Subscription is conditional upon:</p>
+  <ol class="numlist">
+    <li>the incorporation of the Umbrella VCC under the VCC Act;</li>
+    <li>the registration of the Fund as a sub-fund of the Umbrella VCC with ACRA;</li>
+    <li>the entry of the Fund onto MAS's list of restricted schemes following the notification process under the CIS Regulations; and</li>
+    <li>the Credit Facility being in place at First Close.</li>
+  </ol>
+  <p>Subscription proceeds will be held in a settlement account at the Administrator pending First Close. <strong>If incorporation, registration, restricted-scheme listing, or Credit Facility finalisation are not completed by such date as may be specified in the Fund Agreement and the subscription documents, the Manager will return subscription proceeds to Members in accordance with the terms thereof.</strong></p>
+  <h2 class="sub">3.3 Fund Agreement</h2>
+  <p>The rights and obligations of Members are governed by the Fund Agreement, which forms part of the constitutive documents of the Umbrella VCC and the Fund. <strong>In the event of any conflict between this Memorandum and the Fund Agreement, the Fund Agreement prevails.</strong> The Fund Agreement is available to prospective Members on request following execution of the relevant non-disclosure agreement.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>13</span></div>
+</section>
+
+<!-- ═══════════ PAGE 13 · §4 INVESTMENT OBJECTIVE ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 4  ·  STRATEGY</span>
+  </div>
+  <h1 class="sec"><span class="num">4.</span>Investment objective and strategy</h1>
+  <h2 class="sub">4.1 Investment objective</h2>
+  <p>The investment objective of the Fund is to generate target returns through a portfolio of US private market positions, deployed via a credit facility secured by LBMA-grade physical gold contributed by Members. The Fund seeks to combine:</p>
+  <ol class="letlist">
+    <li>the floor preservation of physically-allocated gold at LBMA-grade specifications, held in segregated allocated custody at the Singapore Freeport;</li>
+    <li>the capital efficiency of a secured credit facility provided by a Singapore institutional bank, sized to up to 75% of the prevailing LBMA value of the Fund's gold collateral pool; and</li>
+    <li>curated US private market exposure sourced through the Manager's relationship network, including pre-IPO secondary equity, late-stage private credit, and other comparable positions.</li>
+  </ol>
+  <h2 class="sub">4.2 Investment strategy components</h2>
+  <p><strong>(a) Gold collateral pool.</strong> The Fund holds LBMA-grade physical gold in segregated custody. The gold serves as the primary collateral for the Credit Facility and as the source of the Fund's floor value.</p>
+  <p><strong>(b) Credit Facility deployment.</strong> The Fund draws on the Credit Facility, secured by the gold collateral pool, and deploys the proceeds into US private market positions selected by the Investment Committee. The Credit Facility is sized to up to 75% of the LBMA value of the gold pool, per the parameters set out in the Fund Agreement and sized to Member commitment level.</p>
+  <p><strong>(c) US private market portfolio.</strong> The Fund's investment portfolio is expected to consist primarily of (i) pre-IPO secondary equity in late-stage private companies, (ii) late-stage private credit, and (iii) selectively, other private market exposures consistent with the Fund's investment objective and risk parameters.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>14</span></div>
+</section>
+
+<!-- ═══════════ PAGE 13B · §4 STRATEGY (CONT.) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 4  ·  STRATEGY  ·  TARGETS</span>
+  </div>
+
+  <h2 class="sub">4.3 Target returns</h2>
+  <p>The Fund targets a base internal rate of return on Member capital of approximately fifteen percent (15%) per annum, net of fees and expenses, over the Term. <strong>This target is a forward-looking statement based on the Manager's structuring of the Fund and on its analysis of comparable structures. It is not a guarantee, projection, or representation of future performance. The Fund is a newly formed vehicle. Past performance of unrelated investments managed by the Manager's principals or by other third parties is not indicative of future results of the Fund.</strong> Member returns may be materially below the target, including a loss of all or part of contributed capital.</p>
+  <h2 class="sub">4.4 Investment restrictions and concentration</h2>
+  <p>The Fund's investment restrictions, including position-level concentration limits, leverage limits at the Fund level beyond the Credit Facility, geographic and sectoral restrictions, reinvestment caps, and prohibitions on certain transaction types, are set out in the Fund Agreement.</p>
+  <p>The Manager intends to construct a portfolio diversified across multiple positions, sectors, and vintage periods. <strong>However, the Fund is small by industry standards and may, at any time and in particular during the early Investment Period, hold a portfolio that is concentrated in a small number of positions.</strong> Concentration risk is described in §15.</p>
+  <h2 class="sub">4.5 No assurance of investment opportunities</h2>
+  <p>The availability and characteristics of investment opportunities consistent with the Fund's investment objective are subject to market conditions, sourcing relationships, regulatory environment, and other factors outside the Manager's control. <strong>There is no assurance that the Fund will be able to identify, secure, or fully deploy capital into investment opportunities at the volumes, prices, or terms contemplated.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>15</span></div>
+</section>
+
+<!-- ═══════════ PAGE 14 · §5 GOLD COLLATERAL ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 5  ·  GOLD COLLATERAL</span>
+  </div>
+  <h1 class="sec"><span class="num">5.</span>The gold collateral mechanism</h1>
+  <h2 class="sub">5.1 Specification</h2>
+  <p>All gold acquired by the Fund as the collateral pool must be LBMA good delivery 1-kilogram bars of 999.9 fineness, refined by an LBMA-accredited refiner. Each Bar is uniquely serial-numbered.</p>
+  <h2 class="sub">5.2 Procurement</h2>
+  <p>The Fund procures Bars at the prevailing LBMA spot price at the time of trade execution. Procurement is executed by the Fund through bullion counterparties on terms approved by the Manager. The procurement process, including the Procurement Buffer, is described in §8.</p>
+  <h2 class="sub">5.3 Custody and segregation</h2>
+  <p>Bars are held in <em>allocated, segregated custody</em> at the bullion custodian's premises at the Singapore Freeport. Each Bar is uniquely identified by serial number and recorded in the Custodian's allocated records as belonging to the Fund and not co-mingled with the assets of any other person.</p>
+  <h2 class="sub">5.4 Collateral pool</h2>
+  <p>The Bars are pooled at the Fund level and pledged to the Credit Facility provider as collateral for the secured credit facility. <strong>A Member's economic interest in the Fund is a pro-rata interest in the Fund as a whole (including the gold collateral pool and the Credit Facility-deployed portfolio), not a direct ownership interest in any specific Bar.</strong> The Fund Agreement sets out the rights of Members in respect of the collateral pool, including in the context of insolvency.</p>
+  <h2 class="sub">5.5 Insurance</h2>
+  <p>The Bars are insured under the Custodian's standard insurance programme. The Custodian's insurance programme is summarised in <strong>Schedule B</strong>. <strong>Insurance coverage is subject to per-event limits, aggregate limits, deductibles, exclusions, and conditions. Certain perils may be excluded. Insurance is not a guarantee against all risks of loss.</strong></p>
+  <h2 class="sub">5.6 Insolvency segregation</h2>
+  <p>The Fund's gold collateral pool is held in segregated custody at the Singapore Freeport, separate from the assets of the Manager, the Credit Facility provider, and other counterparties. <strong>In the event of an insolvency of the Manager, segregation of the Bars at the Custodian level is intended to permit the Bars to be excluded from the insolvency estate of the Manager, subject to the terms of the custody agreement and applicable Singapore insolvency law.</strong> Members should not assume that segregation provides absolute protection against all insolvency outcomes; counsel should review the custody agreement and the relevant insolvency analysis.</p>
+  <h2 class="sub">5.7 Inspection rights</h2>
+  <p>Members are entitled to the inspection rights in respect of the Fund's gold custody set out in the Fund Agreement, including periodic Auditor confirmations of the Fund's bar inventory.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>16</span></div>
+</section>
+
+<!-- ═══════════ PAGE 15 · §6 CREDIT FACILITY (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 6  ·  CREDIT FACILITY</span>
+  </div>
+  <h1 class="sec"><span class="num">6.</span>The Credit Facility</h1>
+  <h2 class="sub">6.1 Form and security</h2>
+  <p>The Fund will enter into a secured credit facility with a Singapore institutional bank (the "<strong>Credit Facility Provider</strong>"). The Credit Facility is secured by a pledge over the gold collateral pool held in custody at the Singapore Freeport. The terms of the Credit Facility are set out in the Credit Facility documentation, which is available to prospective Members for review under non-disclosure on request.</p>
+  <h2 class="sub">6.2 Loan-to-value parameters</h2>
+  <p>The Credit Facility provides for borrowings of up to <strong>seventy-five percent (75%)</strong> of the prevailing LBMA value of the gold collateral pool, per the parameters set out in the Fund Agreement and sized to Member commitment level. The Credit Facility provides for a Margin Threshold of <strong>eighty percent (80%) LTV</strong> at which the Credit Facility Provider may issue a margin call.</p>
+  <h2 class="sub">6.3 Pricing</h2>
+  <p>The Credit Facility is priced at a SORA-linked floating rate, with a credit spread set by reference to the gold collateral and the Manager's relationship with the Credit Facility Provider.</p>
+  <h2 class="sub">6.4 Status</h2>
+  <div class="notice-block">
+    <div class="lbl">Status flag</div>
+    As of the date of this Memorandum, the Credit Facility is in the process of being arranged with a Singapore institutional bank. The Manager intends to finalize the Credit Facility prior to First Close. <strong>Subscription to the Fund is conditional upon the Credit Facility being in place at First Close.</strong> The identity of the Credit Facility Provider and the final terms will be confirmed to Members at First Close.
+  </div>
+  <h2 class="sub">6.5 Single-counterparty exposure</h2>
+  <p>The Fund's Credit Facility is provided by a single Singapore institutional bank. <strong>The Manager has not pre-arranged a backup credit facility.</strong> Replacement credit facility arrangements (in the event of withdrawal, default, or material adverse change in the Credit Facility Provider) are subject to commercial availability at the relevant time. This single-counterparty risk is described in §15.</p>
+  <h2 class="sub">6.6 Margin call mechanics</h2>
+  <p>If the Loan-to-Value ratio reaches or exceeds the Margin Threshold of 80%, the Credit Facility Provider may issue a margin call requiring the Fund to either (i) post additional collateral, (ii) repay outstanding principal, or (iii) suffer enforcement of the security interest over the gold collateral pool. The Fund's defensive mechanisms designed to prevent the LTV from reaching the Margin Threshold are described in §7.</p>
+  <h2 class="sub">6.7 LTV monitoring and Member alerts</h2>
+  <p>The Manager monitors the Fund's LTV continuously and issues alerts to Members at LTV thresholds well below the Margin Threshold, including a Member alert at seventy percent (70%) LTV.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>17</span></div>
+</section>
+
+<!-- ═══════════ PAGE 16 · §6 CREDIT FACILITY (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 6  ·  CREDIT FACILITY  ·  COVENANTS</span>
+  </div>
+  <h2 class="sub">6.8 Leverage disclosure</h2>
+  <p><strong>The Fund is a leveraged structure. Leverage magnifies both potential returns and potential losses.</strong> Risk factors associated with the Credit Facility are described in §15.</p>
+  <h2 class="sub">6.9 Covenant categories</h2>
+  <p>The Credit Facility documentation contains covenants applicable to the Fund. Covenant categories include, without limitation:</p>
+  <ol class="letlist">
+    <li><strong>Financial covenants.</strong> Maximum LTV thresholds (consistent with the LTV ceiling described in §6.2 and the Margin Threshold described in §6.6); minimum gold collateral coverage ratios; NAV maintenance covenants.</li>
+    <li><strong>Operational covenants.</strong> Continuous insurance maintenance under the Custodian's standard programme; allocated and segregated custody at the Singapore Freeport; periodic reporting and audit confirmations; LBMA-grade specification of all collateral Bars.</li>
+    <li><strong>Information covenants.</strong> Quarterly financial reporting to the Credit Facility Provider; immediate notification of material events (Key Person events, custody events, insurance events, regulatory events); annual audited financial statements.</li>
+    <li><strong>Negative covenants.</strong> Restrictions on the incurrence of additional debt at the Fund level beyond the Credit Facility; restrictions on the creation of liens on Fund assets; restrictions on the disposition of Fund assets outside the ordinary course of investment activity.</li>
+    <li><strong>Change-of-control covenants.</strong> Notification and consent requirements applicable to material changes in the Manager, the Investment Committee, or the Key Persons.</li>
+  </ol>
+  <p>Specific covenant levels and ratios are set out in the Credit Facility documentation. Breach of any covenant could trigger default events under the Credit Facility, including acceleration of outstanding principal and enforcement of the security interest over the gold collateral pool. Covenant breach risk is described as risk factor C5 in §15.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>18</span></div>
+</section>
+
+<!-- ═══════════ PAGE 17 · §7 CASH RESERVE (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 7  ·  CASH RESERVE</span>
+  </div>
+  <h1 class="sec"><span class="num">7.</span>The Cash Reserve and Capital Call mechanism</h1>
+  <h2 class="sub">7.1 The Cash Reserve</h2>
+  <p>The Fund maintains a Fund-level cash reserve equal to <strong>twenty percent (20%) of the Fund's NAV</strong> (the "<strong>Cash Reserve</strong>"), held in cash and short-duration money-market or equivalent instruments. The Cash Reserve is intended as a defensive buffer against market events affecting the gold collateral pool or the Credit Facility deployment.</p>
+  <div class="notice-block">
+    <div class="lbl">Sourcing</div>
+    The Cash Reserve is funded at the Fund level from the Credit Facility draw allocation. When the Fund draws against the gold collateral pool, the Manager allocates approximately <strong>eighty percent (80%)</strong> of the drawn proceeds to Fund investments (per §4) and retains approximately <strong>twenty percent (20%)</strong> of the drawn proceeds in the Cash Reserve. <strong>The Cash Reserve is therefore funded from the Credit Facility, not from Member subscription wires.</strong> Member subscription wires are applied to the procurement of LBMA-grade gold for the Fund's collateral pool, as described in §8.
+  </div>
+  <p>The Cash Reserve target is twenty percent (20%) of the Fund's NAV from First Close; the Manager rebalances the Cash Reserve on the cycle set out in the Fund Agreement and the Manager's risk-management policies.</p>
+  <h2 class="sub">7.2 Reserve deployment triggers</h2>
+  <p>The Cash Reserve is deployed in the following circumstances:</p>
+  <ol class="letlist">
+    <li><strong>Loan-principal paydown.</strong> When the Fund's LTV approaches the LTV ceiling of 75% per LP agreement parameters, the Cash Reserve is applied first to reduce the outstanding principal balance of the Credit Facility, restoring effective LTV before the Margin Threshold is approached.</li>
+    <li><strong>Distressed gold acquisition.</strong> Where gold price declines from the Fund's procurement baselines exceed twenty-five percent (25%), up to eighty percent (80%) of the Cash Reserve may be deployed to acquire additional Bars at distressed prices, in accordance with the procedures set out in the Fund Agreement.</li>
+  </ol>
+  <p>The Manager's allocation of Cash Reserve deployment between (a) and (b) is determined by the Investment Committee in accordance with the Fund's risk-management policies. <strong>Members participating in the Fund pro-rata share in any Bars acquired under §7.2(b).</strong></p>
+  <h2 class="sub">7.3 Reserve replenishment via Capital Calls</h2>
+  <p>After the Cash Reserve has been deployed, the Manager replenishes the Cash Reserve through one or more Capital Calls applied pro-rata to existing Members.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>19</span></div>
+</section>
+
+<!-- ═══════════ PAGE 18 · §7 CAPITAL CALL (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 7  ·  CAPITAL CALL MECHANICS</span>
+  </div>
+  <h2 class="sub">7.4 Capital Call parameters</h2>
+  <table class="tbl">
+    <tr><th style="width: 32%">Parameter</th><th>Locked terms</th></tr>
+    <tr><td class="k">Aggregate cap</td><td class="v">The aggregate Capital Calls to which a Member may be subject under the Fund Agreement during the Term shall not exceed <strong>one hundred percent (100%) of such Member's original Commitment</strong>. Capital Calls in excess of this cap may not be made by the Manager without the express consent of the affected Member, on terms set out in the Fund Agreement.</td></tr>
+    <tr><td class="k">Notice period</td><td class="v">The Manager will provide Members with not less than the notice period set out in the Fund Agreement (the "Capital Call Notice Period") prior to the date on which a Capital Call is due.</td></tr>
+    <tr><td class="k">Frequency</td><td class="v">Capital Calls are subject to the maximum frequency limits set out in the Fund Agreement.</td></tr>
+    <tr><td class="k">Cure period</td><td class="v">Members are entitled to the cure period set out in the Fund Agreement to fund a Capital Call before being subject to the default consequences described in §7.5.</td></tr>
+    <tr><td class="k">Pro-rata allocation</td><td class="v">Capital Calls are allocated pro-rata to Members' contributed capital, subject to the side-letter provisions set out in §19.</td></tr>
+  </table>
+  <h2 class="sub">7.5 Default consequences — Default Ladder</h2>
+  <p>A Member who fails to fund a Capital Call within the cure period is subject to the default consequences set out in the Fund Agreement (the "<strong>Default Ladder</strong>"), which may include late-payment interest at the rate set out therein, dilution of the defaulting Member's Interest, forced sale of the defaulting Member's Interest, or other consequences as set out therein. <strong>The Default Ladder is structured to balance the protection of non-defaulting Members against the proportionate treatment of the defaulting Member.</strong></p>
+  <h2 class="sub">7.6 Distressed acquisition Member rights</h2>
+  <p>Members participating pro-rata in distressed Bars acquired under §7.2(b) receive a corresponding pro-rata interest in the additional Bars and the additional capital deployed. Members may decline to participate in the additional acquisition, in which case their pro-rata interest in the Cash Reserve replenishment is correspondingly reduced, on terms set out in the Fund Agreement.</p>
+  <h2 class="sub">7.7 Capital call risk disclosure</h2>
+  <p><strong>The Cash Reserve and Capital Call mechanism is the principal defensive layer between the Fund's LTV and the Margin Threshold. In adverse market conditions, Members may be required to contribute additional capital up to the aggregate cap of 100% of their original Commitment. Sustained adverse conditions could exhaust the Cash Reserve and Capital Call mechanism, exposing the Fund to margin call enforcement at the Margin Threshold.</strong> The risk of loss in adverse market conditions is described in §15.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>20</span></div>
+</section>
+
+<!-- ═══════════ PAGE 19 · §8 SUBSCRIPTION (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 8  ·  SUBSCRIPTION</span>
+  </div>
+  <h1 class="sec"><span class="num">8.</span>Subscription, procurement, and pricing</h1>
+  <h2 class="sub">8.1 Subscription mechanics</h2>
+  <table class="tbl">
+    <tr><th style="width: 28%">Step</th><th>What happens</th></tr>
+    <tr><td class="k">1. NDA and inquiry</td><td class="v">Prospect initiates contact with the Manager unsolicited, executes a non-disclosure agreement, and receives offering materials including this Memorandum.</td></tr>
+    <tr><td class="k">2. Indication of Interest</td><td class="v">Prospect submits an Indication of Interest in the form prescribed by the Manager.</td></tr>
+    <tr><td class="k">3. Subscription Agreement</td><td class="v">Prospect completes the Subscription Agreement, the Investor Questionnaire, and the AML/KYC, FATCA/CRS, Section 305, and reverse-solicitation acknowledgments (as applicable).</td></tr>
+    <tr><td class="k">4. Wire</td><td class="v">Prospect wires the agreed subscription amount in United States dollars to the Fund's settlement account at the Administrator.</td></tr>
+    <tr><td class="k">5. Procurement</td><td class="v">Upon clearance of the wire by the Administrator, the Fund executes procurement of Bars at the prevailing LBMA spot price at the time of trade execution.</td></tr>
+    <tr><td class="k">6. Vault confirmation</td><td class="v">Bar(s) serial-allocated into segregated custody at the Singapore Freeport; insurance attaches under the Custodian's standard programme. The Member's Interest in the Fund is established at this point.</td></tr>
+  </table>
+  <h2 class="sub">8.2 Procurement and pricing</h2>
+  <p>Upon clearance of the Member's wire, the Fund executes the procurement of Bars at the prevailing LBMA spot price at the time of trade execution with the Fund's bullion counterparties. The Member's allocated Bar amount, expressed in kilograms, is determined at the trade execution price.</p>
+  <h2 class="sub">8.3 Procurement window and spot risk</h2>
+  <p>The Fund targets execution <em>promptly following wire clearance, subject to market conditions, dealer availability, and bar inventory</em> at the relevant LBMA refiners. <strong>Gold spot movement between Indication of Interest submission and trade execution is borne by the Member, with the corresponding effect on allocated kilogram amount. The Fund does not commit to a fixed kilogram allocation at the IOI stage; the Member's commitment is to the wired United States dollar amount, and the kilogram allocation follows from the execution price.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>21</span></div>
+</section>
+
+<!-- ═══════════ PAGE 20 · §8 PROCUREMENT BUFFER (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 8  ·  PROCUREMENT BUFFER</span>
+  </div>
+  <h2 class="sub">8.4 Procurement Buffer</h2>
+  <p>The Fund retains up to <strong>three percent (3%)</strong> of the Member's wire as a Procurement Buffer to cover spot movement during the execution window, dealer spread, bar storage setup, insurance attachment, and bullion execution costs.</p>
+  <h3 class="subsub">Operational mechanic</h3>
+  <p>The Procurement Buffer is held in a Fund-level reconciliation account at the Administrator. It is <strong>not netted from the Member's wire prior to gold purchase</strong>; rather, the full wired amount is applied to gold procurement at the LBMA spot at execution, and the buffer functions as a Fund-level provision against execution-cost overruns. To the extent actual procurement costs exceed nominal spot, the buffer absorbs the difference; to the extent actual procurement costs are less than nominal spot plus dealer spread, the buffer balance is reconciled annually.</p>
+  <h3 class="subsub">Reconciliation</h3>
+  <p>The buffer balance is reconciled annually by the Auditor against actual procurement costs. The reconciliation is reflected in the Member's annual position statement. <strong>Any unused portion of the Procurement Buffer is credited to the Member's pro-rata share of the Cash Reserve.</strong></p>
+  <div class="example-box">
+    <div class="ex-head">Worked example  ·  $200,000 wire  ·  LBMA spot $4,720/oz at execution  ·  illustrative</div>
+    <table class="tbl tbl-numeric" style="margin: 0;">
+      <tr><th>Component</th><th class="right">Amount</th><th>Note</th></tr>
+      <tr><td class="k">Wire received</td><td class="right">$200,000</td><td class="v">All proceeds reach the Fund's settlement account</td></tr>
+      <tr><td class="k">Gold procurement at execution</td><td class="right">$200,000 ÷ ($4,720 × 32.1507)</td><td class="v">Full wire applied to bar purchase at execution spot</td></tr>
+      <tr><td class="k">Effective Member kg allocation</td><td class="right"><strong>≈ 1.317 kg</strong></td><td class="v">Subject to dealer-spread reconciliation per below</td></tr>
+      <tr><td class="k">Procurement Buffer (Fund provision)</td><td class="right">up to $6,000</td><td class="v">3% × $200,000; held in reconciliation account, not netted</td></tr>
+      <tr><td class="k">Buffer reconciliation</td><td class="right">At year-end</td><td class="v">Unused portion → Member's Cash Reserve share</td></tr>
+    </table>
+  </div>
+  <p>The buffer is the Fund's accounting bridge between nominal LBMA spot and the effective per-kilogram cost (which includes dealer spread, storage setup, and insurance attachment). The Member's effective per-kilogram cost may slightly exceed nominal LBMA spot at execution; the Member is not billed separately for these execution costs.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>22</span></div>
+</section>
+
+<!-- ═══════════ PAGE 20B · §8 SUBSCRIPTION (CONT.) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 8  ·  VAULT &amp; COORDINATION</span>
+  </div>
+
+  <h2 class="sub">8.5 Vault confirmation and Interest establishment</h2>
+  <p>Vault confirmation, comprising serial allocation of the Bar(s) into segregated allocated custody and insurance attachment under the Custodian's standard programme, follows trade execution and is typically completed within one further Business Day. <strong>The Member's Interest in the Fund is established upon vault confirmation.</strong> Until that point, the Member's funds are held in the Fund's settlement account at the Administrator and are not yet subscribed to the Fund.</p>
+  <h2 class="sub">8.6 Coordination with Korean foreign exchange bank</h2>
+  <p>Korean resident Members are advised to coordinate wire timing with their designated Korean foreign exchange bank, which may require advance notice for outbound capital transactions and the submission of supporting documentation under FETA. The Manager will supply standardized remittance documentation.</p>
+  <h2 class="sub">8.7 Effective procurement cost</h2>
+  <p>The Fund's effective procurement cost at execution includes the LBMA spot price, dealer spread, bar storage setup, insurance attachment, and bullion execution costs. The Member's effective per-kilogram cost slightly exceeds the LBMA spot price at execution, consistent with physical bullion procurement at the institutional scale. <strong>Annual position statements reflect the Member's actual cost basis, reconciled at the Fund level and reviewed by the Auditor.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>23</span></div>
+</section>
+
+<!-- ═══════════ PAGE 21 · §9 FEES & CARRY (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 9  ·  FEES & CARRY</span>
+  </div>
+  <h1 class="sec"><span class="num">9.</span>Fees, carried interest, and the Distribution Waterfall</h1>
+  <h2 class="sub">9.1 Management fee</h2>
+  <p>The Manager is entitled to a management fee equal to <strong>two percent (2%) per annum of committed capital</strong> during the Investment Period, transitioning to <strong>two percent (2%) per annum of net invested capital</strong> thereafter. The management fee is payable quarterly in arrears, calculated by the Administrator, and accrued from First Close.</p>
+  <h2 class="sub">9.2 Carried interest and Hurdle Rate</h2>
+  <p>The Manager (or an affiliate of the Manager) is entitled to carried interest equal to <strong>twenty percent (20%)</strong> of distributions to Members in excess of the Hurdle Rate, subject to a <strong>100% catch-up</strong>. The Hurdle Rate is <strong>eight percent (8%) per annum, compounded annually</strong>, on contributed capital. Members receive distributions up to the Hurdle Rate before any carried interest is paid.</p>
+  <h2 class="sub">9.3 GP Commitment</h2>
+  <p>The Manager (or an affiliate of the Manager) shall commit to invest in the Fund alongside Members on terms set out in the Fund Agreement. <strong>The amount and terms of the GP Commitment will be confirmed to Members at First Close.</strong></p>
+  <h2 class="sub">9.4 Organizational and operating expenses</h2>
+  <p>The Manager pays the Fund's organizational expenses up to a cap set out in the Fund Agreement; the Fund reimburses the Manager up to the cap. The Fund bears its own operating expenses, including (without limitation): management fees; Credit Facility interest, fees, and expenses; Custodian fees and insurance premia; Administrator fees; Auditor fees; legal, regulatory, and compliance costs; tax-counsel and tax-filing costs; bank, custody, and settlement costs; cyber and information security costs; Investment Committee and Key Person costs (where charged to the Fund); procurement costs not absorbed by the Procurement Buffer; costs of position-level due diligence, structuring, and execution; and other expenses customary for a fund of this nature.</p>
+  <h2 class="sub">9.5 No retrocessions</h2>
+  <p>The Manager does not receive retrocessions, finders' fees, placement commissions, or similar arrangements from any underlying portfolio counterparty in respect of the Fund's investments. To the extent any such payments are received, they are credited to the Fund and not retained by the Manager.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>24</span></div>
+</section>
+
+<!-- ═══════════ PAGE 22 · §9 WATERFALL (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 9  ·  DISTRIBUTION WATERFALL</span>
+  </div>
+  <h2 class="sub">9.6 Distribution Waterfall</h2>
+  <p>Subject to applicable law, the Fund Agreement, and the Credit Facility documentation, distributions to Members from realized portfolio proceeds are made in the following order (the "<strong>Distribution Waterfall</strong>"):</p>
+  <ol class="letlist">
+    <li><strong>Return of contributed capital.</strong> First, to Members in proportion to their respective contributed capital, until each Member has received an amount equal to its aggregate contributed capital;</li>
+    <li><strong>Hurdle return.</strong> Second, to Members in proportion to their contributed capital, until each Member has received the Hurdle Rate (8% per annum, compounded annually) on its contributed capital from the date of contribution;</li>
+    <li><strong>GP catch-up.</strong> Third, one hundred percent (100%) to the Manager (or its affiliate) as a catch-up distribution until the Manager has received an aggregate amount equal to twenty percent (20%) of the <em>cumulative profit distributions</em> (i.e., the sum of distributions made under §9.6(b) and §9.6(c), <strong>excluding return of contributed capital under §9.6(a)</strong>); and</li>
+    <li><strong>80/20 split.</strong> Thereafter, eighty percent (80%) to Members in proportion to their contributed capital and twenty percent (20%) to the Manager (or its affiliate) as carried interest.</li>
+  </ol>
+  <div class="example-box">
+    <div class="ex-head">Worked example  ·  Member contributes $100  ·  Fund returns $200 over 5-year Term  ·  illustrative</div>
+    <table class="tbl tbl-numeric" style="margin: 0; font-size: 9.5px;">
+      <tr><th>Stage</th><th class="right">Amount</th><th>To</th><th class="right">Member running</th><th class="right">Manager running</th></tr>
+      <tr><td class="k">(a) Return of capital</td><td class="right">$100.00</td><td class="v">Member</td><td class="right">$100.00</td><td class="right">$0</td></tr>
+      <tr><td class="k">(b) Hurdle (8% × 5y compounded ≈ 46.93%)</td><td class="right">$46.93</td><td class="v">Member</td><td class="right">$146.93</td><td class="right">$0</td></tr>
+      <tr><td class="k">(c) Manager catch-up to 20% of cumulative profit</td><td class="right">$11.73</td><td class="v">Manager</td><td class="right">$146.93</td><td class="right">$11.73</td></tr>
+      <tr><td class="k">(d) Remaining $41.34 split 80/20</td><td class="right">$33.07 / $8.27</td><td class="v">Member / Manager</td><td class="right">$180.00</td><td class="right">$20.00</td></tr>
+      <tr class="total"><td class="k"><strong>Total</strong></td><td class="right"><strong>$200.00</strong></td><td class="v"></td><td class="right"><strong>$180.00</strong> (90%)</td><td class="right"><strong>$20.00</strong> (10%)</td></tr>
+    </table>
+  </div>
+  <p><strong>Profit allocation:</strong> Of the $100 profit, the Member receives $80 (80%) and the Manager receives $20 (20%), consistent with the 8% hurdle / 100% catch-up / 20% carry structure.</p>
+  <p class="disc">Note on the catch-up base. The catch-up under (c) is calculated on the basis of the Manager's share of <em>cumulative profit distributions</em>, that is, the sum of distributions made under (b) and (c) only. Distributions under (a), being return of contributed capital, are excluded from the catch-up base. Additional worked examples for varying return scenarios are set out in <strong>Schedule N</strong>.</p>
+  <h2 class="sub">9.7 Distribution form</h2>
+  <p>Distributions may be made in cash or in kind, as the Manager determines in accordance with the Fund Agreement. In-kind distributions may include securities held in the Fund's portfolio, subject to applicable transfer and securities law restrictions.</p>
+  <h2 class="sub">9.8 Tax distributions</h2>
+  <p>The Manager may, at its discretion, make tax distributions to Members in respect of estimated taxable income allocated to such Members from the Fund, on terms set out in the Fund Agreement.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>25</span></div>
+</section>
+
+<!-- ═══════════ PAGE 23 · §10 TERM ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 10  ·  TERM & LIQUIDITY</span>
+  </div>
+  <h1 class="sec"><span class="num">10.</span>Term, liquidity, and transfers</h1>
+  <h2 class="sub">10.1 Term</h2>
+  <p>The Term of the Fund commences at First Close and continues for a period of <strong>five (5) years</strong>, subject to up to <strong>two (2) one-year extensions</strong> exercisable by the Manager. Each extension is subject to the consent thresholds set out in the Fund Agreement.</p>
+  <h2 class="sub">10.2 Investment Period</h2>
+  <p>The Investment Period is <strong>three (3) years from First Close</strong>, subject to extension as set out in the Fund Agreement.</p>
+  <h2 class="sub">10.3 Dissolution events</h2>
+  <p>The Fund will dissolve upon the earliest of (i) the expiration of the Term (including any extensions), (ii) the occurrence of a dissolution event specified in the Fund Agreement (including, without limitation, certain Key Person events, Credit Facility termination events, or material regulatory events), or (iii) the unanimous consent of Members and the Manager.</p>
+  <h2 class="sub">10.4 Liquidation</h2>
+  <p>Upon dissolution, the Manager (or an appointed liquidator) shall conduct an orderly liquidation of the Fund's portfolio and distribute the proceeds in accordance with the Distribution Waterfall. The liquidation period is as set out in the Fund Agreement and may be extended in the Manager's discretion to permit orderly disposition of illiquid positions.</p>
+  <h2 class="sub">10.5 Sub-fund winding up under the VCC Act</h2>
+  <p>The winding up of the Fund as a sub-fund of the Umbrella VCC is governed by the VCC Act. The assets of the Fund are applied solely to the satisfaction of the claims of creditors of, and Members in, the Fund. The assets of the Fund are not available to discharge the liabilities of any other sub-fund of the Umbrella VCC.</p>
+  <h2 class="sub">10.6 No redemption</h2>
+  <p><strong>The Fund is closed-end. Members do not have the right to require the Fund to redeem their Interests prior to dissolution.</strong></p>
+  <h2 class="sub">10.7 Transfer restrictions</h2>
+  <p><strong>The Interests are not freely transferable.</strong> Transfers are subject to (i) the consent of the Manager (which may be withheld at the Manager's discretion); (ii) compliance with applicable securities laws, including the SFA and Section 305 transfer restrictions; (iii) AML/KYC review of the proposed transferee; and (iv) the other transfer restrictions set out in the Fund Agreement. The Interests are illiquid and Members should not expect to be able to sell or transfer their Interests prior to dissolution of the Fund.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>26</span></div>
+</section>
+
+<!-- ═══════════ PAGE 24 · §11 SERVICE PROVIDERS ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 11  ·  SERVICE PROVIDERS & REPORTING</span>
+  </div>
+  <h1 class="sec"><span class="num">11.</span>Service providers and reporting</h1>
+  <h2 class="sub">11.1 Service providers</h2>
+  <table class="tbl">
+    <tr><th style="width: 30%">Service provider</th><th>Identification</th></tr>
+    <tr><td class="k">Fund Administrator</td><td class="v">Independent Singapore-licensed fund administrator, identified at First Close</td></tr>
+    <tr><td class="k">Auditor</td><td class="v">Independent Singapore-licensed audit firm, identified at First Close</td></tr>
+    <tr><td class="k">Custodian</td><td class="v">Bullion custodian at Singapore Freeport, identified at First Close</td></tr>
+    <tr><td class="k">Credit Facility Provider</td><td class="v">Singapore institutional bank, identified at First Close</td></tr>
+    <tr><td class="k">Singapore counsel</td><td class="v">Engaged for fund structuring; identified in the Fund Agreement and on request to qualified prospective Members</td></tr>
+    <tr><td class="k">Korean counsel</td><td class="v">Engaged for cross-border review; identified in the Fund Agreement and on request to qualified prospective Members</td></tr>
+  </table>
+  <p class="disc">Service provider selection and conflicts management are described in §16.</p>
+  <h2 class="sub">11.2 Reports and Member communication</h2>
+  <table class="tbl">
+    <tr><th style="width: 22%">Cadence</th><th>Content</th></tr>
+    <tr><td class="k">Quarterly</td><td class="v">Position statements through the Manager's portal, comprising the Member's pro-rata interest in the Fund's NAV, the Fund's portfolio summary, the gold collateral pool status, the LTV ratio, and the Cash Reserve position.</td></tr>
+    <tr><td class="k">Annually</td><td class="v">Audited financial statements at the Fund level. K-1-equivalent statement for each Member, supporting tax-counsel preparation of the Member's resident-level filings.</td></tr>
+    <tr><td class="k">Capital Calls</td><td class="v">Capital Call notices delivered in accordance with §7.4 and the Fund Agreement.</td></tr>
+    <tr><td class="k">Material events</td><td class="v">Reasonable notice of material events affecting the Fund, including without limitation Key Person events, Credit Facility events, custody events, insurance events, and Member-affecting regulatory events.</td></tr>
+  </table>
+  <h2 class="sub">11.3 Confidentiality of reports</h2>
+  <p>Reports delivered to Members are confidential. Members may not disclose the contents of reports to third parties other than the Member's professional advisors retained for the purpose of advising the Member on the Member's investment in the Fund, subject to the confidentiality obligations of such advisors.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>27</span></div>
+</section>
+
+<!-- ═══════════ PAGE 25 · PART II DIVIDER ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>PART II</span>
+  </div>
+  <div class="part-divider">
+    <div class="part-num">Part II</div>
+    <h1 class="part-title">Definitive<br/><em>disclosures.</em></h1>
+    <div class="part-rule"></div>
+    <p class="part-sub">The legal, tax, regulatory, and risk factor disclosures necessary for an informed investment decision. Drafted for counsel review.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>28</span></div>
+</section>
+
+<!-- ═══════════ PAGE 26 · §12 KOREAN FRAMEWORK (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 12  ·  KOREAN FRAMEWORK</span>
+  </div>
+  <h1 class="sec"><span class="num">12.</span>Korean regulatory and tax framework</h1>
+  <h2 class="sub">12.1 Member-level obligations remain with the Member</h2>
+  <p>Korean residents subscribing to the Fund are subject to Korean regulatory and tax obligations applicable to offshore fund subscriptions. The Manager has structured the Fund to consolidate Singapore-side fund administration into a single Member subscription. <strong>The Member's resident-level Korean obligations are unaffected by the Fund structure and remain the Member's obligation.</strong></p>
+  <h2 class="sub">12.2 Korean obligations — regulatory mapping</h2>
+  <p>The following table sets out, by Korean regulatory regime, the treatment of the Member's obligation under the Fund structure. <em>This regulatory mapping is provided as structural background only; specifics for any Korean resident depend on individual circumstances and require qualified Korean tax / FX counsel review.</em></p>
+  <table class="tbl">
+    <tr><th style="width: 30%">Korean obligation</th><th>Treatment under Fund structure</th></tr>
+    <tr><td class="k">FETA — initial remittance</td><td class="v">Member designates a Korean foreign exchange bank at subscription. Remittance reported through that bank under standard capital transaction process. The Manager supplies standardized remittance documentation supporting purpose-of-transfer disclosure.</td></tr>
+    <tr><td class="k">FETA — per-deal filing</td><td class="v">Addressed at the Fund level under Singapore regulation. After subscription, individual deal entries are made by the Singapore VCC under its own filing regime; the Member does not submit per-deal FETA filings against the Member's LP interest itself.</td></tr>
+    <tr><td class="k">FSCMA — 49-investor private placement cap</td><td class="v">Not applicable at the fund level. The Fund is a Singapore-domiciled vehicle. The Member's exposure is a single LP subscription in a Singapore structure, not a Korean private fund interest.</td></tr>
+    <tr><td class="k">FSCMA — 10% single-deal cap</td><td class="v">Not applicable at Member level. Position-level concentration is held at the fund level. The Member holds a pro-rata interest in the fund, not direct deal exposure.</td></tr>
+    <tr><td class="k">KoFIU — AML / STR review</td><td class="v">Initial remittance triggers standard CTR/STR review at the Member's Korean bank. The Manager supplies source-of-funds documentation support during onboarding to assist the bank and the Member's counsel with the review.</td></tr>
+  </table>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>29</span></div>
+</section>
+
+<!-- ═══════════ PAGE 27 · §12 KOREAN FRAMEWORK (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 12  ·  KOREAN FRAMEWORK (CONT.)</span>
+  </div>
+  <table class="tbl">
+    <tr><th style="width: 30%">Korean obligation</th><th>Treatment under Fund structure</th></tr>
+    <tr><td class="k">NTS — overseas account annual reporting<span class="small">LCITA · KRW 500 million threshold</span></td><td class="v">Member's annual reporting obligation <em>remains.</em> The Manager supplies standardized annual documentation — K-1-equivalent and position summary — to support the Member's Korean tax counsel in preparing the filing. Filings continue to be made by the Member's Korean counsel.</td></tr>
+    <tr><td class="k">NTS — capital gains on distributions</td><td class="v">Member's Korean capital gains tax obligation on Fund distributions <em>remains.</em> The Manager supplies annual documentation supporting cost basis and distribution reporting.</td></tr>
+    <tr><td class="k">NTS — tax characterization on disposition</td><td class="v">The Korean tax characterization of gain or loss on disposition of the Member's Interest — including any embedded gold price appreciation reflected in Fund value — depends on the Member's circumstances and Korean tax law applicable at the time of disposition. <strong>Members should engage qualified Korean tax counsel prior to subscription</strong> on expected treatment.</td></tr>
+  </table>
+  <h2 class="sub">12.3 Treatment summary</h2>
+  <p>The Fund structure addresses the Singapore-side fund-level entity reporting under Singapore law. <strong>Resident-level obligations of the Korean Member — annual NTS overseas account reporting, capital gains tax on distributions, the designated FX bank relationship, and the tax characterization on exit — are unaffected by the structure and continue to require the engagement of the Member's qualified Korean tax / FX counsel.</strong></p>
+  <h2 class="sub">12.4 Distribution restriction; reverse solicitation</h2>
+  <p>This Memorandum is not, and is not intended to be, a public offer of the Interests in the ROK. <strong>The Manager does not undertake general solicitation, advertising, or public marketing in the ROK.</strong> Distribution to ROK residents is contemplated solely on a reverse-solicitation basis where each prospect has initiated contact with the Manager prior to receipt of substantive offering materials, or, where the Manager engages a Korean-licensed distributor, through that distributor in compliance with applicable FSCMA requirements.</p>
+  <h2 class="sub">12.5 Member responsibility for compliance</h2>
+  <p>Each ROK resident Member is responsible for compliance with all Korean laws applicable to its subscription, holding, and disposition of the Interest, including but not limited to FETA, LCITA, FSCMA, and the KoFIU rules. <strong>The Manager does not provide Korean tax advice and does not submit Korean tax filings on behalf of Members.</strong></p>
+  <h2 class="sub">12.6 Korean withholding and double tax treaty</h2>
+  <p>Distributions to Korean residents from the Fund may be subject to Singapore-Korea tax treaty consideration and to Korean tax. Members should consult Korean tax counsel for analysis of treaty position and distribution treatment.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>30</span></div>
+</section>
+
+<!-- ═══════════ PAGE 28 · §13 SINGAPORE FRAMEWORK ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 13  ·  SINGAPORE FRAMEWORK</span>
+  </div>
+  <h1 class="sec"><span class="num">13.</span>Singapore regulatory and tax framework</h1>
+  <h2 class="sub">13.1 VCC Act</h2>
+  <p>The Umbrella VCC and the Fund are governed by the VCC Act 2018. The Fund will operate in accordance with the VCC Act, the constitutive documents of the Umbrella VCC, and applicable Singapore regulations.</p>
+  <h2 class="sub">13.2 SFA — Restricted Scheme</h2>
+  <p>The Fund is offered as a restricted scheme under Section 305 of the SFA. The Fund's status as a restricted scheme is subject to ongoing compliance with the conditions of Section 305 and the <strong>Sixth Schedule of the CIS Regulations</strong>, including:</p>
+  <ol class="numlist">
+    <li>the offer being made in or accompanied by an information memorandum (this Memorandum) that contains salient information about the Fund, in compliance with paragraph 1(1) of the Sixth Schedule of the CIS Regulations;</li>
+    <li>the Manager being licensed or regulated to manage the scheme property in the jurisdiction of its principal place of business and being fit and proper, in compliance with paragraph 1(1)(b) of the Sixth Schedule;</li>
+    <li>entry of the Fund onto MAS's list of restricted schemes through the CISNet portal prior to any offer being made; and</li>
+    <li>lodgement of an annual declaration with MAS every 12 months as a condition for ongoing exemption, in compliance with paragraph 7 of the Sixth Schedule.</li>
+  </ol>
+  <p><strong>As a restricted scheme, the Fund is exempted from CIS authorisation/recognition and prospectus requirements under the SFA, subject to ongoing compliance with the conditions above.</strong> The Manager will submit the relevant notification through CISNet and lodge annual declarations as required.</p>
+  <h2 class="sub">13.3 Manager licensing</h2>
+  <p>The Manager will at all times comply with the regulatory requirements applicable to managing a Singapore-domiciled sub-fund offered as a restricted scheme — <strong>either by holding a capital markets services licence under Section 86 of the SFA in respect of fund management activities, or by qualifying for an applicable exemption under Section 99 of the SFA</strong>. The Manager's regulatory licensing status will be confirmed to Members at First Close.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>31</span></div>
+</section>
+
+<!-- ═══════════ PAGE 28B · §13 SINGAPORE FRAMEWORK (CONT.) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 13  ·  SINGAPORE  ·  TAX &amp; AML</span>
+  </div>
+
+  <h2 class="sub">13.4 Singapore tax — Fund-level</h2>
+  <p>The Manager intends to apply for available Singapore tax incentives applicable to the Fund, including (where applicable) the Section 13O or Section 13U tax exemption schemes. <strong>No assurance is given that the Fund will obtain or maintain any specific tax incentive or treatment.</strong> Singapore tax-counsel review confirms the structure's eligibility for the intended scheme; full details are set out in the Fund Agreement and in the tax-counsel opinion available to qualified prospective Members on request.</p>
+  <h2 class="sub">13.5 Singapore tax — Member-level</h2>
+  <p>Singapore-resident Members are subject to Singapore tax on Fund distributions in accordance with Singapore tax law. Singapore-resident Members should consult their own Singapore tax advisors.</p>
+  <h2 class="sub">13.6 AML/CFT</h2>
+  <p>The Manager and the Umbrella VCC comply with AML/CFT requirements applicable under Singapore law, including the Corruption, Drug Trafficking and Other Serious Crimes (Confiscation of Benefits) Act, the Terrorism (Suppression of Financing) Act, and relevant MAS notices and guidelines applicable to fund managers and Variable Capital Companies. Members are subject to AML/KYC review at subscription and ongoing monitoring.</p>
+  <h2 class="sub">13.7 ACRA registration</h2>
+  <p>The Umbrella VCC and the Fund will be registered with the Accounting and Corporate Regulatory Authority of Singapore in accordance with the VCC Act. The Fund's sub-fund registration number will be confirmed to Members at First Close.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>32</span></div>
+</section>
+
+<!-- ═══════════ PAGE 29 · §14 CUSTODY ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 14  ·  CUSTODY & INSURANCE</span>
+  </div>
+  <h1 class="sec"><span class="num">14.</span>Custody, insurance, and segregation</h1>
+  <h2 class="sub">14.1 Custodian</h2>
+  <p>The Bars are held in segregated allocated custody at a bullion custodian's premises at the Singapore Freeport. The Custodian is identified to Members at First Close.</p>
+  <h2 class="sub">14.2 Allocation and serial identification</h2>
+  <p>Each Bar is uniquely identified by serial number and recorded in the Custodian's allocated records as belonging to the Fund. Bars are segregated from the assets of the Custodian, the Manager, the Credit Facility Provider, and other counterparties.</p>
+  <h2 class="sub">14.3 Insurance</h2>
+  <p>The Bars are insured under the Custodian's standard insurance programme, with terms summarised in <strong>Schedule B</strong>. Members should note that:</p>
+  <ol class="letlist">
+    <li>insurance coverage is subject to the per-event limits, aggregate limits, deductibles, exclusions, and conditions set out in the Custodian's policy;</li>
+    <li>certain perils may be excluded (e.g., war, terrorism, insurrection, certain force majeure events, certain inside-job events depending on policy terms);</li>
+    <li>insurance settlement may take time and may require investigation, claims process, and adjustment;</li>
+    <li>where the value of an insured loss exceeds the policy limits, the Fund (and accordingly the Members) bear the residual risk.</li>
+  </ol>
+  <h2 class="sub">14.4 Custody of cash and investment assets</h2>
+  <p>Cash and investment assets of the Fund (other than the Bars) are held by the Administrator and the Fund's prime broker or sub-custodian (as applicable), in segregated accounts in the name of the Fund. Cash held at the Singapore institutional bank that provides the Credit Facility may be subject to bank counterparty risk; the Manager monitors and manages such exposures.</p>
+  <h2 class="sub">14.5 Insolvency segregation</h2>
+  <p>In the event of an insolvency of the Manager, the Custodian, or the Credit Facility Provider:</p>
+  <ol class="letlist">
+    <li>the Bars held in segregated allocated custody at the Singapore Freeport are intended to be excluded from the insolvency estate of the relevant insolvent party, <strong>subject to the terms of the relevant custody agreement and applicable Singapore insolvency law</strong>;</li>
+    <li>cash and investment assets of the Fund held at the Administrator are intended to be similarly excluded, subject to the terms of the Administrator's custody arrangements and applicable insolvency law;</li>
+    <li>the Credit Facility itself is a contractual relationship and may be affected by an insolvency of the Credit Facility Provider; the Fund's pledge of the gold collateral pool would, in such event, become a creditor relationship with the insolvency estate of the Credit Facility Provider.</li>
+  </ol>
+  <p><strong>Members should not assume that segregation provides absolute protection against all insolvency outcomes. Counsel should review the relevant custody agreements, Credit Facility documentation, and the applicable insolvency analysis.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>33</span></div>
+</section>
+
+<!-- ═══════════ PAGE 30 · §15 RISK FACTORS · A ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  A</span>
+  </div>
+  <h1 class="sec"><span class="num">15.</span>Risk Factors</h1>
+  <div class="notice-block">
+    <strong>Investment in the Fund involves significant risks, including the loss of all or part of contributed capital. Prospective Members should review carefully the risk factors set out below, together with the Fund Agreement and the other information in this Memorandum, before deciding to subscribe. The risk factors below are not exhaustive; additional risks may apply that are not currently known to the Manager or that the Manager does not currently consider material.</strong>
+  </div>
+  <div class="risk-cat">A. Strategy and return risks</div>
+  <div class="risk">
+    <div class="rcode">A1</div>
+    <div class="rtitle">No operating history of the Fund.</div>
+    <p>The Fund is a newly formed vehicle. Targets, IRR ranges, and structural economics referenced in this Memorandum are illustrative based on the Manager's structuring of the vehicle and on its analysis of comparable structures. They are not historical results of the Fund. <strong>Past performance of unrelated investments managed by the Manager's principals or by other third parties is not indicative of future results of the Fund.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">A2</div>
+    <div class="rtitle">Investment strategy execution.</div>
+    <p>The Fund's ability to execute the investment strategy depends on the Manager's ability to source, evaluate, and execute appropriate US private market positions on terms consistent with the strategy. Sourcing relationships, deal flow, and execution conditions are subject to market and operational factors that may adversely affect the Fund's ability to deploy capital at the targeted volumes, prices, or terms.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">A3</div>
+    <div class="rtitle">Concentration risk.</div>
+    <p>The Fund may, at any time and in particular during the early Investment Period, hold a portfolio that is concentrated in a small number of positions. Concentration of investments increases the impact of any single position's underperformance on the Fund's overall returns.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">A4</div>
+    <div class="rtitle">Forward-looking statements.</div>
+    <p>Statements in this Memorandum that are not historical fact, including statements regarding the Fund's investment objective, return targets, and operational mechanics, are forward-looking. Forward-looking statements involve known and unknown risks, uncertainties, and other factors that may cause actual outcomes to differ materially from those expressed or implied. <strong>No representation or warranty is made as to the accuracy of any forward-looking statement.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">A5</div>
+    <div class="rtitle">Reliance on the Manager.</div>
+    <p>The Fund is dependent on the Manager for sourcing, structuring, execution, monitoring, and exit of all positions. The Manager is newly established and the principals' ability to attract and retain investment, operations, and compliance personnel is material to the Fund.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>34</span></div>
+</section>
+
+<!-- ═══════════ PAGE 31 · §15 RISK FACTORS · B ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  B</span>
+  </div>
+  <div class="risk-cat">B. Gold and custody risks</div>
+  <div class="risk">
+    <div class="rcode">B1</div>
+    <div class="rtitle">Gold price volatility.</div>
+    <p>The value of the Fund's gold collateral pool fluctuates with the LBMA spot price of gold. Material declines in the gold price reduce the headroom in the Fund's LTV ratio and may trigger Cash Reserve deployment, Capital Calls, or, in extreme cases, margin calls under the Credit Facility.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B2</div>
+    <div class="rtitle">Gold price decline below LTV ceiling and below Margin Threshold.</div>
+    <p>A material decline in the gold price could cause the LTV ratio to approach or exceed the LTV ceiling of seventy-five percent (75%) per LP agreement parameters or the Margin Threshold of eighty percent (80%). The Fund's defensive mechanisms (Cash Reserve and Capital Calls) are designed to prevent the LTV from reaching the Margin Threshold but provide no guarantee against this outcome.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B3</div>
+    <div class="rtitle">Gold procurement spread and basis risk.</div>
+    <p>The Fund procures Bars at the LBMA spot price at the time of trade execution, plus dealer spread. The Fund may be unable to procure Bars at the targeted prices or volumes during periods of market dislocation, and the procurement spread may widen.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B4</div>
+    <div class="rtitle">Custody counterparty risk.</div>
+    <p>The Bars are held at a bullion custodian at the Singapore Freeport. Custody-counterparty failure, fraud, theft, or operational error at the Custodian could affect the Fund's gold position and Member outcomes.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B5</div>
+    <div class="rtitle">Insurance coverage limits.</div>
+    <p>Bars are insured under the Custodian's standard insurance programme. Insurance coverage is subject to per-event limits, aggregate limits, deductibles, exclusions, and conditions. Certain perils may be excluded. Insurance settlement may be delayed. Where the value of an insured loss exceeds policy limits, the Fund (and accordingly the Members) bear the residual risk.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B6</div>
+    <div class="rtitle">Procurement window slippage.</div>
+    <p>Gold spot may move between Indication of Interest submission and trade execution. The Fund retains up to three percent (3%) of the Member's wire as a Procurement Buffer to cover spot movement during the execution window, dealer spread, bar storage setup, insurance attachment, and bullion execution costs. Spot movement in excess of the Procurement Buffer is borne by the Member.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">B7</div>
+    <div class="rtitle">LBMA refiner availability.</div>
+    <p>The Fund's procurement depends on the availability of LBMA-grade bars from accredited refiners. Disruptions to LBMA refiner inventories could affect the Fund's procurement timeline.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>35</span></div>
+</section>
+
+<!-- ═══════════ PAGE 32 · §15 RISK FACTORS · C ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  C</span>
+  </div>
+  <div class="risk-cat">C. Credit facility and leverage risks</div>
+  <div class="risk">
+    <div class="rcode">C1</div>
+    <div class="rtitle">Single-bank counterparty exposure.</div>
+    <p>The Fund's Credit Facility is provided by a single Singapore institutional bank. The Manager has not pre-arranged a backup credit facility. Withdrawal, default, or material adverse change at the Credit Facility Provider could affect the Fund's ability to deploy capital and meet its obligations.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">C2</div>
+    <div class="rtitle">Leverage magnification.</div>
+    <p>The Credit Facility introduces leverage at the Fund level. <strong>Leverage magnifies both potential returns and potential losses.</strong> In adverse scenarios, leverage may result in losses materially exceeding the unlevered position.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">C3</div>
+    <div class="rtitle">Margin call risk.</div>
+    <p>The Credit Facility Provider may issue a margin call at the Margin Threshold of 80% LTV. Margin call enforcement may result in the Fund being required to post additional collateral, repay outstanding principal, or suffer enforcement of the security interest over the gold collateral pool.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">C4</div>
+    <div class="rtitle">SORA-linked rate volatility.</div>
+    <p>The Credit Facility is priced at a SORA-linked floating rate. SORA rate movements affect the Fund's borrowing cost and net spread on portfolio positions. Material increases in SORA could compress the Fund's net spread and reduce returns.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">C5</div>
+    <div class="rtitle">Covenant breach.</div>
+    <p>The Credit Facility documentation contains covenants applicable to the Fund. Breach of such covenants could trigger default events under the Credit Facility, including acceleration of outstanding principal and enforcement of the security interest.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>36</span></div>
+</section>
+
+<!-- ═══════════ PAGE 33 · §15 RISK FACTORS · D ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  D</span>
+  </div>
+  <div class="risk-cat">D. Portfolio risks</div>
+  <div class="risk">
+    <div class="rcode">D1</div>
+    <div class="rtitle">Pre-IPO secondary equity risk.</div>
+    <p>Pre-IPO secondary positions are illiquid, may be subject to issuer-imposed transfer restrictions, and may be subject to private valuation methodology that may differ from realized exit valuations. The expected liquidity event (typically an initial public offering) may be delayed, withdrawn, or restructured, materially affecting the Fund's exit timing and proceeds.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D2</div>
+    <div class="rtitle">Late-stage private credit risk.</div>
+    <p>Private credit positions are subject to credit risk, structural risk, covenant risk, and recovery risk. Borrower default, distressed restructuring, or secondary-market price decline may result in partial or total loss of principal on such positions.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D3</div>
+    <div class="rtitle">Position-level valuation risk.</div>
+    <p>Pre-IPO and private credit positions are valued using methodology described in the Fund Agreement. Valuation is subject to material judgment and may differ materially from realized exit prices.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D4</div>
+    <div class="rtitle">Currency risk.</div>
+    <p>The Fund's portfolio is denominated primarily in United States dollars. Member subscriptions are in United States dollars. <strong>Members whose home currency is not the United States dollar bear currency risk on the Member's interest in the Fund.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D5</div>
+    <div class="rtitle">Geopolitical and US regulatory risk.</div>
+    <p>US private market positions are subject to US regulatory and geopolitical risks, including possible changes in US securities regulations, tax law, sanctions regimes, and foreign-investment review (CFIUS).</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D6</div>
+    <div class="rtitle">Sponsor / counterparty risk.</div>
+    <p>Pre-IPO and private credit positions involve relationships with deal sponsors, lead investors, custodians, and other counterparties. Sponsor failure, counterparty default, or fraud at a counterparty could affect specific positions and the Fund's overall returns.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D7</div>
+    <div class="rtitle">Sector concentration.</div>
+    <p>Certain US private market positions targeted by the Fund (including in the artificial intelligence and defense sectors) may be subject to sector-specific risks, including regulatory scrutiny, technology obsolescence, and reputational risk.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">D8</div>
+    <div class="rtitle">Indicative opening positions — closing risk.</div>
+    <p>Marketing materials referencing specific opening positions described to prospective Members are sourced and indicative; these positions are subject to availability, allocation, and final terms at close. <strong>There is no guarantee that any specific position described in marketing materials will be available to the Fund or that the Fund will receive any specific allocation.</strong></p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>37</span></div>
+</section>
+
+<!-- ═══════════ PAGE 34 · §15 RISK FACTORS · E ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  E</span>
+  </div>
+  <div class="risk-cat">E. Capital call and funding risks</div>
+  <div class="risk">
+    <div class="rcode">E1</div>
+    <div class="rtitle">Contingent capital commitment.</div>
+    <p>A Member's investment in the Fund is subject to a contingent additional capital commitment beyond initial subscription, exercisable by the Manager under conditions set out in the Fund Agreement. <strong>Aggregate Capital Calls during the Term shall not exceed 100% of a Member's original Commitment.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">E2</div>
+    <div class="rtitle">Capital Call timing risk.</div>
+    <p>Capital Calls may be issued at times when the Member's other liquidity is limited, or when global market conditions affect the Member's ability to fund. The Default Ladder applies to a Member who fails to fund a Capital Call within the cure period.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">E3</div>
+    <div class="rtitle">Capital Call dilution risk.</div>
+    <p>A Member who fails to fund a Capital Call may be subject to dilution of the Member's Interest, forced sale, or other consequences set out in the Default Ladder. <strong>Such consequences may result in significant loss of the Member's investment.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">E4</div>
+    <div class="rtitle">Cash Reserve depletion.</div>
+    <p>In adverse market conditions involving sustained gold price declines, the Cash Reserve may be deployed faster than it is replenished by Capital Calls. <strong>Sustained adverse conditions could exhaust the Cash Reserve and the Capital Call mechanism, exposing the Fund to margin call enforcement at the Margin Threshold.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">E5</div>
+    <div class="rtitle">Cash Reserve concentration.</div>
+    <p>The Cash Reserve is held in cash and short-duration instruments at counterparty banks. Counterparty failure at a Cash Reserve depository could affect the Fund's defensive position.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>38</span></div>
+</section>
+
+<!-- ═══════════ PAGE 35 · §15 RISK FACTORS · F ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  F</span>
+  </div>
+  <div class="risk-cat">F. Regulatory risks</div>
+  <div class="risk">
+    <div class="rcode">F1</div>
+    <div class="rtitle">Singapore VCC registration.</div>
+    <p>As of the date of this Memorandum, the Umbrella VCC has not yet been incorporated and the Fund has not yet been established. <strong>Subscription is conditional upon the incorporation of the Umbrella VCC, the registration of the Fund as a sub-fund, and the entry of the Fund onto MAS's list of restricted schemes prior to First Close.</strong> The Manager has prepared a contingency plan in the event of registration delay; details are set out in the Fund Agreement.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F2</div>
+    <div class="rtitle">Singapore tax treatment.</div>
+    <p>The Manager intends to apply for available Singapore tax incentives. <strong>No assurance is given that any specific incentive will be obtained or maintained.</strong> Changes in Singapore tax law could affect Fund and Member tax outcomes.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F3</div>
+    <div class="rtitle">Korean private placement compliance.</div>
+    <p>Distribution of Fund materials to ROK residents is contemplated solely on a reverse-solicitation basis or through a Korean-licensed distributor. <strong>Failure to comply with Korean private placement rules could affect Member subscriptions and is subject to Korean securities-regulatory inquiry risk.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F4</div>
+    <div class="rtitle">Korean tax law changes.</div>
+    <p>Korean tax law (LCITA, FETA, FSCMA, KoFIU regulations) may change during the Term. Changes affecting overseas account reporting, capital gains taxation, or remittance rules may affect Member outcomes.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F5</div>
+    <div class="rtitle">Withholding tax and double tax treaty.</div>
+    <p>US private market distributions may be subject to US withholding tax. Singapore-Korea double tax treaty interpretation may affect ultimate Member tax outcomes.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F6</div>
+    <div class="rtitle">KoFIU AML / source-of-funds review.</div>
+    <p>Initial Member remittances trigger AML / source-of-funds review at the Member's Korean bank. Adverse findings could delay or block subscription.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F7</div>
+    <div class="rtitle">Designated FX bank relationship.</div>
+    <p>Members must designate a Korean foreign exchange bank for Fund-related transactions. Disruption to this relationship affects Member ability to remit, receive distributions, and report.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F8</div>
+    <div class="rtitle">MAS regulatory developments.</div>
+    <p>Changes in MAS regulation, including changes to the VCC Act, the SFA, the CIS Regulations, AML/CFT requirements, and applicable codes and notices, could affect the Fund's structure, operations, or Member outcomes.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">F9</div>
+    <div class="rtitle">CFIUS and US foreign-investment review.</div>
+    <p>US private market positions involving sensitive sectors (including defense and dual-use technology) may be subject to CFIUS review. CFIUS outcomes could affect the Fund's ability to acquire, hold, or exit specific positions.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>39</span></div>
+</section>
+
+<!-- ═══════════ PAGE 36 · §15 RISK FACTORS · G ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 15  ·  RISK FACTORS  ·  G</span>
+  </div>
+  <div class="risk-cat">G. Operational and miscellaneous risks</div>
+  <div class="risk">
+    <div class="rcode">G1</div>
+    <div class="rtitle">Fund administrator dependency.</div>
+    <p>NAV calculation, Member reporting, and operational continuity depend on the independent Singapore administrator. Administrator failure could affect reporting cadence and operational integrity.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G2</div>
+    <div class="rtitle">Auditor dependency.</div>
+    <p>Annual audit depends on the independent Singapore auditor. Audit qualification or delay could affect Member confidence and regulatory standing.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G3</div>
+    <div class="rtitle">Cybersecurity and data breach.</div>
+    <p>Fund operations and Member portal access depend on technology systems. Cyber incidents could affect operational continuity, Member data, or transaction execution.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G4</div>
+    <div class="rtitle">Force majeure.</div>
+    <p>War, pandemic, sanctions, market closures, and other force majeure events could affect Fund operations, particularly gold procurement, custody, and US private market access.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G5</div>
+    <div class="rtitle">Litigation risk.</div>
+    <p>The Manager, the Fund, custodians, and counterparties may face litigation that could affect Fund operations, Member outcomes, or Fund standing.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G6</div>
+    <div class="rtitle">Reputation risk.</div>
+    <p>Adverse publicity affecting the Manager, the Fund, or any underlying counterparty could affect Fund operations or Member confidence.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G7</div>
+    <div class="rtitle">Information lock-up and MNPI.</div>
+    <p>Members may receive information about underlying positions that constitutes material non-public information ("<strong>MNPI</strong>") under US, Korean, or other applicable securities laws. <strong>Members are prohibited from trading on the basis of such MNPI and must comply with applicable insider trading laws.</strong></p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G8</div>
+    <div class="rtitle">Side-letter parity.</div>
+    <p>The Manager may enter into side letters with certain Members. The terms and circumstances of such side letters are described in §19 and the Fund Agreement.</p>
+  </div>
+  <div class="risk">
+    <div class="rcode">G9</div>
+    <div class="rtitle">Distribution waterfall mechanics.</div>
+    <p>Distributions are subject to the Distribution Waterfall described in §9.6. The mechanics of carry, catch-up, and Hurdle Rate may produce outcomes that differ from a Member's expected return profile in specific scenarios.</p>
+  </div>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>40</span></div>
+</section>
+
+<!-- ═══════════ PAGE 37 · §16 CONFLICTS ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 16  ·  CONFLICTS OF INTEREST</span>
+  </div>
+  <h1 class="sec"><span class="num">16.</span>Conflicts of Interest</h1>
+  <h2 class="sub">16.1 Generally</h2>
+  <p>The Manager and its affiliates, principals, and personnel may, from time to time, have interests that conflict with the interests of the Fund or of individual Members. The Manager has adopted a written conflicts-of-interest policy (the "<strong>Conflicts Policy</strong>") that addresses, among other things, the matters set out in §16.2.</p>
+  <h2 class="sub">16.2 Identified conflicts</h2>
+  <p>The Conflicts Policy addresses the following matters, among others:</p>
+  <ol class="letlist">
+    <li>The Manager may, in the future, manage other funds, accounts, or vehicles with investment strategies that may overlap with the Fund's strategy. Allocation of investment opportunities among multiple funds is governed by an allocation policy in the Conflicts Policy.</li>
+    <li>The Manager and its principals may invest personally in positions that the Fund has acquired, may acquire, or has declined to acquire. Personal account dealing rules applicable to the principals are set out in the Manager's compliance manual.</li>
+    <li>The Manager and its affiliates may be entitled to fees and other compensation from the Fund (including the management fee, carried interest, and reimbursement of expenses) that creates an incentive to take positions that benefit the Manager.</li>
+    <li>The Manager's relationships with the Custodian, the Administrator, the Auditor, the Credit Facility Provider, and other service providers may give rise to conflicts; the Manager has adopted procedures for the selection, monitoring, and termination of such service providers.</li>
+    <li>The Manager may receive non-cash benefits from counterparties, intermediaries, or service providers; such benefits are subject to the Manager's gifts and entertainment policy.</li>
+  </ol>
+  <h2 class="sub">16.3 Disclosure and consent</h2>
+  <p>Material conflicts not addressed by the Conflicts Policy are disclosed to Members and, where required by the Fund Agreement, are subject to Member consent procedures.</p>
+  <h2 class="sub">16.4 Investor advisory committee</h2>
+  <p>The Fund Agreement may provide for the establishment of an Investor Advisory Committee (or similar body), comprising representatives of certain Members, with the role of reviewing and providing input on material conflicts and other matters specified in the Fund Agreement.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>41</span></div>
+</section>
+
+<!-- ═══════════ PAGE 38 · §17 AML & SANCTIONS (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 17  ·  AML & SANCTIONS</span>
+  </div>
+  <h1 class="sec"><span class="num">17.</span>Anti-Money Laundering and Sanctions</h1>
+  <h2 class="sub">17.1 AML/CFT compliance</h2>
+  <p>The Manager and the Umbrella VCC comply with AML/CFT requirements applicable under Singapore law and applicable to fund managers and Variable Capital Companies, including the AML/CFT Notices and Guidelines issued by MAS in respect of Variable Capital Companies.</p>
+  <h2 class="sub">17.2 KYC and CDD</h2>
+  <p>Each Member is required to complete the KYC and customer due diligence procedures described in the Subscription Agreement and the Fund's AML/CFT policy, and to maintain compliance with such procedures during the Term.</p>
+  <h2 class="sub">17.3 Source of funds</h2>
+  <p>Each Member is required to provide source-of-funds documentation supporting the legitimate origin of the subscription proceeds. The Manager may conduct enhanced due diligence on Members where the Manager determines that such enhanced due diligence is appropriate.</p>
+  <h2 class="sub">17.4 Sanctions compliance</h2>
+  <p>Each Member represents that it (and, where applicable, its beneficial owners) is not a person sanctioned under the sanctions regimes administered by the relevant sanctions authorities, including the United Nations, the Office of Foreign Assets Control of the United States Department of the Treasury, the European Union, the United Kingdom, Singapore, and the ROK. The Manager monitors Member sanctions status and may suspend or compulsorily redeem a Member found to be sanctioned, as set out in the Fund Agreement.</p>
+  <h2 class="sub">17.5 Suspicious activity reporting</h2>
+  <p>The Manager and the Administrator are required to file suspicious activity reports under applicable AML/CFT law. Members acknowledge that information regarding their subscription, holdings, and transactions may be disclosed to relevant authorities as required by law.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>42</span></div>
+</section>
+
+<!-- ═══════════ PAGE 39 · §17 FATCA & CRS (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 17  ·  FATCA · CRS · US WITHHOLDING</span>
+  </div>
+  <h2 class="sub">17.6 FATCA, CRS, and US withholding</h2>
+  <h3 class="subsub">FATCA</h3>
+  <p>The Umbrella VCC will register as a Reporting Foreign Financial Institution under the United States Foreign Account Tax Compliance Act ("<strong>FATCA</strong>"), and will obtain a Global Intermediary Identification Number from the United States Internal Revenue Service. The Fund's FATCA classification reflects its status as a sub-fund of a Singapore VCC investing primarily in passive financial assets.</p>
+  <h3 class="subsub">CRS</h3>
+  <p>Singapore is a participating jurisdiction under the OECD Common Reporting Standard ("<strong>CRS</strong>"). The Umbrella VCC will register as a Reporting Financial Institution under CRS, and will be required to report financial account information of Members who are residents of CRS partner jurisdictions to the Inland Revenue Authority of Singapore for onward exchange.</p>
+  <h3 class="subsub">Member documentation</h3>
+  <p>Each Member is required to provide, as part of subscription, a properly completed and executed:</p>
+  <ul style="margin: 8px 0 14px; padding-left: 20px; font-size: 10.5px; line-height: 1.55;">
+    <li style="margin-bottom: 6px; color: var(--text);">IRS Form W-8BEN (for non-US individual Members), W-8BEN-E (for non-US entity Members), or W-9 (for US Members), as applicable; and</li>
+    <li style="margin-bottom: 6px; color: var(--text);">CRS self-certification form indicating the Member's CRS classification and tax residency.</li>
+  </ul>
+  <p>The Manager may require updated forms from time to time to reflect changes in Member classification or applicable regulation.</p>
+  <h3 class="subsub">US withholding</h3>
+  <p>Distributions from the Fund attributable to US-source income may be subject to US withholding tax. The Fund will apply the applicable treaty rate to distributions to Members based on the Member's documented tax residency, where treaty benefits are available. Members are responsible for the accuracy of the documentation they provide. <strong>Members are advised to consult their own tax counsel on the availability of treaty benefits and the credit treatment of any US tax withheld.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>43</span></div>
+</section>
+
+<!-- ═══════════ PAGE 40 · §18 CONFIDENTIALITY ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 18  ·  CONFIDENTIALITY</span>
+  </div>
+  <h1 class="sec"><span class="num">18.</span>Confidentiality and information use</h1>
+  <h2 class="sub">18.1 Confidentiality of Memorandum</h2>
+  <p>This Memorandum and all information furnished by the Manager in connection with the Fund are confidential. Recipients are required to treat such information as confidential and to use it solely for the purpose of evaluating an investment in the Fund.</p>
+  <h2 class="sub">18.2 Member information</h2>
+  <p>Information regarding the Fund's portfolio positions, Member subscription levels, and operational matters is confidential. Members may not disclose such information to third parties other than the Member's professional advisors, subject to confidentiality obligations.</p>
+  <h2 class="sub">18.3 Material non-public information</h2>
+  <p>Members may receive information about Fund portfolio positions that constitutes MNPI under US, Korean, or other applicable securities laws. <strong>Members are prohibited from trading on the basis of such MNPI and must comply with applicable insider trading laws.</strong> The Manager may impose information walls, blackout periods, or other restrictions on certain Members in respect of certain positions.</p>
+  <h2 class="sub">18.4 Public disclosure</h2>
+  <p>The Manager does not generally make public disclosure of the Fund's portfolio holdings, returns, or operational matters. Required regulatory disclosures (e.g., the annual MAS declaration for the restricted scheme and ACRA filings under the VCC Act) are made to the extent required by law.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>44</span></div>
+</section>
+
+<!-- ═══════════ PAGE 41 · §19 SIDE LETTERS ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 19  ·  SIDE LETTERS & MFN</span>
+  </div>
+  <h1 class="sec"><span class="num">19.</span>Side letters and most-favoured-nation</h1>
+  <h2 class="sub">19.1 Side letters</h2>
+  <p>The Manager may enter into side letters with certain Members, providing for terms or conditions specific to such Members. The Manager has adopted a side-letter policy that governs the scope, disclosure, and most-favoured-nation arrangements applicable to side letters. <strong>The side-letter policy is set out in the Fund Agreement.</strong></p>
+  <h2 class="sub">19.2 Most-favoured-nation</h2>
+  <p>Where the side-letter policy provides for most-favoured-nation rights, the Manager will follow the procedures set out in the Fund Agreement to make such rights available to Members within the same MFN class. <strong>Eligibility for MFN, the scope of rights subject to MFN, and the procedures for election are set out in the Fund Agreement.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>45</span></div>
+</section>
+
+<!-- ═══════════ PAGE 42 · §20 SELLING RESTRICTIONS (1/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 20  ·  SELLING RESTRICTIONS</span>
+  </div>
+  <h1 class="sec"><span class="num">20.</span>Selling restrictions and important jurisdictional notices</h1>
+  <h2 class="sub">20.1 Singapore selling restriction</h2>
+  <p>Restated from the Important Notices: this Memorandum has not been registered as a prospectus with MAS. The Interests may not be circulated or distributed, nor may they be offered or sold or be made the subject of an invitation for subscription or purchase, whether directly or indirectly, to persons in Singapore other than (i) to an institutional investor under Section 304 of the SFA; (ii) to a relevant person under Section 305(1) or to any person under Section 305(2) of the SFA; or (iii) otherwise pursuant to, and in accordance with, the conditions of any other applicable provision of the SFA. The Fund is a restricted scheme under the Sixth Schedule to the CIS Regulations.</p>
+  <p>The transfer restrictions under Sections 305A(1)(b) and 305A(3)(c)(ii) of the SFA apply to subsequent sales of the Interests as set out in the Important Notices.</p>
+  <h2 class="sub">20.2 Korea selling restriction</h2>
+  <p>Restated from the Important Notices: this Memorandum is not, and is not intended to be, a public offer of the Interests in the ROK. The Manager does not undertake general solicitation, advertising, or public marketing in the ROK in connection with the Fund. Distribution to ROK residents is contemplated solely on a reverse-solicitation basis where each prospect has initiated contact with the Manager prior to receipt of substantive offering materials, or, where the Manager engages a Korean-licensed distributor, through that distributor in compliance with applicable FSCMA requirements.</p>
+  <h2 class="sub">20.3 United States selling restriction</h2>
+  <p>Restated from the Important Notices: the Interests have not been and will not be registered under the Securities Act or under any state securities laws. The Interests are offered outside the United States in reliance upon Regulation S. The Fund and the Umbrella VCC are not, and will not be, registered as investment companies under the Investment Company Act. <strong>The Interests may not be offered or sold within the United States or to, or for the account or benefit of, any "U.S. person" except pursuant to an exemption from registration.</strong></p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>46</span></div>
+</section>
+
+<!-- ═══════════ PAGE 43 · §20 SELLING RESTRICTIONS (2/2) ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>SECTION 20  ·  SELLING RESTRICTIONS (CONT.)</span>
+  </div>
+  <h2 class="sub">20.4 Hong Kong selling restriction</h2>
+  <p>This Memorandum has not been registered or filed with any securities regulator or authority in Hong Kong. The Interests are offered solely to "professional investors" as defined under the Securities and Futures Ordinance of Hong Kong (Cap. 571).</p>
+  <h2 class="sub">20.5 European Union selling restriction</h2>
+  <p>The Fund is not, and will not be, marketed in the European Union under the Alternative Investment Fund Managers Directive (AIFMD). The Interests are offered solely on a reverse-solicitation basis, where each prospect has initiated contact with the Manager prior to receipt of substantive offering materials.</p>
+  <h2 class="sub">20.6 Other jurisdictions</h2>
+  <p>The Interests may not be offered or sold in any jurisdiction in which such offer or sale would be unlawful. Recipients are required to inform themselves about and observe any restrictions applicable in their jurisdiction. <strong>No action has been or will be taken in any jurisdiction by the Manager or the Fund that would permit a public offering of the Interests, or possession or distribution of this Memorandum, in any jurisdiction where action for that purpose is required.</strong></p>
+  <h2 class="sub">20.7 No representation beyond Memorandum</h2>
+  <p>No person has been authorized to make any representations regarding the Fund other than as contained in this Memorandum.</p>
+  <h1 class="sec" style="margin-top:30px;"><span class="num">21.</span>Governing law, dispute resolution, amendment</h1>
+  <h2 class="sub">21.1 Governing law</h2>
+  <p>This Memorandum, the Fund Agreement, and all subscription documents are governed by, and shall be construed in accordance with, <strong>the laws of the Republic of Singapore</strong>.</p>
+  <h2 class="sub">21.2 Dispute resolution</h2>
+  <p>Any dispute, controversy, or claim arising out of or in connection with this Memorandum, the Fund Agreement, or the Member's subscription <strong>shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre under the SIAC Rules in force from time to time. The seat of arbitration shall be Singapore. The number of arbitrators shall be three. The language of the arbitration shall be English.</strong></p>
+  <h2 class="sub">21.3 Amendment and waiver</h2>
+  <p>The Fund Agreement may be amended in accordance with the amendment provisions set out therein. Material amendments require the consent of Members holding the percentage specified in the Fund Agreement. The Manager may waive certain provisions of the Fund Agreement in respect of a specific Member, where consistent with the Fund Agreement and applicable law.</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>47</span></div>
+</section>
+
+<!-- ═══════════ PAGE 44 · PART III + SCHEDULES ═══════════ -->
+<section class="page">
+  <div class="head">
+    <div class="lockup"><span class="au"><em>Au</em></span><span class="word">AURUM</span></div>
+    <span>PART III  ·  SCHEDULES</span>
+  </div>
+  <div class="part-divider" style="flex: 0; padding: 0.5in 0;">
+    <div class="part-num">Part III</div>
+    <h1 class="part-title" style="font-size:24px;">Schedules and<br/><em>operational documents.</em></h1>
+    <div class="part-rule"></div>
+  </div>
+  <table class="tbl tbl-dense">
+    <tr><th style="width: 12%">Schedule</th><th>Title</th></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">A</td><td class="v">Manager — Principals (biographies)</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">B</td><td class="v">Custody and Insurance Programme — Summary Terms</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">C</td><td class="v">Subscription Documents — Form of Agreement</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">D</td><td class="v">Investor Questionnaire</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">E</td><td class="v">AML/KYC and CDD Documentation</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">F</td><td class="v">FATCA / CRS Forms</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">G</td><td class="v">Section 305 Acknowledgments</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">H</td><td class="v">Reverse-Solicitation Acknowledgment (for Korean residents)</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">I</td><td class="v">Form of Indication of Interest</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">J</td><td class="v">Specimen Subscription Wire Instructions</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">K</td><td class="v">Audit Engagement — Summary</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">L</td><td class="v">Conflicts of Interest Policy — Summary</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">M</td><td class="v">Side-Letter Policy — Summary</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">N</td><td class="v">Distribution Waterfall — Worked Examples</td></tr>
+    <tr><td class="k" style="font-family:var(--mono); color:var(--gold); letter-spacing:0.10em;">O</td><td class="v">Term and Dissolution — Worked Examples</td></tr>
+  </table>
+  <div class="end-marker">END OF MEMORANDUM</div>
+  <p class="disc" style="text-align:center;">TACC Pte Ltd  ·  Singapore  ·  MMXXVI</p>
+  <div class="foot"><span>CONFIDENTIAL  ·  QUALIFIED INVESTORS ONLY</span><span>48</span></div>
+</section>
+</body>
+</html>
